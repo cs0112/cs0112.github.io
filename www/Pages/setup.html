@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Setup Instructions | CSCI 0112 - Fall 2022</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Setup Instructions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Pages/setup.html" />
+<meta property="og:url" content="/Pages/setup.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2022" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Setup Instructions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Setup Instructions","url":"/Pages/setup.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2022" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">CSCI 0112 - Fall 2022</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a class="page-link" href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link" href="/Pages/hours.html">Hours</a>
+          <a class="page-link" href="/Labs/">Labs</a>
+          <a class="page-link" href="/Pages/learning.html">Learning</a>
+          <a class="page-link" href="/Lectures/">Lectures</a>
+          <a class="page-link" href="/Pages/setup.html">Setup</a>
+          <a class="page-link" href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Setup Instructions</h1>
+  </header>
+
+  <div class="post-content">
+    <p>Hi and welcome to CS112! In order to complete and submit course assignments, you must complete the following setup instructions:</p>
+
+<ul>
+  <li><a href="#visual-studio-code">Visual Studio Code</a></li>
+  <li><a href="#python">Python</a></li>
+  <li><a href="#gradescope">Gradescope</a></li>
+</ul>
+
+<p>Should you encounter any troubles or have questions regarding setup, reach out to one of the TAs or post your question on EdStem!</p>
+
+<h2 id="visual-studio-code">Visual Studio Code</h2>
+
+<p>To edit code files for this course, you must install Visual Studio Code (also known as VSCode).</p>
+
+<h3 id="step-1-install">Step 1: Install</h3>
+
+<p>To install VSCode, open the link below that corresponds to your operating system, and follow the directions in the “Installation” section.</p>
+
+<ul>
+  <li><a href="https://code.visualstudio.com/docs/setup/mac">Mac OS</a></li>
+  <li><a href="https://code.visualstudio.com/docs/setup/linux">Linux</a></li>
+  <li><a href="https://code.visualstudio.com/docs/setup/windows">Windows</a></li>
+</ul>
+
+<h3 id="step-2-add-line-length-indicator-optional">Step 2: Add line-length indicator (optional)</h3>
+
+<p>Long lines can make your code less readable, especially when reading it on smaller screens or when viewing two files side-by-side. We suggest using a maximum of 120 characters for each line of code that you write. VSCode can help you follow this guideline by adding a ruler to the editor display. To add this ruler, follow these steps:</p>
+
+<ol>
+  <li>
+    <p>Open Settings by selecting the following menus, depending on your platform:</p>
+
+    <ol>
+      <li>On Mac OS: <strong>Code</strong> &gt; <strong>Preferences</strong> &gt; <strong>Settings</strong></li>
+      <li>On Windows: <strong>File</strong> &gt; <strong>Preferences</strong> &gt; <strong>Settings</strong></li>
+    </ol>
+  </li>
+  <li>
+    <p>Search for <code class="language-plaintext highlighter-rouge">Editor: Rulers</code> in the <em>Settings</em> tab to find the specific setting (pictured below).</p>
+
+    <p><img src="/Pages/vscode/setting_rulers.png" alt="" /></p>
+  </li>
+  <li>
+    <p>Click the <strong>Edit in settings.json</strong> link.</p>
+  </li>
+  <li>
+    <p>In the newly-opened editor for <em>settings.json</em>, add <code class="language-plaintext highlighter-rouge">120</code> between the brackets after <code class="language-plaintext highlighter-rouge">editor.rulers</code> (pictured below).</p>
+
+    <p><img src="/Pages/vscode/setting_rulers_edit.png" alt="" /></p>
+  </li>
+  <li>
+    <p>Save the <em>settings.json</em> file.</p>
+  </li>
+  <li>
+    <p>You should now see a vertical line at column 120, as pictured below:</p>
+
+    <p><img src="/Pages/vscode/ruler_example.png" alt="" /></p>
+  </li>
+</ol>
+
+<h2 id="using-visual-studio-code">Using Visual Studio Code</h2>
+
+<p>Here’s a handy guide to finding your way around Visual Studio Code:</p>
+
+<p><strong>Note:</strong> Use the .py file extension when saving your source files to indicate that these are Python source files.</p>
+
+<p>You will need to use the terminal (also called command prompt) often. You may use the built-in Terminal or Command Prompt app, or you can use the built-in VSCode terminal. To access the VSCode terminal, select <strong>Terminal</strong> in the VSCode top menu, and then, in the dropdown menu that appears, select <strong>New Terminal</strong>.</p>
+
+<p>Along the left-hand side of the VSCode window, you should see several buttons that open various sidebars, which allow you to open files, debug your code, manage VSCode extensions, etc. The icons you are shown may differ, depending on what other extensions you have installed, but they should contain at least the ones listed here. Following are short descriptions what each tab contains:</p>
+
+<p><img src="./vscode/explorer.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Explorer:</strong> Allows you to choose what folders and files to open. If no folder is open, clicking <strong>Open Folder</strong> will allow you to open a folder from your computer and show its files in this tab for easy access.</p>
+
+<p><img src="./vscode/search.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Search:</strong> Allows you to quickly search over all files in the currently opened folder. You can also open search by pressing ⇧⌘F.</p>
+
+<p><img src="./vscode/source_control.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Source Control:</strong> This tab lets you interact with Git. Knowing and using Git is completely optional for this course.</p>
+
+<p><img src="./vscode/debug.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Run and Debug:</strong> Displays all options relevant to running and debugging the program you are writing. You can also open this tab using the keyboard shortcut ⇧⌘D.</p>
+
+<p><img src="./vscode/extensions.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Extensions:</strong> Allows you to download extensions for different languages and tools. The only extension necessary for this course is the Python extension, which you should have already installed.</p>
+
+<p><img src="./vscode/tests.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Testing:</strong> You can run tests using this tab if test files are in the locations that it expects. Using this is entirely optional; assignments will direct you to run tests by running <code class="language-plaintext highlighter-rouge">pytest</code> in the terminal.</p>
+
+<h2 id="python">Python</h2>
+
+<p>To work with Python in VSCode for this course, you must install and configure the correct Python version.</p>
+
+<h3 id="step-1-install-python">Step 1: Install Python</h3>
+
+<p>You must have a Python version from <strong>3.7.x</strong> to <strong>3.10.x</strong> (inclusive) installed for this course.</p>
+
+<p>If you think you already have Python installed, check which version you have installed by running <code class="language-plaintext highlighter-rouge">python3 --version</code> in your terminal or command prompt. (You can open a terminal in VSCode by clicking <strong>Terminal</strong> &gt; <strong>New Terminal</strong>.) If the Python version is in the range 3.7.x to 3.10.x (inclusive), move on to step 2!</p>
+
+<p>Otherwise, follow the instructions <a href="https://www.python.org/downloads/">here</a> to download and install the correct version for your device. Please do not install versions outside the range specified previously as they will not work with the stencil code provided.</p>
+
+<h3 id="step-2-install-the-vscode-python-extension">Step 2: Install the VSCode Python Extension</h3>
+
+<p>Next, add the Python extension to your VSCode installation. This extension allows for a better Python coding experience by supporting autocomplete, IntelliSense, debugging, and more. Follow the steps below to download the extension:</p>
+
+<ol>
+  <li>Go to the <strong>Extensions</strong> tab on VSCode. This is located on the left hand side of the screen, and should look like this: <img src="./vscode/extensions.png" style="width: 2em; height: 2em; vertical-align: middle" /></li>
+  <li>Search for <code class="language-plaintext highlighter-rouge">Python</code> in the <em>Search Extensions…</em> text box.</li>
+  <li>Click the <strong>Install</strong> button on the extension in the list that includes the word <em>Pylance</em> in the description (the first option in the following screenshot).</li>
+</ol>
+
+<p><img src="/Pages/vscode/extension_list.png" alt="" /></p>
+
+<p>Once the extension is installed, proceed to step 3! </p>
+
+<h3 id="step-3-select-the-python-version-in-vscode">Step 3: Select the Python version in VSCode</h3>
+
+<p>Next, select the default version of Python on VSCode, or check that you have the right version selected:</p>
+
+<p>On the bottom ribbon of the screen, you can see what version of the Python interpreter is currently selected in VSCode:</p>
+
+<p><img src="/Pages/vscode/python_version.png" alt="" /></p>
+
+<p>If the version shown does not match the version you found or installed in step 1, click the Python version indicator. You should see the version of Python installed in step 1 in a list as pictured below. Select this version to use it in VSCode. <strong>Remember:</strong> Use a Python version between 3.7.x-3.9.x (inclusive).</p>
+
+<p><img src="/Pages/vscode/python_version_list.png" alt="" /></p>
+
+<h3 id="step-4-set-up-pytest">Step 4: Set up PyTest</h3>
+
+<p>Next, you will need to install PyTest, a Python package that allows you to write tests and see the results of your test cases.</p>
+
+<p>First, check if you have pytest installed by running <code class="language-plaintext highlighter-rouge">pytest --version</code> in your terminal. If PyTest is correctly installed, it should display something matching<code class="language-plaintext highlighter-rouge">pytest 7.x.x</code>.</p>
+
+<p>If PyTest is not correctly installed, run <code class="language-plaintext highlighter-rouge">pip3 install pytest</code>. After it is installed, run <code class="language-plaintext highlighter-rouge">pytest --version</code> to check that everything works.</p>
+
+<h2 id="using-pytest">Using PyTest</h2>
+
+<p>Whenever writing test files, add <code class="language-plaintext highlighter-rouge">import pytest</code> at the top.</p>
+
+<p>All of your tests must be contained within functions that begin with <code class="language-plaintext highlighter-rouge">test_</code></p>
+
+<p>To run your tests, run <code class="language-plaintext highlighter-rouge">pytest [test file name]</code>. You can also use <code class="language-plaintext highlighter-rouge">python3 -m pytest [test file name]</code> in your VSCode terminal.</p>
+
+<h2 id="gradescope">Gradescope</h2>
+
+<p>We will be using Gradescope for assignment submission and grading. As Gradescope lacks support for anonymous grading, you will be creating an anonymous email account to sign up for Gradescope. You are required to complete the steps below, but if you have any security concerns relating to creating a new email account for this purpose, email us at <a href="mailto:cs0112headtas@cs.brown.edu">cs0112headtas@cs.brown.edu</a> for an exception to this policy.</p>
+
+<p>These steps should be completed by <strong>11:59pm Eastern Time on September 12</strong> (when HW0 is due). You must tell us your anonymous email address in the appropriate question on HW0 once you’ve completed these steps; if you do not we will be unable to grade your assignments.</p>
+
+<p>If you already have a Gradescope account <span style="text-decoration:underline;">with an anonymous email address</span>, you are welcome to reuse it. Just be sure to enroll in cs0112 on Gradescope and submit HW0 to tell us what your email is.</p>
+
+<h3 id="email-creation">Email Creation</h3>
+
+<p>First, create an anonymous ID using <a href="http://www.unit-conversion.info/texttools/random-string-generator/">this link</a>. Now, you’ll need to create a new email address with this ID as the username. This will make you anonymous to graders on Gradescope. To do this, carefully walk through the following steps. We recommend using an incognito window for this.</p>
+
+<ol>
+  <li>Navigate to www.gmail.com.</li>
+  <li>Make sure you are logged out of any other account and click “Create account” at the bottom.</li>
+  <li>Fill out relevant details, and include your ID from above as the username. That is, your account should be &lt;your anonymous ID here&gt;@gmail.com. However, we will not see the name you use to create the email account, so you can use your real name here.</li>
+  <li>If the account is already taken, generate a new anonymous ID and repeat the steps above.</li>
+  <li>If prompted, enter a valid phone number to verify your account.</li>
+  <li>Finish filling out the requested details and click “Next”.</li>
+</ol>
+
+<h3 id="email-forwarding">Email Forwarding</h3>
+
+<p>You can set up email forwarding so that you don’t need to ever check this inbox. To do this, follow these steps (starting from your <strong>new</strong> Gmail inbox):</p>
+
+<ol>
+  <li>Go into your inbox settings by clicking on the gear symbol in the upper-right of your inbox and then clicking on “Settings”.</li>
+  <li>Navigate to the “Forwarding and POP/IMAP” tab.</li>
+  <li>Click on “Add a forwarding address” at the top and choose an email of your choice.</li>
+  <li>Go into that email inbox and copy the confirmation code to verify.</li>
+  <li>Select the “Forward a copy…” radio button, and then click “Save changes” at the bottom.</li>
+</ol>
+
+<h3 id="gradescope-account-setup">Gradescope Account Setup</h3>
+
+<p>Here we will go through the steps of creating a Gradescope account and enrolling in our course. Even if you have used Gradescope before with your @brown.edu email, you need to create a new account for this class with your anonymous ID and email address. Again, if you already have a Gradescope account <strong>with an anonymous email</strong>, you can reuse it.</p>
+
+<ol>
+  <li>Navigate to www.gradescope.com.</li>
+  <li>Click “Sign Up” in the top right and sign up as a student.</li>
+  <li>For the course entry code, write 7GE6J4.</li>
+  <li>For the remaining fields enter your anonymous ID, email address, and anonymous ID respectively. <strong>Your name should not appear anywhere in your account information.</strong></li>
+  <li>Once you submit, your account is created, and you’re enrolled!</li>
+  <li><strong>Submit HW0</strong> so that we can link your Gradescope account to your identity when we assign final grades!</li>
+</ol>
+
+<p>Keep track of your ID as you will need it to sign in to your Gradescope account! You will be given a copy of your response to HW0 so you will always have your ID.</p>
+
+<p>(Special thanks to Julia McClellan and the cs0220, cs1710, cs1730, and cs1260 TAs for the designing this anonymization system)</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <h2 class="footer-heading">CSCI 0112 - Fall 2022</h2>
+
+    <i>
+      If you find any ambiguous language, inconsistencies, or mistakes in this
+      or any other CSCI0112 document, please let us know by filling out the
+      <a href="https://forms.gle/BFNGA7CirrTH8tm28">anonymous feedback form</a>.
+    </i>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

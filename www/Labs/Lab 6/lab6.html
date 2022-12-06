@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Web APIs | CSCI 0112 - Fall 2022</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Web APIs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Labs/Lab%206/lab6.html" />
+<meta property="og:url" content="/Labs/Lab%206/lab6.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2022" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Web APIs" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Web APIs","url":"/Labs/Lab%206/lab6.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2022" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">CSCI 0112 - Fall 2022</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a class="page-link" href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link" href="/Pages/hours.html">Hours</a>
+          <a class="page-link" href="/Labs/">Labs</a>
+          <a class="page-link" href="/Pages/learning.html">Learning</a>
+          <a class="page-link" href="/Lectures/">Lectures</a>
+          <a class="page-link" href="/Pages/setup.html">Setup</a>
+          <a class="page-link" href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h1 class="post-title">
+    
+      Lab 6:
+    
+    Web APIs
+  </h1>
+</header>
+
+
+
+  
+  
+    
+  
+
+  
+      <p><a href="/Labs/Lab 6/Lab 6.pptx">View presentation</a></p>
+  
+
+  <h2 id="section-1-get-api-key">Section 1: Get API Key</h2>
+
+<p>In order to use an API you might need a key. This is the way that the API identifies who is requesting information and whether you have access to the information. For this lab, we’ll be using the Alpha Vantage API, which has data about different financial securities, including stocks, foreign exchange, and cryptocurrencies.</p>
+
+<p>For Alpha Vantage, you can get a free API key at this <a href="https://www.alphavantage.co/support/#api-key">link</a>.</p>
+
+<p>Make sure to select <code class="language-plaintext highlighter-rouge">student</code> for <code class="language-plaintext highlighter-rouge">Which of the following best describes you?</code> and fill out the rest of the boxes. Then submit the form. After you do, the webpage should display some text with your API Key. Copy this value and save it somewhere - you’ll need it later in the lab!</p>
+
+<h2 id="section-2-make-a-simple-request">Section 2: Make a Simple Request</h2>
+<p>Now, let’s practice making some requests and retrieving information from urls. In Python, the <code class="language-plaintext highlighter-rouge">requests</code> library has all of the functionality you’ll need. Let’s start by installing the <code class="language-plaintext highlighter-rouge">requests</code> library - in your terminal type <code class="language-plaintext highlighter-rouge">pip3 install requests</code>.</p>
+
+<p>Now we’re going to try and make a request to a cat facts website and get a cat fact. The cat facts website returns a JSON with a fact in it. To see the format of the json, feel free to copy and paste the url into a web browser. The cat facts url we are using is https://catfact.ninja/fact, and it does not take in any parameters.</p>
+
+<p><strong>Task</strong>: Make a get request to the cat facts URL (https://catfact.ninja/fact) and print out the fact!</p>
+
+<p><strong>Hint</strong>: We want only the fact to be printed out - don’t just print the json! Remember to access and print just the fact, refer to the slides for more information on accessing elements in a JSON.</p>
+
+<hr />
+<h3 id="checkpoint">CHECKPOINT:</h3>
+<p><strong>Call over a TA to check your request.</strong> We want to hear your cat facts!
+___</p>
+
+<h2 id="section-3-hit-the-alpha-vantage-api">Section 3: Hit the Alpha Vantage API</h2>
+<p>Now, we’re going to use what we learned about requesting information from a URL to get information from the Alpha Vantage API. Specifically, we’ll be looking at daily stock prices using the daily time series endpoint. For this exercise, pick one company to investigate. You can get a list of the S&amp;P 500 companies and their tickers <a href="https://en.wikipedia.org/wiki/List_of_S%26P_500_companies">here</a>, but feel free to use any company. You’ll need one company’s stock ticker.</p>
+
+<p>The documentation for the Alpha Vantage API is <a href="https://www.alphavantage.co/documentation/">here</a>. Make sure to click <code class="language-plaintext highlighter-rouge">Daily Adjusted</code> on the sidebar to get the documentation for the correct endpoint. In order to make a request properly, you’ll need to provide a parameters JSON with the symbol, function, and API key specified. The symbol is the stock ticker you just selected and the API key is your key from section 1 of the lab.</p>
+
+<p><strong>Task</strong>: Similarly to the cat facts website, make a request to the Alpha Vantage API and get yesterday’s opening price for the selected company’s stock. Print out the value!</p>
+
+<p><strong>Hint</strong>: If you want to see the specific format of the response JSON, you can check out this <a href="https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&amp;symbol=MSFT&amp;apikey=demo">link</a>.</p>
+
+<h2 id="section-4-integrate-api-and-graph-results">Section 4: Integrate API and Graph Results</h2>
+<p>Just getting one datapoint from one company doesn’t seem that helpful! With our new knowledge of APIs, we’re going to get data for 5 different companies and plot it. To start, we’ve written code to plot financial time series data for you - you’ll just be getting and transforming the data.</p>
+
+<p>First, run <code class="language-plaintext highlighter-rouge">pip3 install plotly</code> to install the plotly library.</p>
+
+<p>The code to plot is:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="n">go</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+<span class="k">def</span> <span class="nf">plot_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+	<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="p">.</span><span class="n">Figure</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">company</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+		<span class="n">random_rgb</span> <span class="o">=</span> <span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+		<span class="n">company_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">company</span><span class="p">]</span>
+		<span class="n">fig</span><span class="p">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="p">.</span><span class="n">Scatter</span><span class="p">(</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">company_data</span><span class="p">],</span>
+			<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">company_data</span><span class="p">],</span>
+			<span class="n">name</span> <span class="o">=</span> <span class="n">company</span><span class="p">,</span>
+			<span class="n">line_color</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"rgb(</span><span class="si">{</span><span class="n">random_rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">random_rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">random_rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s">)"</span><span class="p">,</span>
+			<span class="n">opacity</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">)</span>
+		<span class="p">)</span>
+
+	<span class="n">fig</span><span class="p">.</span><span class="n">update_layout</span><span class="p">(</span>
+		<span class="n">title</span><span class="o">=</span><span class="s">"Timeseries of high price for day"</span><span class="p">,</span>
+		<span class="n">xaxis_title</span><span class="o">=</span><span class="s">"timeseries (daily)"</span><span class="p">,</span>
+		<span class="n">yaxis_title</span><span class="o">=</span><span class="s">"stock price (USD)"</span>
+	<span class="p">)</span>
+	<span class="n">fig</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+<p>If you have any questions about what this code is doing, feel free to call over a TA.</p>
+
+<p><strong>Task</strong>: Copy and paste the above code into a python file. Then, write code below it that calls the API for five different companies and reshapes the data so that it can be plotted. Feel free to select five tickers from the link provided in Section 3. Below is an outline of what we want you to write:</p>
+
+<ul>
+  <li>create a dictionary to store the company data</li>
+  <li>for each ticker:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">response = requests.get(&lt;send api request&gt;)</code></li>
+      <li>get the response json, then get the “Time Series (Daily)” entry in the json</li>
+      <li>get the first 30 days worth of data. To do this you may need to convert it to a list using <code class="language-plaintext highlighter-rouge">list()</code></li>
+      <li>create a list containing the date and the highest price for each of the 30 days worth of data.</li>
+      <li>add the company to the dictionary using the ticker symbol as the key and the list you just created as the value</li>
+    </ul>
+  </li>
+  <li>call the graphing function and pass in your dictionary as a parameter</li>
+</ul>
+
+<hr />
+<h3 id="checkpoint-1">CHECKPOINT:</h3>
+<p><strong>Call over your Lab TA so that they can check your graph.</strong>
+___</p>
+
+<h2 id="section-5-exploration-of-api">Section 5: Exploration of API</h2>
+
+<p>For this section, we want you to explore another section of the Alpha Vantage API. The only requirements are that you use a different endpoint (though it can still be a stocks endpoint, just don’t use the time series daily endpoint) and that you make at least five different calls to the API. If you are using a stocks endpoint, we’d ask that you get data about five different companies, if you are using a foreign exchange endpoint, get data about five currencies, etc. Print out something interesting about each result.</p>
+
+<hr />
+<h3 id="checkpoint-2">CHECKPOINT:</h3>
+<p><strong>Call over a TA so they can
+check your code. Congrats! You’ve finished this week’s lab!</strong></p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <h2 class="footer-heading">CSCI 0112 - Fall 2022</h2>
+
+    <i>
+      If you find any ambiguous language, inconsistencies, or mistakes in this
+      or any other CSCI0112 document, please let us know by filling out the
+      <a href="https://forms.gle/BFNGA7CirrTH8tm28">anonymous feedback form</a>.
+    </i>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Data Structures | CSCI 0112 - Fall 2022</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Data Structures" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Homeworks/hw2/hw2.html" />
+<meta property="og:url" content="/Homeworks/hw2/hw2.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2022" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Data Structures" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Data Structures","url":"/Homeworks/hw2/hw2.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2022" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">CSCI 0112 - Fall 2022</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a class="page-link" href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link" href="/Pages/hours.html">Hours</a>
+          <a class="page-link" href="/Labs/">Labs</a>
+          <a class="page-link" href="/Pages/learning.html">Learning</a>
+          <a class="page-link" href="/Lectures/">Lectures</a>
+          <a class="page-link" href="/Pages/setup.html">Setup</a>
+          <a class="page-link" href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h1 class="post-title">
+    
+      HW 2:
+    
+    The Social Setwork
+  </h1>
+</header>
+
+
+
+  
+  
+    
+      <ul>
+        
+          <li><strong>Due:</strong> Wed, Sep 21 2022 at 10:00 PM EST</li>
+        
+        
+        
+          <li><strong>Released:</strong> Thu, Sep 15 2022</li>
+        
+      </ul>
+    
+  
+
+  
+
+  <p>The goal of this assignment is to get some practice using the <code class="language-plaintext highlighter-rouge">set</code> data structure.</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>Download the following stencil files:</p>
+<div class="stencil" data-source="setwork.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview setwork.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>setwork.py</code>
+    </a>
+    <a href="setwork.py" download="" class="stencil-download" title="Download setwork.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy setwork.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="setwork_test.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview setwork_test.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>setwork_test.py</code>
+    </a>
+    <a href="setwork_test.py" download="" class="stencil-download" title="Download setwork_test.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy setwork_test.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>On your desktop, create a cs0112 folder. This will hold your future assignments, labs, and projects. In the cs0112 folder, create a hw2 folder, and place the <code class="language-plaintext highlighter-rouge">setwork.py</code> and <code class="language-plaintext highlighter-rouge">setwork_test.py</code> files there.</p>
+
+<p>To open the hw2 folder in VSCode, start by opening VSCode and then opening the Explorer tab. The Explorer can be opened with the top-most button on the left sidebar which looks like this:</p>
+
+<p><img src="https://cs.brown.edu/courses/csci0112/fall-2021/homeworks/hw2_images/vscode-explorer-icon.png" alt="Image of the explorer icon." title="VSCode explorer icon" /></p>
+
+<p>Once you’ve opened the explorer, your VSCode window should look something like this:</p>
+
+<p><img src="https://cs.brown.edu/courses/csci0112/fall-2021/homeworks/hw2_images/vscode-no-file.png" alt="Image of a VSCode window. The Explorer tab is open, with a button that says Open Foler." title="VSCode Explorer Window" /></p>
+
+<p>Click on the button which says “Open a Folder” and find the hw2 folder. Open that folder, and your VSCode window will look something like this:</p>
+
+<p><img src="https://cs.brown.edu/courses/csci0112/fall-2021/homeworks/hw2_images/hw2-no-files.png" alt="Image of a VSCode window. The Explorer tab is open, with a list of files: hw2_revised.md, setwork_test.py, and setwork.py." title="VSCode with hw2 open" /></p>
+
+<p>Double-click the file names to open them in new tabs. You can also click the Explorer icon again to close that sidebar.</p>
+
+<p>Since you opened the hw2 folder with VSCode, the VSCode terminal will automatically be in the hw2 directory. This means that you can use the terminal to run pytest without having to navigate to this directory.</p>
+
+<h2 id="helpful-things">Helpful Things</h2>
+
+<h3 id="documentation">Documentation</h3>
+<ul>
+  <li><a href="https://cs0112.github.io/Pages/syntax_testing.html">Python testing, design and clarity guide</a></li>
+</ul>
+
+<h3 id="staff-assistance">Staff Assistance</h3>
+<p>Your friendly TAs and Professor are here to help with this assignment! You can
+find our schedule for office hours <a href="/Pages/hours.html">here</a>.</p>
+
+<h2 id="the-assignment">The Assignment</h2>
+
+<p>Tim’s last talk on courses at Brown has been on the Top 10 Talks list for weeks now! 
+In fact, Tim’s Talks have gotten so popular that you’ve been tasked with designing a 
+basic social networking website for fans to connect with one another.</p>
+
+<p>The website’s data are organized as a dictionary where the keys are
+usernames (strings) and the values are sets of <em>interests</em> (also strings). For
+example, the data might look like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+    <span class="s">"tim"</span><span class="p">:</span> <span class="p">{</span><span class="s">"reading"</span><span class="p">,</span> <span class="s">"cooking"</span><span class="p">,</span> <span class="s">"logic"</span><span class="p">},</span>
+    <span class="s">"ashley"</span><span class="p">:</span> <span class="p">{</span><span class="s">"books"</span><span class="p">,</span> <span class="s">"piano"</span><span class="p">,</span> <span class="s">"animation"</span><span class="p">},</span>
+    <span class="s">"ben"</span><span class="p">:</span> <span class="p">{</span><span class="s">"chocolate"</span><span class="p">,</span> <span class="s">"pretzels"</span><span class="p">,</span> <span class="s">"chocolate-covered pretzels"</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You’ve been asked to implement and test several functions that either query or
+modify data in this format.</p>
+
+<p>Each function you’re implementing takes a <code class="language-plaintext highlighter-rouge">users</code> dictionary (formatted as above)
+as its first argument.</p>
+
+<p>Implement the functions in <code class="language-plaintext highlighter-rouge">setwork.py</code>. You should test all of your functions in <code class="language-plaintext highlighter-rouge">setwork_test.py</code>. Both of these stencils can be downloaded in the Setup section of this handout.</p>
+
+<p>Make sure to test edge cases! Writing a good set of tests for each function <em>before</em>
+you start implementing it is always a good idea–that way you can make sure you
+understand what your function is supposed to do.</p>
+
+<h3 id="functions-that-modify-the-dictionary">Functions that modify the dictionary</h3>
+
+<h4 id="add_user">add_user</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">add_user</code> function should add a user with the given name to the dictionary
+with no interests. If there is already a user with that name, it should <em>not</em>
+modify the dictionary.</p>
+
+<p>Note that in Python, <code class="language-plaintext highlighter-rouge">set()</code> is the empty set (whereas <code class="language-plaintext highlighter-rouge">{}</code> is the empty
+dictionary).</p>
+
+<h4 id="add_interest">add_interest</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">add_interest</code> function should record that the user named <code class="language-plaintext highlighter-rouge">name</code> is
+interested in <code class="language-plaintext highlighter-rouge">interest</code>. If the user doesn’t exist, the function should add a
+user with that name.</p>
+
+<h4 id="copy_interests">copy_interests</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">copy_interests</code> function should add <em>all</em> of user <code class="language-plaintext highlighter-rouge">name_from</code>’s interests
+as interests of <code class="language-plaintext highlighter-rouge">name_to</code>. If a user named <code class="language-plaintext highlighter-rouge">name_to</code> doesn’t exist, it should be
+created. If a user named <code class="language-plaintext highlighter-rouge">name_from</code> doesn’t exist, pretend it’s a user with no
+interests (i.e., don’t modify <code class="language-plaintext highlighter-rouge">name_to</code>’s interests).</p>
+
+<h3 id="functions-that-query-the-dictionary">Functions that query the dictionary</h3>
+
+<h4 id="interest_exists">interest_exists</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">interest_exists</code> function should return <code class="language-plaintext highlighter-rouge">True</code> if <em>any</em> user is interested
+in <code class="language-plaintext highlighter-rouge">interest</code>, and <code class="language-plaintext highlighter-rouge">False</code> otherwise.</p>
+
+<h4 id="interests_match">interests_match</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">interests_match</code> function should return a <code class="language-plaintext highlighter-rouge">set</code> of users (names) who <em>share</em> at
+least <code class="language-plaintext highlighter-rouge">n</code> interests with the user named <code class="language-plaintext highlighter-rouge">name</code>. If user <code class="language-plaintext highlighter-rouge">name</code> is not present,
+it should return the empty set. If <code class="language-plaintext highlighter-rouge">n</code> is greater than the number of interests for 
+a specified name, an empty <code class="language-plaintext highlighter-rouge">set</code> should be returned.</p>
+
+<p>Note that every user will share all of their interests with themselves.</p>
+
+<h3 id="general-tips">General tips</h3>
+
+<p>The <a href="https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset"><code class="language-plaintext highlighter-rouge">set</code>
+documentation</a>
+will be useful–some of the problems can be solved in fewer lines of code with a
+judicious use of the operations described!</p>
+
+<p>Note that sets do not contain duplicates, i.e <code class="language-plaintext highlighter-rouge">{"A", "B"}</code> and <code class="language-plaintext highlighter-rouge">{"A", "B", "A", "A"}</code> are the same set.</p>
+
+<h3 id="running-your-code-and-tests">Running your Code and Tests</h3>
+<p>If you opened your hw2 directory through VSCode using the instructions in the Setup section of this handout, then your VSCode terminal will already be in the correct directory.</p>
+
+<p>To run <code class="language-plaintext highlighter-rouge">setwork.py</code>, you can use VSCode’s run button or type <code class="language-plaintext highlighter-rouge">python3 setwork.py</code> in the terminal. To use pytest to run your tests, run <code class="language-plaintext highlighter-rouge">pytest setwork_test.py</code> in the terminal. Alternatively, if that command doesn’t work, try <code class="language-plaintext highlighter-rouge">python3 -m pytest setwork_test.py</code></p>
+
+<p>To open the Terminal in VSCode, click the button which looks something like this:</p>
+
+<p><img src="https://cs.brown.edu/courses/csci0112/fall-2021/homeworks/hw2_images/terminal-bar-button.png" alt="Image of a button from the sidebar on the bottom of the VSCode window. This button has an icon saying how many warning and how many errors there are, and opens a sidebar containing the terminal." title="Terminal Sidebar Button" /></p>
+
+<p>This will open a sidebar on the bottom of your screen which looks like this:</p>
+
+<p><img src="https://cs.brown.edu/courses/csci0112/fall-2021/homeworks/hw2_images/terminal-sidebar.png" alt="Image of a sidebar from a VSCode window. It has several tabs, called problems, output, terminal, and debug console." title="Terminal Sidebar" /></p>
+
+<p>Click on the <code class="language-plaintext highlighter-rouge">Terminal</code> tab to open your terminal.</p>
+
+<h2 id="readme">README</h2>
+
+<p>In your <code class="language-plaintext highlighter-rouge">README.txt</code>, include answers to the following questions:</p>
+
+<ul>
+  <li>Did you discuss this assignment with any other students? Please list their cs logins.</li>
+  <li>How many late days are you using on this assignment?</li>
+</ul>
+
+<h2 id="handin">Handin</h2>
+
+<p>You may submit as many times as you want. Only your latest submission will be
+graded. This means that if you submit after the deadline, you will be using a
+late day – so do NOT submit after the deadline unless you plan on using late
+days.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">setwork.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">setwork_test.py</code></li>
+</ul>
+
+<p>Because all we need are the above files, you do not need to submit the whole project
+folder. As long as the files you create have the same name as what needs to be
+submitted, you’re good to go!</p>
+
+<p>If you are using late days, make sure to make a note of that in your
+README. Remember, you may only use a maximum of 3 late days per assignment. If
+the assignment is late (and you do NOT have anymore late days) no credit will be
+given.</p>
+
+<p>Please don’t put your name anywhere in any of the handin files–we grade
+assigments anonymously!</p>
+
+<p>Hand in your work on Gradescope. Use the Gradescope account associated with your anonymous ID which you set up during HW0. The guide for setting that up and enrolling in gradescope can be found in the Setup guide <a href="https://cs0112.github.io/Pages/setup.html">here</a>.</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <h2 class="footer-heading">CSCI 0112 - Fall 2022</h2>
+
+    <i>
+      If you find any ambiguous language, inconsistencies, or mistakes in this
+      or any other CSCI0112 document, please let us know by filling out the
+      <a href="https://forms.gle/BFNGA7CirrTH8tm28">anonymous feedback form</a>.
+    </i>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

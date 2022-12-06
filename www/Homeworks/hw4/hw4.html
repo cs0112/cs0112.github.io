@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Linked Lists and Objects | CSCI 0112 - Fall 2022</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Linked Lists and Objects" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Homeworks/hw4/hw4.html" />
+<meta property="og:url" content="/Homeworks/hw4/hw4.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2022" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linked Lists and Objects" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Linked Lists and Objects","url":"/Homeworks/hw4/hw4.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2022" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">CSCI 0112 - Fall 2022</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a class="page-link" href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link" href="/Pages/hours.html">Hours</a>
+          <a class="page-link" href="/Labs/">Labs</a>
+          <a class="page-link" href="/Pages/learning.html">Learning</a>
+          <a class="page-link" href="/Lectures/">Lectures</a>
+          <a class="page-link" href="/Pages/setup.html">Setup</a>
+          <a class="page-link" href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h1 class="post-title">
+    
+      HW 4:
+    
+    C&#39;mon Let&#39;s Link-ed List
+  </h1>
+</header>
+
+
+
+  
+  
+    
+      <ul>
+        
+          <li><strong>Due:</strong> Wed, Nov  2 2022 at 10:00 PM EST</li>
+        
+        
+        
+          <li><strong>Released:</strong> Thu, Oct 27 2022</li>
+        
+      </ul>
+    
+  
+
+  
+
+  <p>The goal of this assignment is to get some more practice writing recursive
+methods, as well as to get some practice with object-oriented programming
+concepts like inheritance.</p>
+
+<h2 id="setup">Setup</h2>
+<p>Save the following stencil files to a <code class="language-plaintext highlighter-rouge">hw4</code> directory:</p>
+<div class="stencil" data-source="docs.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview docs.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>docs.py</code>
+    </a>
+    <a href="docs.py" download="" class="stencil-download" title="Download docs.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy docs.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="linkedlist.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview linkedlist.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>linkedlist.py</code>
+    </a>
+    <a href="linkedlist.py" download="" class="stencil-download" title="Download linkedlist.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy linkedlist.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>In addition, create the following files for tests, leaving them empty for now:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">test_linkedlist.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">test_docs.py</code></li>
+</ul>
+
+<h2 id="staff-assistance">Staff Assistance</h2>
+<p>Your friendly TAs and Professor are here to help with this assignment! You can
+find our hours schedule <a href="/Pages/hours.html">here</a>.</p>
+
+<h2 id="the-assignment">The Assignment</h2>
+
+<p>Tim is working on his speech for his next talk. After all, the grind never stops. 
+He doesn’t trust Google Docs and needs your help to create his very own, simplified 
+document editing and sharing system to prevent his speech from falling into the wrong hands.</p>
+
+<h3 id="linked-lists">Linked lists</h3>
+
+<p>We have provided the Linked List implementation from class, along with some
+tests. We’d like you to 1) add a method to remove nodes, then 2) change the class to
+have a more efficient <code class="language-plaintext highlighter-rouge">length</code> implementation.</p>
+
+<h4 id="adding-remove">Adding <code class="language-plaintext highlighter-rouge">remove</code></h4>
+
+<p>You should add a method called <code class="language-plaintext highlighter-rouge">remove</code>, which removes a node by its
+index.</p>
+
+<p>The image below helps illustrate what the <code class="language-plaintext highlighter-rouge">remove</code> method should achieve. We have the linked-list [a,b,c,d] and 
+we want to remove the item at the 2nd index. The result would be linked list [a,b,d] pictured below with the pre-removal list.</p>
+
+<p><img src="/Homeworks/hw4/LinkedListExample.png" alt="LinkedListExample" /></p>
+
+<p>You should implement <code class="language-plaintext highlighter-rouge">remove</code> using a recursive helper method called
+<code class="language-plaintext highlighter-rouge">remove_from</code>. Think about what the base case and recursive case should look
+like!</p>
+
+<p>If the specified index isn’t in the list (i.e., if it is less than 0 or greater
+than or equal to the list’s length), you should raise an exception (see the
+implementation of <code class="language-plaintext highlighter-rouge">nth</code> for an example of what this might look like).</p>
+
+<p>You should write good tests for <code class="language-plaintext highlighter-rouge">remove</code>. Make sure to test error cases (see the
+tests for <code class="language-plaintext highlighter-rouge">nth</code>).</p>
+
+<h4 id="making-length-more-efficient">Making <code class="language-plaintext highlighter-rouge">length</code> more efficient</h4>
+
+<p>Right now, the <code class="language-plaintext highlighter-rouge">length()</code> method runs in linear time in the length of the list,
+since it has to look at every node. We can do this more efficiently by adding a
+field called <code class="language-plaintext highlighter-rouge">count</code> to the <code class="language-plaintext highlighter-rouge">LinkedList</code> class. <code class="language-plaintext highlighter-rouge">count</code> represents the number of
+nodes in the list. It should be initialized to 0 in <code class="language-plaintext highlighter-rouge">__init__</code>, and be updated
+in both <code class="language-plaintext highlighter-rouge">append</code> and <code class="language-plaintext highlighter-rouge">remove</code>. You can then modify <code class="language-plaintext highlighter-rouge">length</code> to return <code class="language-plaintext highlighter-rouge">count</code>
+instead of looking at the nodes in the list.</p>
+
+<p>Modify the linked list implementation (<code class="language-plaintext highlighter-rouge">__init__</code>, <code class="language-plaintext highlighter-rouge">append</code>, and your <code class="language-plaintext highlighter-rouge">remove</code>
+method) to track the <code class="language-plaintext highlighter-rouge">count</code> field.</p>
+
+<p>You don’t need to write or modify any tests for this part of the
+assignment. Once you’ve fixed all of the methods, our test suite (as well as the
+tests you wrote for <code class="language-plaintext highlighter-rouge">remove</code>) should pass.</p>
+
+<h3 id="cloud-documents">Cloud documents</h3>
+
+<p>We’d like you to implement a (very) simplified version of the logic for a
+cloud-based document editing and sharing system (like Google Docs). You’ll
+implement two classes that handle document creation and permissions.</p>
+
+<p>Take a look at the <code class="language-plaintext highlighter-rouge">Document</code> class in <code class="language-plaintext highlighter-rouge">docs.py</code>. This class represents
+individual documents, which have:</p>
+<ul>
+  <li>a name</li>
+  <li>contents (i.e., text)</li>
+  <li>a creator ID</li>
+  <li>a list of user IDs who can access the document</li>
+</ul>
+
+<p>You’ll implement two classes: <code class="language-plaintext highlighter-rouge">User</code> and <code class="language-plaintext highlighter-rouge">AdminUser</code>. A <code class="language-plaintext highlighter-rouge">User</code> has a collection
+of documents, some of which may be shared with other users. An <code class="language-plaintext highlighter-rouge">AdminUser</code> is a
+user who can access <em>any</em> document. Your <code class="language-plaintext highlighter-rouge">AdminUser</code> class should inherit from
+your <code class="language-plaintext highlighter-rouge">User</code> class.</p>
+
+<p>We have provided some commented-out tests in <code class="language-plaintext highlighter-rouge">test_docs.py</code>. Once you have
+implemented your <code class="language-plaintext highlighter-rouge">User</code> and <code class="language-plaintext highlighter-rouge">AdminUser</code> classes, you can uncomment these
+tests. Note that you should write your own tests for all of your methods in
+addition to the included tests.</p>
+
+<h4 id="user-methods"><code class="language-plaintext highlighter-rouge">User</code> methods</h4>
+
+<h5 id="__init__"><code class="language-plaintext highlighter-rouge">__init__</code></h5>
+<p>The <strong>__init__</strong> method should take in a user id (an integer). It should
+initialize two fields: a <code class="language-plaintext highlighter-rouge">user_id</code> field that records the user’s ID and a
+<code class="language-plaintext highlighter-rouge">documents</code> field that holds an (initially empty) list of the documents the user
+has created.</p>
+
+<h5 id="create_document"><code class="language-plaintext highlighter-rouge">create_document</code></h5>
+
+<p>The <strong>create_document</strong> method should take in the name and contents of a
+document. It should create a new document (i.e., a new instance of the
+<code class="language-plaintext highlighter-rouge">Document</code> class) and add it to the user’s list of documents. The constructor
+for the <code class="language-plaintext highlighter-rouge">Document</code> class takes a user ID; you should pass in the user’s ID for
+that argument.</p>
+
+<h5 id="can_access"><code class="language-plaintext highlighter-rouge">can_access</code></h5>
+
+<p>The <strong>can_access</strong> method takes in a <code class="language-plaintext highlighter-rouge">Document</code> and returns a boolean. It should
+check whether the user’s ID is in the set of users who can access the document
+(which you can get with <code class="language-plaintext highlighter-rouge">doc.user_ids_with_access()</code>).</p>
+
+<h5 id="get_document"><code class="language-plaintext highlighter-rouge">get_document</code></h5>
+
+<p>The <strong>get_document</strong> method takes in the index of a document and returns that
+document (i.e., looks up that index in the user’s documents list). If there is
+no such document in the list, your method should raise a <code class="language-plaintext highlighter-rouge">NoDocumentError</code>.</p>
+
+<h4 id="adminuser-methods"><code class="language-plaintext highlighter-rouge">AdminUser</code> methods</h4>
+
+<p>The <strong>AdminUser</strong> class should be a subclass of the <code class="language-plaintext highlighter-rouge">User</code> class. You will need to
+implement one method in this class. Note that <code class="language-plaintext highlighter-rouge">AdminUser</code> should <em>not</em> implement
+<code class="language-plaintext highlighter-rouge">__init__</code>.</p>
+
+<h5 id="can_access-1"><code class="language-plaintext highlighter-rouge">can_access</code></h5>
+
+<p>Admin users should be able to access any document, so this method should always
+return <code class="language-plaintext highlighter-rouge">True</code>. It should have the same signature as the <code class="language-plaintext highlighter-rouge">can_access</code> method on
+the <code class="language-plaintext highlighter-rouge">User</code> class.</p>
+
+<h2 id="testing">Testing</h2>
+
+<p>Write good tests for all of your methods–you know how to do this!</p>
+
+<p>Include tests for exceptional cases and edge cases – come to hours if you’re struggling to come up with edge cases to test!</p>
+
+<h2 id="readme">README</h2>
+
+<p>In your <code class="language-plaintext highlighter-rouge">README.txt</code>, please include answers to the following questions:</p>
+
+<ul>
+  <li>
+    <p>Did you discuss this assignment with any other students? Please list their cs logins.</p>
+  </li>
+  <li>
+    <p>How many late days are you using on this assignment?</p>
+  </li>
+</ul>
+
+<h2 id="handin">Handin</h2>
+<p>Handin the following files to gradescope when submitting the assignment:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">linkedlist.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">test_linkedlist.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">docs.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">test_docs.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+</ul>
+
+<p>Remember to include a README.txt when submitting your assignment!</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <h2 class="footer-heading">CSCI 0112 - Fall 2022</h2>
+
+    <i>
+      If you find any ambiguous language, inconsistencies, or mistakes in this
+      or any other CSCI0112 document, please let us know by filling out the
+      <a href="https://forms.gle/BFNGA7CirrTH8tm28">anonymous feedback form</a>.
+    </i>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>
