@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Trees and Objects | CSCI 0112 - Fall 2023</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Trees and Objects" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Homeworks/hw3/hw3.html" />
+<meta property="og:url" content="/Homeworks/hw3/hw3.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2023" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Trees and Objects" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Trees and Objects","url":"/Homeworks/hw3/hw3.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2023" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">CSCI 0112 - Fall 2023</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a class="page-link" href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link" href="/Pages/hours.html">Hours</a>
+          <a class="page-link" href="/Labs/">Labs</a>
+          <a class="page-link" href="/Pages/learning.html">Learning</a>
+          <a class="page-link" href="/Lectures/">Lectures</a>
+          <a class="page-link" href="/Pages/setup.html">Setup</a>
+          <a class="page-link" href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h1 class="post-title">
+    
+      HW 3:
+    
+    Trees and Objects
+  </h1>
+</header>
+
+
+
+  
+  
+    
+      <ul>
+        
+          <li><strong>Due:</strong> Wed, Oct 11 2023 at  9:00 PM EST</li>
+        
+        
+        
+          <li><strong>Released:</strong> Wed, Oct  4 2023</li>
+        
+      </ul>
+    
+  
+
+  
+
+  <p>The goals of this assignment are:</p>
+<ul>
+  <li>to get practice with designing and developing programs that operate on on tree-shaped data; and</li>
+  <li>to get practice implementing methods on Python classes.</li>
+</ul>
+
+<p>The material from class on Wednesday, October 4th covers the first goal (Part 1 below), and class on Friday, October 6th covers the second goal (Part 2).</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>In order to setup <strong>hw3</strong>, make a new VSCode Project and name it <strong>hw3</strong>. The functions
+you need to complete will be outlined later, but for now make sure you copy the following files:</p>
+
+<div class="stencil" data-source="README.txt">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>README.txt</code>
+    </a>
+    <a href="README.txt" download="" class="stencil-download" title="Download README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy README.txt to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="tree.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview tree.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>tree.py</code>
+    </a>
+    <a href="tree.py" download="" class="stencil-download" title="Download tree.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy tree.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="messagecenter.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview messagecenter.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>messagecenter.py</code>
+    </a>
+    <a href="messagecenter.py" download="" class="stencil-download" title="Download messagecenter.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy messagecenter.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="htmltree.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview htmltree.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>htmltree.py</code>
+    </a>
+    <a href="htmltree.py" download="" class="stencil-download" title="Download htmltree.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy htmltree.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>In addition, create the following empty files:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">tree_test.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">messagecenter_test.py</code></li>
+</ul>
+
+<p>Make sure you copy the stencil code from the links above for <code class="language-plaintext highlighter-rouge">tree.py</code> and
+<code class="language-plaintext highlighter-rouge">messagecenter.py</code>. Also, since you will be working with HTMLTrees in <code class="language-plaintext highlighter-rouge">tree.py</code>, 
+copy the code from the link above for <code class="language-plaintext highlighter-rouge">htmltree.py</code>. This contains the structure
+of the HTMLTree, which is imported into <code class="language-plaintext highlighter-rouge">tree.py</code>.</p>
+
+<h2 id="helpful-things">Helpful Things</h2>
+
+<h3 id="documentation">Documentation</h3>
+<ul>
+  <li><a href="https://cs0112.github.io/Pages/syntax_testing.html">Python testing, design and clarity guide</a></li>
+</ul>
+
+<h3 id="staff-assistance">Staff Assistance</h3>
+
+<p>Your friendly TAs and Professor are here to help with this assignment! You can
+find our schedule for office hours <a href="/Pages/hours.html">here</a>.</p>
+
+<h2 id="the-assignment"><strong>The Assignment</strong></h2>
+
+<h3 id="part-1-for-the-love-of-newton"><strong>Part 1: For the love of Newton</strong></h3>
+
+<h4 id="whimsical-framing">Whimsical Framing</h4>
+
+<p>Tim has been invited to give a talk at Woolsthorpe Manor, the famous location where 
+Isaac Newton reportedly came up with the law of gravity. While touring the estate, you 
+pass by the apple tree. Tim thinks that <em>inspiration</em> could be found at the top of the tree, but would perhaps be wiser not to make the attempt. Exactly how far <em>is</em> it from the top of the tree to the bottom? You’ll help by showing Tim a simulation of this idea on HTML trees.</p>
+
+<h4 id="summary">Summary</h4>
+
+<p>We’d like you to write the following functions on <code class="language-plaintext highlighter-rouge">HTMLTree</code>s in the <code class="language-plaintext highlighter-rouge">tree.py</code> file.</p>
+
+<p><code class="language-plaintext highlighter-rouge">tree_height</code></p>
+
+<p><strong>tree_height</strong> computes the maximum distance from the root to any leaf. This
+function should take an <code class="language-plaintext highlighter-rouge">HTMLTree</code> and return an integer. The height of a tree
+with only the root and no children is 1; the height of a tree with children is the maximum height of any of its children plus 1.</p>
+
+<p><code class="language-plaintext highlighter-rouge">has_strong_grandchildren</code></p>
+
+<p><strong>has_strong_grandchildren</strong> should return <code class="language-plaintext highlighter-rouge">True</code> if any of the <em>grandchildren</em> of
+the node at the root of the tree (i.e., children of its children) have the
+<code class="language-plaintext highlighter-rouge">"strong"</code> tag. Note that it doesn’t matter whether the root of the tree or any
+of its children are <code class="language-plaintext highlighter-rouge">strong</code>, we only care about the grandchildren. <code class="language-plaintext highlighter-rouge">has_strong_grandchildren</code> should take an
+<code class="language-plaintext highlighter-rouge">HTMLTree</code> and return a boolean.</p>
+
+<h3 id="part-2-getting-the-message"><strong>Part 2: Getting the message</strong></h3>
+
+<h4 id="whimsical-framing-1">Whimsical Framing</h4>
+
+<p>In homework two, Tim set up a social network to connect students with similar interests. Now, he wants to grow the platform by allowing users to interact with each other through messaging.</p>
+
+<h4 id="summary-1">Summary</h4>
+
+<p>For this part, you’ll implement a messaging application–think WhatsApp. Your
+application will track messages (as a list of <code class="language-plaintext highlighter-rouge">Message</code> objects, defined above)
+and groups, which are <strong>sets</strong> of users. Users can send messages either to other
+users or to a group; sending a message to a group results in it being sent to
+every user in the group. Your messaging application will be implemented as a
+class called <code class="language-plaintext highlighter-rouge">MessageCenter</code>.</p>
+
+<p>You should write code for this part in <code class="language-plaintext highlighter-rouge">messagecenter.py</code>. The stencil file,
+linked above, contains code implementing the <code class="language-plaintext highlighter-rouge">Message</code> class, as well as the
+method definitions for the <code class="language-plaintext highlighter-rouge">MessageCenter</code> class.</p>
+
+<p>Implement the methods below in the <code class="language-plaintext highlighter-rouge">MessageCenter</code> class. Remember that all of
+your methods need to take <code class="language-plaintext highlighter-rouge">self</code> as their first argument! We list the other
+arguments below.</p>
+
+<h4 id="__init__"><code class="language-plaintext highlighter-rouge">__init__</code></h4>
+<p>The <strong>__init__</strong> method doesn’t need to take any arguments besides <code class="language-plaintext highlighter-rouge">self</code>. It
+should add <code class="language-plaintext highlighter-rouge">messages</code> and <code class="language-plaintext highlighter-rouge">groups</code> fields to the object; these should be an
+empty list responsible for keeping track of the messages and an empty dictionary
+in charge of the different groups present in the message center, respectively.</p>
+
+<h4 id="add_user_to_group"><code class="language-plaintext highlighter-rouge">add_user_to_group</code></h4>
+<p>This method should take (in addition to <code class="language-plaintext highlighter-rouge">self</code>) the name of a group (a string)
+and the name of a user (also a string). It should add a group with the given
+name if it doesn’t exist, and then add the named user to the group if it’s not
+already in the group.</p>
+
+<h4 id="add_direct_message"><code class="language-plaintext highlighter-rouge">add_direct_message</code></h4>
+<p><strong>add_direct_message</strong> should take (in addition to <code class="language-plaintext highlighter-rouge">self</code>) two users and a
+message body. It should create a message with the given users and body and store
+it in the <code class="language-plaintext highlighter-rouge">messages</code> list.</p>
+
+<h4 id="add_group_message"><code class="language-plaintext highlighter-rouge">add_group_message</code></h4>
+<p><strong>add_group_message</strong> should take (in addition to <code class="language-plaintext highlighter-rouge">self</code>) a user, a group, and a
+message body. If the given group exists, it should add messages with the given
+body from the given user to every member of the group.</p>
+
+<h4 id="next_message"><code class="language-plaintext highlighter-rouge">next_message</code></h4>
+<p><strong>next_message</strong> should take (in addition to <code class="language-plaintext highlighter-rouge">self</code>) a user and return the first
+<em>unread</em> message in the messages list addressed to that user. Before returning
+the message, it should mark the message as read using the <code class="language-plaintext highlighter-rouge">mark_read</code> method.</p>
+
+<h4 id="message_history"><code class="language-plaintext highlighter-rouge">message_history</code></h4>
+<p><strong>message_history</strong> should take (in addition to <code class="language-plaintext highlighter-rouge">self</code>) two users and return all
+of the messages (read or unread) between those two users–messages from the
+first user to the second user and vice versa.</p>
+
+<h3 id="part-3-privacy"><strong>Part 3: Privacy</strong></h3>
+
+<p>We have received feedback from our users expressing a desire for their messages to be encrypted to ensure their privacy. However, we currently analyze the content of users’ messages to screen for potentially harmful content. To get a deeper understanding of the issue read this article on <a href="https://www.nytimes.com/2023/06/13/opinion/encryption-messaging-privacy-signal-whatsapp.html">WhatsApp end to end encryption</a> and then, in your README, reflect on the following:</p>
+
+<p><strong>NOTE: You should be able to access the mentioned articles without requiring any subscription. You should sign in through google using your brown .edu email.</strong></p>
+
+<ol>
+  <li>Describe situations where encryption might be a lifeline versus when it could harbor malicious activities. Does your stance on the balance between individual privacy and collective security change based on these contexts? (5-6 sentences)</li>
+</ol>
+
+<p>After reviewing various solutions, Tim has concluded that a good compromise between privacy and security would be to incorporate end-to-end encryption for the content of messages while retaining metadata about the context behind those messages for the sake of moderation. While delving into the details of encryption is beyond the scope of this course, we will be adding metadata to our messages.</p>
+
+<p><code class="language-plaintext highlighter-rouge">__init__</code></p>
+
+<p>Modify the <code class="language-plaintext highlighter-rouge">__init__</code> field in the Message class so that, in addition to keeping track of the sender and recipient, we keep track of the timestamp and length of a message in self.timestamp and self.length respectively. To get the date and time of a message, use the datetime python library. You can read the documentation for the datetime library here: datetime (use the <a href="https://docs.python.org/3/library/datetime.html">.now()</a> function).</p>
+
+<p>After implementing metadata answer the following two questions in your README:</p>
+
+<ol>
+  <li>
+    <p>What other metadata can you think of that might be useful for better understanding the context surrounding an encrypted message?</p>
+  </li>
+  <li>
+    <p>If we stopped keeping track of the sender and recipient(s) of a message, how could you use the metadata we implemented, and the metadata you came up with in your last response to identify the sender and recipient(s) of a message? (Hint: if you are stuck, read <a href="https://kieranhealy.org/blog/archives/2013/06/09/using-metadata-to-find-paul-revere/">Using Metadata to find Paul Revere</a>).</p>
+  </li>
+</ol>
+
+<p>While encryption plays a pivotal role in ensuring security and privacy from intermediaries like the company relaying messages, hackers, and third parties, it only addresses concerns about unauthorized access. Privacy, however, is not only about external threats; it also deals with the control individuals have over their data, even when it is in the hands of authorized recipients. This is where European Privacy Laws under the GDPR (General Data Protection Regulation) come into play. One of the key principles of GDPR is the “right to be forgotten,” which means that individuals can request the deletion of their data. In compliance with this principle, we will implement a function that allows users to delete their account and all messages sent from it.</p>
+
+<p><code class="language-plaintext highlighter-rouge">delete_account</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">delete_account</code> should take (in addition to self) a user. This function should remove all messages in the Message Center that have been sent by this user and remove the user from all groups.</p>
+
+<p>In your README, answer the following:</p>
+
+<ol>
+  <li>What are some of the negative implications of giving users more agency over their data, particularly in scenarios where past messages may have legal, historical, or societal importance? (3-4 sentences)</li>
+</ol>
+
+<h2 id="testing"><strong>Testing</strong></h2>
+
+<p>Please make sure you write tests for your functions in the tree_test.py and messagecenter_test.py files. You don’t have to test for a case where no tree is present (null/None).</p>
+
+<h2 id="handin"><strong>Handin</strong></h2>
+
+<p>You may submit as many times as you want. Only your latest submission will be
+graded. This means that if you submit after the deadline, you will be using a
+late day – so do NOT submit after the deadline unless you plan on using late
+days.</p>
+
+<p>Please follow the <a href="https://cs0112.github.io/Pages/syntax_testing.html">design and clarity
+guide</a>–part
+of your grade will be for code style and clarity. After completing the homework,
+you will submit:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tree.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">tree_test.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">messagecenter.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">messagecenter_test.py</code></li>
+</ul>
+
+<p>Please make sure your files are named properly.</p>
+
+<p>If you are using late days, make sure to make a note of that in your
+README. Remember, you may only use a maximum of 3 late days per assignment. If
+the assignment is late (and you do NOT have anymore late days) no credit will be
+given.</p>
+
+<p>Please don’t put your name anywhere in any of the handin files–we grade
+assigments anonymously!</p>
+
+<p>Hand in your work on Gradescope. Use the Gradescope account associated with your anonymous ID which you set up during HW0. The guide for setting that up and enrolling in gradescope can be found in the Setup guide <a href="https://cs0112.github.io/Pages/setup.html">here</a>.</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <h2 class="footer-heading">CSCI 0112 - Fall 2023</h2>
+
+    <i>
+      If you find any ambiguous language, inconsistencies, or mistakes in this
+      or any other CSCI0112 document, please let us know by filling out the
+      <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+    </i>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

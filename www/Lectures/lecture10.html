@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Data-Structure Performance (The Secret of Sets and Dictionaries) | CSCI 0112 - Fall 2023</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Data-Structure Performance (The Secret of Sets and Dictionaries)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture10.html" />
+<meta property="og:url" content="/Lectures/lecture10.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2023" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-09-27T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Data-Structure Performance (The Secret of Sets and Dictionaries)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-09-27T00:00:00+00:00","datePublished":"2023-09-27T00:00:00+00:00","description":"CSCI 0112","headline":"Data-Structure Performance (The Secret of Sets and Dictionaries)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture10.html"},"url":"/Lectures/lecture10.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2023" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">CSCI 0112 - Fall 2023</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a class="page-link" href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link" href="/Pages/hours.html">Hours</a>
+          <a class="page-link" href="/Labs/">Labs</a>
+          <a class="page-link" href="/Pages/learning.html">Learning</a>
+          <a class="page-link" href="/Lectures/">Lectures</a>
+          <a class="page-link" href="/Pages/setup.html">Setup</a>
+          <a class="page-link" href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="how-are-sets-and-dictionaries-so-fast">How are sets and dictionaries so fast?</h1>
+
+<h2 id="setting-the-stage">Setting the stage</h2>
+
+<p>Last time we saw that switching from a <code class="language-plaintext highlighter-rouge">list</code> to a <code class="language-plaintext highlighter-rouge">set</code> in our <code class="language-plaintext highlighter-rouge">distinct</code> function produced a massive performance improvement. Today we’ll learn about why. Or, rather, <strong>we’ll invent the trick that Python <code class="language-plaintext highlighter-rouge">set</code>s use for ourselves!</strong></p>
+
+<p><strong>Next time</strong>, we’ll actually implement this idea to help you experiment with it.</p>
+
+<h2 id="two-inefficient-set-structures">Two Inefficient Set Structures</h2>
+
+<h4 id="inefficient-structure-1">Inefficient Structure 1</h4>
+
+<p>If we really wanted to, we could use Python lists to store sets. Adding an element would just mean appending a new value to the list, and checking for membership would involve a linear search through the list.</p>
+
+<p>Python lists are built so that accessing any particular index takes constant time. For example, suppose we have a <strong>list</strong> called <code class="language-plaintext highlighter-rouge">staff</code> that stores the first names of the staff of a course:</p>
+
+<p><img src="/Lectures/images/lecture10_firstnames.png" alt="" /></p>
+
+<p>How long does it take for Python to return <code class="language-plaintext highlighter-rouge">'Ben'</code> for <code class="language-plaintext highlighter-rouge">staff[2]</code>? It depends on how lists are implemented! In Python, lists are contiguous blocks in memory. Python doesn’t have to count down the list elements one by one, it can just do some arithmetic and skip ahead.</p>
+
+<p>This is different from how Pyret lists work, and we’ll contrast the two in more detail soon. For now, imagine Python lists as being written on a sheet of lined paper in memory. Element <code class="language-plaintext highlighter-rouge">0</code> is a certain distance from element <code class="language-plaintext highlighter-rouge">1</code>, which is that same distance from element <code class="language-plaintext highlighter-rouge">2</code> and so on. As a result, Python should be able to get the value of <code class="language-plaintext highlighter-rouge">staff[2]</code> in <em>constant time</em>. Python doesn’t have to count down the list elements one by one, it can just do some arithmetic and skip ahead.</p>
+
+<p>The trouble is that this kind of fast <em>lookup by index</em> doesn’t help us check for membership in the set. There’s no connection between <code class="language-plaintext highlighter-rouge">2</code> and <code class="language-plaintext highlighter-rouge">'Ben'</code> except the arbitrary order in which elements were added. So let’s simplify the problem.</p>
+
+<h4 id="inefficient-structure-2">Inefficient Structure 2</h4>
+
+<p>What if, instead, the element we were searching for <em>was</em> the index? Suppose that we wanted to check whether a certain ID number was in our set. Then we could take advantage of how lists work in Python, and draw a picture like this, where the list elements are just <code class="language-plaintext highlighter-rouge">True</code> and <code class="language-plaintext highlighter-rouge">False</code>:</p>
+
+<p><img src="/Lectures/images/lecture10_studentids.png" alt="" /></p>
+
+<p>We store a <code class="language-plaintext highlighter-rouge">True</code> if that ID number is in the set, and <code class="language-plaintext highlighter-rouge">False</code> otherwise.
+Since Python can look up an index of a list in constant time, we can use this data structure to report on set membership in constant time—if the elements are numbers.</p>
+
+<p><strong>Aside:</strong> If we stored more than just booleans in that list, we could easily map numeric keys to arbitrary values, much like a dictionary does. Access would remain constant time.</p>
+
+<p><strong>Aside:</strong> Even better, there are tricks we can use to encode most data-types as numbers. So this idea isn’t limited to only looking up non-negative integers. We could use it to solve the lookup-by-name problem above by deciding to encode, say, ‘Ben’ as $2<em>26^2+5</em>26+14$. In practice, there are far better encodings.</p>
+
+<p>This all sounds great: it really does get us worst-case constant time lookup.</p>
+
+<p><em>But there’s a cost.</em> Unless the range of possible values is small, this technique needs a colossally big list—probably more than we could fit in memory! Worse, most of it is going to be used on <code class="language-plaintext highlighter-rouge">False</code> values, to say “nope, nothing here!”. We’re making an extreme trade-off of space for time: allocating a list cell for <em>every potential search key</em>, in exchange for constant-time lookup rewards.</p>
+
+<h2 id="making-a-reasonable-tradeoff-hash-functions">Making a Reasonable Tradeoff: Hash Functions</h2>
+
+<p>Can we find a happy medium between these solutions? Maybe by spending a <em>little</em> bit of extra space, we can somehow end up with constant-time lookup? And even if we don’t always manage that, maybe we can still improve on both the extremes above.</p>
+
+<p>Let’s start with another design question. Suppose we want to map the IDs of CSCI 0112 staff to their corresponding name. Further, let’s say that IDs are non-negative numbers ranging between <code class="language-plaintext highlighter-rouge">0</code> and <code class="language-plaintext highlighter-rouge">999999</code>, but that there are far fewer than a million staff members: there are fewer than 10, and so you’ll never have more than 10 datapoints to store in a given semester.</p>
+
+<p>So I’m going to give you a Python list with just 10 elements to work with. Strictly speaking, that ought to be enough space, but nowhere near enough to make a list cell for every <em>possible</em> ID. Here’s what it looks like:</p>
+
+<p><img src="/Lectures/images/lecture10_justenough.png" alt="" /></p>
+
+<p>How can we convert a 6-digit student ID to a <em>unique index between 0 and 9</em>?</p>
+
+<p>We can’t.</p>
+
+<p>But what if we were willing to give up the “unique” part of that question? Do we know a way to convert an ID to a number between 0 and 9 (while still making a reasonable <em>effort</em> at uniqueness?)</p>
+
+<p>Every ID has a remainder when divided by 10. For instance, <code class="language-plaintext highlighter-rouge">1234</code> has remainder <code class="language-plaintext highlighter-rouge">4</code> when divided by 10. Let’s try using this as our index function. We’ll insert two datapoints: <code class="language-plaintext highlighter-rouge">{1234 : 'Tim'}</code> and <code class="language-plaintext highlighter-rouge">{5678: 'Ashley'}</code>.</p>
+
+<p><img src="/Lectures/images/lecture10_justenough_2.png" alt="" /></p>
+
+<p>Now if we want to look up the key <code class="language-plaintext highlighter-rouge">5678</code> we can do so in constant time! Just divide by 10 to get <code class="language-plaintext highlighter-rouge">8</code>, and do a lookup in this Python list.</p>
+
+<p>This sounds great, but do we yet have a usable data structure? What’s the problem?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>We gave up uniqueness! For every index in the list, there are ten thousand potential keys with the same remainder when divided by 10.</p>
+
+  <p>Just look up the key <code class="language-plaintext highlighter-rouge">0004</code> in the above list to see it. This isn’t Tim’s ID, but it still gets mapped to the string <code class="language-plaintext highlighter-rouge">'Tim'</code>. This is often called a <em>collision</em>: two actually-used keys get mapped to the same index, with potentially destructive results.</p>
+
+  <p>So: this is a nice start, but we’d better do a little bit more work.</p>
+
+</details>
+
+<h4 id="a-note-on-terminology">A Note on Terminology</h4>
+
+<p>This kind of key-to-index transformation is often called a <em>hash function</em>, where “hash” here means a digest or summary of the original data. Hash functions are usually fast, lossy, and (in applications beyond this lecture!) built to have a relatively uniform distribution of hashes over the key population to reduce the chance of collision.</p>
+
+<h2 id="the-challenge-collisions-">The Challenge: Collisions <a name="challenge"></a></h2>
+
+<p>You’ll learn more about the details if you take CSCI 0200. In short, there are a few ways of handling collisions: my favorite is storing a separate list for every index, but there are more sophisticated approaches.</p>
+
+<p>The important takeaway is that, in the <strong>worst case</strong> (all keys hash to the same index, nothing but collisions) searching a hash table is as slow as a list: linear in the number of elements being stored. With a well-chosen hash function, and enough space in the table, collisions turn out to be rare. With some probability theory, we could prove that the <strong>average case</strong> is constant time. It’s <em>usually</em> incredibly fast, and anyway never scales worse than a list.</p>
+
+<h4 id="takeaway">Takeaway</h4>
+
+<p>That’s how sets and dictionaries are so fast in Python, and that’s why data structure choice matters. You’ll be choosing between lists, dictionaries, sets, etc. on the final project, so keep these scaling differences in mind.</p>
+
+<h4 id="another-note-on-terminology">Another Note on Terminology</h4>
+
+<p>This kind of data structure is called a <em>hash table</em>. For myself, I like to make a distinction between a hash table and a dictionary: one is low level, and one is high level. A dictionary (also called a <em>map</em> in some other languages) is an abstract description of the shape of the data (a key-value store) and certain common operations (like lookup). You could implement a dictionary using any of the above data structures! Hash tables are by far the most common (and usually the wisest) way to implement a dictionary, and Python’s dictionaries are backed by hash tables. The two terms are often used interchangeably.</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <h2 class="footer-heading">CSCI 0112 - Fall 2023</h2>
+
+    <i>
+      If you find any ambiguous language, inconsistencies, or mistakes in this
+      or any other CSCI0112 document, please let us know by filling out the
+      <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+    </i>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Web Scraping | CSCI 0112 - Fall 2023</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Web Scraping" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Projects/Web%20Scraping/scraping.html" />
+<meta property="og:url" content="/Projects/Web%20Scraping/scraping.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2023" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Web Scraping" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Web Scraping","url":"/Projects/Web%20Scraping/scraping.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2023" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">CSCI 0112 - Fall 2023</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          <a class="page-link" href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link" href="/Pages/hours.html">Hours</a>
+          <a class="page-link" href="/Labs/">Labs</a>
+          <a class="page-link" href="/Pages/learning.html">Learning</a>
+          <a class="page-link" href="/Lectures/">Lectures</a>
+          <a class="page-link" href="/Pages/setup.html">Setup</a>
+          <a class="page-link" href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h1 class="post-title">
+    
+      Project 3:
+    
+    Web Scraping
+  </h1>
+</header>
+
+
+
+  
+  
+
+  
+
+  <h2 id="due-dates"><strong>Due Dates</strong></h2>
+
+<ul>
+  <li><strong>Design Checks</strong> November 6 – November 8</li>
+  <li><strong>Design Check Response</strong> Due November 8 by 10:00 PM EST (no late days allowed)</li>
+  <li><strong>Project Code</strong> Due November 14 at 10:00 PM EST (up to 3 late days allowed ONLY if both you and your partner have late days remaining).</li>
+</ul>
+
+<h2 id="summary"><strong>Summary</strong></h2>
+
+<p>In order to find more venues to host Tim Talks and increase accessibility, you’ve turned to Craigslist. 
+You know there’s a lot of useful information on Craigslist listings, but your goal is to scrape data from 
+the site and put it into helpful data structures that allow you to find the ideal venue more efficiently!</p>
+
+<p>For this project, we’re asking you to scrape some data from Craigslist and write
+a few queries over your scraped data. Specifically, you’re going to examine
+rental housing listings for a number of major US cities, plus Providence.</p>
+
+<h3 id="learning-goals"><strong>Learning goals</strong></h3>
+
+<p>This project will give you experience:</p>
+<ul>
+  <li>Designing data structures</li>
+  <li>Scraping web data</li>
+</ul>
+
+<h2 id="project-tasks"><strong>Project tasks</strong></h2>
+
+<ol>
+  <li>Read through this document in its entirety!</li>
+  <li><strong>Setup</strong>: Create a new VSCode project and install some libraries (if not already installed!):
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">pip3 install pytest</code></li>
+      <li><code class="language-plaintext highlighter-rouge">pip3 install selenium</code></li>
+      <li><code class="language-plaintext highlighter-rouge">pip3 install bs4</code></li>
+    </ul>
+
+    <p>Then, copy the starting point code below into a file called <code class="language-plaintext highlighter-rouge">scraper.py</code>.</p>
+  </li>
+  <li><strong>Design Check</strong>: Complete the Design Check questions due by Nov. 8th at 10pm EST</li>
+  <li>Implement your web scraper!</li>
+</ol>
+
+<p>When writing code, please follow the <a href="https://cs0112.github.io/Pages/syntax_testing.html">testing and style guide</a>.</p>
+
+<h2 id="implementation-starting-point"><strong>Implementation starting point</strong></h2>
+
+<p>Put this stencil code in a file called <code class="language-plaintext highlighter-rouge">scraper.py</code>:</p>
+<div class="stencil" data-source="scraper.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview scraper.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>scraper.py</code>
+    </a>
+    <a href="scraper.py" download="" class="stencil-download" title="Download scraper.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy scraper.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<h2 id="implementation-tasks"><strong>Implementation tasks</strong></h2>
+
+<p>Your implementation will have two parts: the scraper and the query functions.</p>
+
+<h3 id="the-scraper"><strong>The Scraper</strong></h3>
+
+<p>Your scraper will be a function called <code class="language-plaintext highlighter-rouge">scrape_data</code>. It takes in a dictionary
+where the keys are city names from the <code class="language-plaintext highlighter-rouge">CITIES</code> list and the values are
+<code class="language-plaintext highlighter-rouge">BeautifulSoup</code> objects. Your scraper should use <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/"><code class="language-plaintext highlighter-rouge">BeautifulSoup</code>
+methods</a> to transform
+the data into a format that you can query in your query functions.</p>
+
+<p>You’ll need to scrape the following data from each rental listing:</p>
+<ul>
+  <li>Price</li>
+  <li>Number of bedrooms</li>
+  <li>Description (i.e., the text of the link to that listing)</li>
+</ul>
+
+<p>Some listings may be missing the number of bedrooms. You should skip these
+listings (i.e., you should not include them in your data).</p>
+
+<h4 id="implementation-hints"><strong>Implementation hints</strong></h4>
+
+<p>Some <a href="https://docs.python.org/3.8/library/stdtypes.html#string-methods">string
+methods</a> may
+be useful; our implementation uses <code class="language-plaintext highlighter-rouge">.split</code>, <code class="language-plaintext highlighter-rouge">.strip</code>, <code class="language-plaintext highlighter-rouge">.replace</code>, and
+<code class="language-plaintext highlighter-rouge">.endswith</code>.</p>
+
+<p>In class, we saw the <code class="language-plaintext highlighter-rouge">find_all</code> method called with one argument–a tag
+name. Another form may be useful for this assignment: you can call
+<code class="language-plaintext highlighter-rouge">soup.find_all("table", "cls")</code> to find <code class="language-plaintext highlighter-rouge">table</code> tags with the <em>class</em>
+<code class="language-plaintext highlighter-rouge">"cls"</code>. Classes are a way to indicate structure in HTML, and are used by
+browsers to determine how to display elements. The tag</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"assignments red"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>has both <code class="language-plaintext highlighter-rouge">"assignments"</code> and <code class="language-plaintext highlighter-rouge">"red"</code> as classes; we could find it with
+<code class="language-plaintext highlighter-rouge">soup.find_all("div", "assignments")</code> <em>or</em> <code class="language-plaintext highlighter-rouge">soup.find_all("div", "red")</code>.</p>
+
+<h3 id="query-functions"><strong>Query functions</strong></h3>
+
+<p>You will write several queries over your data:</p>
+<ul>
+  <li>A function to find the average number of bedrooms across all of the
+cities. The function should take in the data and return a <code class="language-plaintext highlighter-rouge">float</code> representing
+the average number of bedrooms.</li>
+  <li>A function to find the city with the highest average price for a given number
+of bedrooms. The function should take in your structured data and a number of
+bedrooms and return a city name.</li>
+  <li>A function to find the most commonly-occuring “interesting” word in the
+listing for a given city. The function should use the <code class="language-plaintext highlighter-rouge">interesting_word</code>
+function in the starter code to determine which words are interesting, and
+should count upper- and lower-case versions of a word as being the same. It
+should take in the data and a city name and return a single word.</li>
+</ul>
+
+<h3 id="understanding-craigslists-website"><strong>Understanding Craigslist’s Website</strong></h3>
+
+<p>In past years, Craigslist employed a static method for presenting information, meaning that content was directly embedded into the HTML code that is received by your browser. This method makes it more navigatable to web scrape using tools such as BeautifulSoup.</p>
+
+<p>However, like many modern websites Craiglist has transitioned to a more dynamic content delivery method. This type of method leverages JavaScript to load content asynchronously <em>after</em> the initial page load! This technique is often referred to as AJAX (Asynchronous JavaScript and XML). This allows for faster and much more responsive web applications. With this technique, instead of the whole page refreshing with every change, only specific sections are updated asynchronously, in turn allowing the rest of the page to remain static and uninterrupted.</p>
+
+<p>Now here is the problem- Tools like BeautifulSoup are designed to parse HTML and are not equipped to execute JavaScript. When BeautifulSoup makes a request to a website, it receives only the <em>initial</em> HTML content, which does not include any content loaded asynchronously via JavaScript. As a result, there <strong>will</strong> be a discrepancy between what you see in your web browser (where JavaScript runs by default) and the content that is retrieved by BeautifulSoup.</p>
+
+<p>To bridge the gap between what BeautifulSoup sees and what your browser displays, you can disable JavaScript in your web browser. This step will make the webpage’s content appear similar to the HTML content that BeautifulSoup extracts. Here’s how you can disable JavaScript in some web browsers:</p>
+
+<p><strong>Disabling JavaScript in Your Browser</strong></p>
+
+<p><strong><em>Google Chrome:</em></strong></p>
+
+<ul>
+  <li>Inspect the page: Right-click and select “Inspect”.
+    <ul>
+      <li><a href="https://providence.craigslist.org/search/apa">Craigslist Rental Listings Page</a></li>
+    </ul>
+  </li>
+  <li>Navigate to the command palette: <strong>CTRL/CMD + SHIFT + P</strong></li>
+  <li>Search for <strong>JavaScript</strong>.</li>
+  <li>Click on <strong>Disable JavaScript</strong>.</li>
+  <li>Refresh the page.</li>
+</ul>
+
+<p><strong><em>Safari:</em></strong></p>
+
+<ul>
+  <li>In safari, go to the menu bar and select <strong>Safari</strong></li>
+  <li>Go to <strong>Preferences</strong> » <strong>Advanced</strong></li>
+  <li>Enable the “Show develop in menu in menu bar”</li>
+  <li>Return to the menu bar and select <strong>Develop</strong></li>
+  <li>Here you can select <strong>Disable Javascript</strong> and <strong>Show Web Inspector</strong></li>
+</ul>
+
+<p>You may notice a significant amount of information is lost!</p>
+
+<h2 id="selenium"><strong>Selenium</strong></h2>
+
+<p>We will be using Selenium in order to extract the data that is dynamically loaded via JavaScript on Craigslist.</p>
+
+<p>In the stencil code, you may notice a couple of extra lines for the retrieval of data. Please read through the documentation to gain a better understanding of what is going on.</p>
+
+<p><strong>Google Chrome Requirement:</strong></p>
+
+<p>This script is designed to work with Google Chrome, which means you need to have the Chrome browser installed on your machine. The script uses <code class="language-plaintext highlighter-rouge">webdriver_manager</code> to handle the ChromeDriver installation automatically. This process requires an internet connection.</p>
+
+<p><strong>If You Don’t Have Google Chrome:</strong></p>
+
+<p>If you don’t have the Google Chrome browser installed, or if you prefer to use another browser, you’ll need a different driver.</p>
+
+<p>You may replace the <code class="language-plaintext highlighter-rouge">get_driver</code> method in the stencil code for your browser:</p>
+<div class="stencil" data-source="alternative-web-drivers.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview alternative-web-drivers.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>alternative-web-drivers.py</code>
+    </a>
+    <a href="alternative-web-drivers.py" download="" class="stencil-download" title="Download alternative-web-drivers.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy alternative-web-drivers.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>Note: We will also be providing HTML files to provide consistent city data as well as an alternative if your driver is failing.</p>
+
+<h2 id="design-check"><strong>Design check</strong></h2>
+
+<p>For the design check, only one submission with all group memebers added is required. <code class="language-plaintext highlighter-rouge">scraper.py</code> has block comments for you to place the answers to the questions asked below.</p>
+
+<p>Before your design check meeting, you should read through this document and
+examine a <a href="https://providence.craigslist.org/search/apa">Craigslist Rental Listings Page</a> in a web browser using the
+Web Inspector (see lecture from Oct. 25 for more on how to do this). Then,
+you should answer the following questions:</p>
+
+<ul>
+  <li>What do you notice about the way the data you need to scrape (price, bedrooms, description) are structured on the page?</li>
+  <li>Can we directly use data that we scrape from the page? Is there any pre-processing that needs to take place before the data can be used?</li>
+  <li>How will you structure your data internally in order to implement your query functions? It might be helpful to think about what classes you will need, if any.</li>
+  <li>What are the names and signatures of your three query functions?</li>
+</ul>
+
+<h2 id="testing-and-clarity"><strong>Testing and clarity</strong></h2>
+
+<p>You should write good tests for all of your query functions in a file called
+<code class="language-plaintext highlighter-rouge">test_scraper.py</code>.</p>
+
+<p>You don’t need to write automated tests for your scraping function. You should
+convince yourself that it works on Craigslist data by calling
+<code class="language-plaintext highlighter-rouge">scrape_craigslist_data</code>.</p>
+
+<p>Please follow the <a href="https://cs0112.github.io/Pages/syntax_testing.html">design and clarity
+guide</a>–part
+of your grade will be for code style and clarity.</p>
+
+<h3 id="local-data"><strong>Local data</strong></h3>
+
+<p>In order to be able to test your project against consistent data, we’ve saved a
+copy of the craigslist listings for every city; you can download these data
+<a href="/Projects/Web%20Scraping/localdata.zip">here</a>. If you want to be able to run your code without internet
+access, or on consistent data, you can save the contents of that file to a
+directory called <code class="language-plaintext highlighter-rouge">localdata</code> in your project. You can then run
+<code class="language-plaintext highlighter-rouge">scrape_local_data</code> to run your scraping function against the locally-saved
+files.</p>
+
+<h2 id="handin"><strong>Handin</strong></h2>
+
+<p>You may submit as many times as you want. Only your latest submission will be
+graded. This means that if you submit after the deadline, you will be using a
+late day – so do NOT submit after the deadline unless you plan on using late
+days. Reminder that you may only use late days if both you and your partner have late days available.</p>
+
+<p>The README template can be found <a href="https://drive.google.com/file/d/1JBglGM0B-6g7RLgB3sVTLFsXFtIE17pI/view">here</a>.</p>
+
+<p>In addition to the questions in the template, in your README, please tell us how
+you tested your scraper function.</p>
+
+<p>After completing the homework,
+you will submit:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">scraper.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">test_scraper.py</code></li>
+  <li>Any additional files you create.</li>
+</ul>
+
+<p>Because all we need are the files, you do not need to submit the whole project
+folder. As long as the file you create has the same name as what needs to be
+submitted, you’re good to go! Only one of your partners should submit the
+project on Gradescope! Make sure to add your partner as a Group Member on your
+Gradescope submission so that you both can see the submission. Please DO NOT
+write your partner’s name in the README when listing other collaborators’
+cslogins.</p>
+
+<p>If you are using late days, make sure to make a note of that in your
+README. Remember, you may only use a maximum of 3 late days per assignment. If
+the assignment is late (and you do NOT have anymore late days) no credit will be
+given.</p>
+
+<p>Please don’t put your name anywhere in any of the handin files–we grade
+assignments anonymously!</p>
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <h2 class="footer-heading">CSCI 0112 - Fall 2023</h2>
+
+    <i>
+      If you find any ambiguous language, inconsistencies, or mistakes in this
+      or any other CSCI0112 document, please let us know by filling out the
+      <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+    </i>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>
