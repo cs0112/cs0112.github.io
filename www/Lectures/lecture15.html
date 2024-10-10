@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Polymorphism | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Polymorphism" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture15.html" />
+<meta property="og:url" content="/Lectures/lecture15.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Polymorphism" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-07T00:00:00+00:00","datePublished":"2024-10-07T00:00:00+00:00","description":"CSCI 0112","headline":"Polymorphism","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture15.html"},"url":"/Lectures/lecture15.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="polymorphism">Polymorphism</h1>
+
+<p><a href="/Lectures/live/lecture15.py">Livecode</a></p>
+
+<p><a href="/Lectures/live/2022/lecture15.py">2022 Livecode (pre-class, for Tim’s prep)</a></p>
+
+<h2 id="motivation">Motivation</h2>
+
+<p>What type does the following function return?</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<p>Depending on the type of <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code>, <code class="language-plaintext highlighter-rouge">x+y</code> could produce an integer, a float, a string, or something else. Python has <em>different behavior</em> depending on what we’re trying to add with <code class="language-plaintext highlighter-rouge">+</code>. Here are some examples:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1 + 2</code> produces <code class="language-plaintext highlighter-rouge">3</code>, and <code class="language-plaintext highlighter-rouge">type(3)</code> is <code class="language-plaintext highlighter-rouge">int</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">'hello ' + 'world'</code> produces <code class="language-plaintext highlighter-rouge">'hello world'</code> and <code class="language-plaintext highlighter-rouge">type('hello world')</code> is <code class="language-plaintext highlighter-rouge">str</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">1.2 + 3.4</code> produces <code class="language-plaintext highlighter-rouge">4.6</code> and <code class="language-plaintext highlighter-rouge">type(4.6)</code> is <code class="language-plaintext highlighter-rouge">float</code>; and</li>
+  <li><code class="language-plaintext highlighter-rouge">[1,2,3] + [4,5,6]</code> produces <code class="language-plaintext highlighter-rouge">[1, 2, 3, 4, 5, 6]</code>, and <code class="language-plaintext highlighter-rouge">type([1, 2, 3, 4, 5, 6])</code> is <code class="language-plaintext highlighter-rouge">list</code>.</li>
+</ul>
+
+<p>Python will let us add values with different types if they are compatable:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1 + 1.1</code> (<code class="language-plaintext highlighter-rouge">int</code> and <code class="language-plaintext highlighter-rouge">float</code>) produces <code class="language-plaintext highlighter-rouge">2.1</code>, which is a <code class="language-plaintext highlighter-rouge">float</code>; but</li>
+  <li><code class="language-plaintext highlighter-rouge">1 + '1'</code> (<code class="language-plaintext highlighter-rouge">int</code> and <code class="language-plaintext highlighter-rouge">string</code>) produces a <code class="language-plaintext highlighter-rouge">TypeError</code>: <code class="language-plaintext highlighter-rouge">TypeError: unsupported operand type(s) for +: 'int' and 'str'</code>.</li>
+</ul>
+
+<p>This behavior is convenient: it keeps us from having to use special type-preserving or type-modifying versions of <code class="language-plaintext highlighter-rouge">+</code>. It’s also powerful for other reasons, which is why we’re covering it today.</p>
+
+<p>But it can also be confusing for someone trying to read or debug our code. If we only plan on calling our example <code class="language-plaintext highlighter-rouge">add</code> function with a specific type, we might want to add annotations:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+  <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</code></pre></div></div>
+
+<h2 id="polymorphism-defined">Polymorphism Defined</h2>
+
+<p>Polymorphism (“poly-“: multiple, “morph-“: shape) is the ability to write <em>one</em> function or operator that works for <em>many</em> different data types. The <code class="language-plaintext highlighter-rouge">+</code> operator, as well as the built-in <code class="language-plaintext highlighter-rouge">len</code> function, <code class="language-plaintext highlighter-rouge">str</code> function, and many others are polymorphic. But Python also lets us write our own polymorphic functions, like <code class="language-plaintext highlighter-rouge">add(x, y)</code> above.</p>
+
+<h2 id="polymorphism-in-practice">Polymorphism In Practice</h2>
+
+<p>Let’s add a <code class="language-plaintext highlighter-rouge">__len__</code> method to the <code class="language-plaintext highlighter-rouge">DJData</code> class. This is what Python looks for in an object when someone calls the built-in <code class="language-plaintext highlighter-rouge">len</code> function on that object. The double-underscore convention isn’t really important right now—it’s used to label methods that shouldn’t accessed directly, and usually interact with some Python built-in, like <code class="language-plaintext highlighter-rouge">len</code>. E.g., if you created a <code class="language-plaintext highlighter-rouge">DJData</code> object called <code class="language-plaintext highlighter-rouge">data</code>, you’d use <code class="language-plaintext highlighter-rouge">len(data)</code> to get the length of its queue, and <em>not</em> <code class="language-plaintext highlighter-rouge">data.__len__()</code>.</p>
+
+<p>To do this, we’ll just add:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># Here's how to provide the length of the object, as if it were a list...
+</span>  <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Notice that we can call <code class="language-plaintext highlighter-rouge">len</code> on many different things. Lists. Dictionaries. And now, <code class="language-plaintext highlighter-rouge">DJData</code> objects! Python lets each object define its length; Python doesn’t need to care about the details itself. This is the power of polymorphism.</p>
+
+<h2 id="example-polymorphism-at-the-library">Example: Polymorphism at the Library</h2>
+
+<p>Let’s revisit an example you might have seen in 0111: tracking items at a library. The library has different types of media: books, movies, and so on. Because these media are different, they may have different kinds of data: a movie might have a list of actors, but a book wouldn’t. So we’ll make separate classes for all of them. For simplicity, I’ll leave out a lot of fields we might have in reality:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Book</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">author</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">author</span>
+
+<span class="k">class</span> <span class="nc">TVSeries</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">actors</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_episodes</span> <span class="o">=</span> <span class="n">num_episodes</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">actors</span> <span class="o">=</span> <span class="n">actors</span>
+</code></pre></div></div>
+
+<p>We can represent a library as a list of these items. Let’s pick one of each:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Book</span><span class="p">(</span><span class="s">"The Calculating Stars"</span><span class="p">,</span> <span class="s">"Mary Robinette Kowal"</span><span class="p">),</span>    
+    <span class="n">TVSeries</span><span class="p">(</span><span class="s">"Guardian"</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="p">[</span><span class="s">"Bai Yu"</span><span class="p">,</span> <span class="s">"Zhu Yilong"</span><span class="p">])</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>Once we have a library, it’s natural to want to be able to search it. An advanced search might allow users to enter a string to search for, and for that to apply to all media—authors, directors, titles, etc. We could implement this by making books and movies the same datatype, and disambiguate using a field in that type. We’d probably need to use something like a dictionary to store arbitrary data fields, and write a lot of code to check that those fields were what we expected. That’s a lot of work, and not as true to the nature of these objects: movies have directors, books have authors, and so on.</p>
+
+<p>Polymorphism is useful here. We’ll add a <code class="language-plaintext highlighter-rouge">matches</code> method to each class:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Book</span><span class="p">:</span>
+    <span class="p">...</span>
+    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="ow">or</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">author</span>
+
+<span class="k">class</span> <span class="nc">TVSeries</span><span class="p">:</span>
+    <span class="p">...</span> 
+    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="ow">or</span>
+          <span class="nb">any</span><span class="p">([</span><span class="n">query</span> <span class="ow">in</span> <span class="n">actor</span> <span class="k">for</span> <span class="n">actor</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">actors</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>Notice that I’ve used a function called <code class="language-plaintext highlighter-rouge">any</code> here, which you might not have seen before. It takes in a list of booleans and produces true if and only if any of those inputs is true. It’s convenient for implementing this sort of method via a list comprehension.</p>
+
+<p>Now we can implement our library search function, which works with lists of these objects:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">library</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">library</span> <span class="k">if</span> <span class="n">item</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="n">query</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>Let’s work though what happens when we call <code class="language-plaintext highlighter-rouge">search(library, "Zhu")</code>. Here’s what the state of the program dictionary and memory look like:</p>
+
+<p><img src="/Lectures/images/lecture15_library.png" alt="" /></p>
+
+<p>The list comprehension in <code class="language-plaintext highlighter-rouge">search</code> is going to look through everything in <code class="language-plaintext highlighter-rouge">library</code>: the book at index <code class="language-plaintext highlighter-rouge">0</code> and the movie at index <code class="language-plaintext highlighter-rouge">1</code>.  In both cases, it will call the <code class="language-plaintext highlighter-rouge">matches</code> method of the object at hand, but let’s be a bit more concrete about what each of those calls has to work with.</p>
+
+<p>When the program is executing the <code class="language-plaintext highlighter-rouge">matches</code> method of the book, the program dictionary is <em>expanded</em>: <code class="language-plaintext highlighter-rouge">self</code> and <code class="language-plaintext highlighter-rouge">query</code> are known now, too! The program dictionary has <em>3</em> identifiers in it.</p>
+
+<p>Once the program returns from the <code class="language-plaintext highlighter-rouge">search</code> function, those entries get removed. And every time a <code class="language-plaintext highlighter-rouge">search</code> method is called, the value of <code class="language-plaintext highlighter-rouge">self</code> changes.</p>
+
+<h3 id="preview">Preview</h3>
+
+<p>We’ll come back to polymorphism on Friday, and you’ll see some of the ways that Python uses it.</p>
+
+<h2 id="project-2">Project 2</h2>
+
+<p>Your next project is a very basic climate-change <em>simulator</em>.</p>
+
+<p>Real climate simulation is challenging: there are many factors, both technical and social, that make modeling the problem complex. A <em>very high quality</em> simulation is therefore outside the scope of 112. But, much like we wanted you to get some practice with the ideas of machine learning, we also want you to get experience with building simulations.</p>
+
+<p>When building this assignment, we consulted with Baylor Fox-Kemper, an environmental sciences professor at Brown, to produce something that, in spite of its simplicity, was still based in real climate science. You can find out more about this in the resources linked from the handout. (We’re grateful to Professor Fox-Kemper for taking the time to talk with us!)</p>
+
+<p>The simulation focuses on a geopolitical challenge. Different nations might implement different climage-change mitigation strategies: keeping emissions constant, scaling them back in specific ways, and so on.</p>
+
+<p><strong>Exercise: what other kinds of strategies like these can you think of? Do they all use the same data?</strong></p>
+
+<p>You’ll be representing each of these strategies as its own class that informs the simulation via an <code class="language-plaintext highlighter-rouge">emit</code> method. Defining that method for each strategy class (What arguments does it take?) will be good practice at using both classes and polymorphism in Python. The similator shouldn’t need to know what kind of strategy class it’s working with; all it needs to know is that an <code class="language-plaintext highlighter-rouge">emit</code> method exists, and what to pass to it.</p>
+
+<p>So, in spite of the simplistic nature of the model, this project will give you valuable experience with:</p>
+<ul>
+  <li>basic (but real) climate science in a computing context;</li>
+  <li>a new application for computing—simulation; and</li>
+  <li>object-oriented programming in Python.</li>
+</ul>
+
+<p>You’re allowed to partner with the same person on Project 2 if you’d like to, although we encourage branching out!</p>
+
+<h2 id="note-on-testing-floats">Note on Testing Floats</h2>
+
+<p>Here’s a quick example of what can go wrong when you test non-whole numbers in Python (and many other languages). Suppose we want to assert that the base-10 logarithm of <code class="language-plaintext highlighter-rouge">2</code> is equal to the value that you get when you Google for <code class="language-plaintext highlighter-rouge">log of 2</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">assert</span> <span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.30102999566</span>
+</code></pre></div></div>
+
+<p>This <em>fails</em>! But why? Let’s print out what <code class="language-plaintext highlighter-rouge">log10(2)</code> is in Python:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mf">0.3010299956639812</span>
+</code></pre></div></div>
+
+<p>Those are indeed two different numbers, although the difference is quite small. Google and Python returned the value with different precision—with a different number of decimal digits. Other, related issues can occur when you’re testing non-whole number values. For example, error can propagate and be amplified—recall why we use significant digits in science!</p>
+
+<p>In general, if you can write your expected output values in ways that don’t decimal-expand, you should. In Project 1, you may have written your weights as logarithms of constants, rather than decimals to avoid this problem. The Pytest library also provides a useful helper, here:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">approx</span>
+<span class="k">assert</span> <span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="n">approx</span><span class="p">(</span><span class="mf">0.30102999566</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The default relative tolerance of <code class="language-plaintext highlighter-rouge">approx</code> is <code class="language-plaintext highlighter-rouge">1e-6</code> (one part per million). See <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html#pytest-approx">the docs</a> for more info.</p>
+
+<!-- ## Facebook Discussion <A name="fb"></A>
+
+We'll spend the last 10 or 15 minutes of lecture discussing some of the resources posted on Friday about the Facebook Papers.
+
+Discussions like this can happen at different levels of depth. We might start with:
+* Facebook has not made enough effort to mitigate the impact of misinformation on its platform.
+
+But let's set ourselves a higher standard. While true (at least in my opinion), the above statement needs more detail in order to really understand what the problem is:
+* Facebook has automated measures to take down harmful content, but it doesn't apply those measures equitably across all its users. Some users, including politicians and celebrities, are often first manually reviewed by a Facebook employee before their content is taken down.
+
+It's also useful to not just identify the problem, but:
+* think through possible solutions (and new problems those might introduce!) or
+* consider secondary effects that the problems might cause.
+
+It's important to try to be mindful of this when we explore places where the technical and social meet (which is often where problems get both especially difficult _and_ important to solve, or at least to take steps toward solving).
+
+With that context in mind, here are a few suggested discussion topics:
+* What consequences did the recent Facebook downtime have? What factors made the problem worse? What technical or systemic failure led to the downtime in the first place, and how might that risk be reduced in the future?
+* If Facebook doesn't apply the same criteria to everyone re: removing content, what consequences are there? What factors (business, systemic, technical, etc.) might contribute to Facebook's actions? What could be done?
+* Facebook's algorithm has been said to confuse "engagement" with "anger". Is this a fair criticism? If so, what are the consequences? If not, what _is_ the way to phrase the issue, and what are the consequences of that?
+* Facebook's review processes are heavily biased toward English-language content. What social threats might arise because of this? Is there a technical solution? If yes, what is it? If not, what could Facebook do? -->
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

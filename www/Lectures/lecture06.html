@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Problem Solving | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Problem Solving" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture06.html" />
+<meta property="og:url" content="/Lectures/lecture06.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-16T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Problem Solving" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-16T00:00:00+00:00","datePublished":"2024-09-16T00:00:00+00:00","description":"CSCI 0112","headline":"Problem Solving","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture06.html"},"url":"/Lectures/lecture06.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="problem-solving">Problem Solving</h1>
+
+<p><a href="/Lectures/live/lecture06.py">Livecode link</a>
+<a href="/Lectures/live/test_lecture06.py">Livecode tests</a></p>
+
+<h2 id="logistics">Logistics</h2>
+
+<p><strong>Reminder re: Final Project Presentations:</strong> While I hope to see many of you in person for your final project demos, we will be set up to do final project presentations in hybrid or remote mode. <strong>Thus, if you need to leave campus before demos, it’s OK</strong>. Don’t feel you need to spend more for airfare or miss family time over winter break because of 0112.</p>
+
+<p><strong>Hours Change Forthcoming:</strong> Morgan’s hours are changing. This week she will hold them remotely from 5:30pm to 7:30pm.</p>
+
+<p><strong>Hours Reminder:</strong> Alison’s hours are 12pm–2pm Tuesdays.</p>
+
+<p><strong>Homework 2:</strong> Homework 2 will be due at 9pm on the 17th.</p>
+
+<p><strong>Lab Feedback:</strong> Any feedback on the lab? (Was livecoding the solution effective?)</p>
+
+<h2 id="problem-solving-1">Problem Solving</h2>
+
+<p>Let’s say we have a problem we need to solve, and we want to solve it by writing a program. How should we start?</p>
+
+<p>In an earlier lecture, I recommended writing down what data you have (and what form it’s in), and what you want to produce. From there, you can break down the problem into smaller pieces. If you can solve each subproblem, and then combine them together, you can solve the whole problem.</p>
+
+<p>Some subproblems can be solved by writing helper functions, and we’ve seen a number of examples of this. Other times, subproblems correspond to calls to built-in functions, or particular variables we keep track of. Breaking down problems is a skill you develop over time, and it’s a skill we’ll be practicing a lot in this class.</p>
+
+<p>The most important thing to remember is: <em>even if you aren’t sure how to do something in Python</em>, you can still make progress. Here’s an example.</p>
+
+<h3 id="example-1-cast-of-characters">Example 1: Cast of Characters</h3>
+
+<p>Given a string that contains the text of a book, suppose we want to find all the words that begin with a capital letter, then make each word all caps, and then return them all in a set. We can call our function <code class="language-plaintext highlighter-rouge">cast_of_chars</code>, short for “cast of characters”. This isn’t quite the right name for what we’ll get; we’ll see lots of words at the beginning of sentences, too.</p>
+
+<p>Now that we know the type of our function’s input and output, let’s go ahead and write some examples, in test form:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># in lecture06.py:
+</span><span class="k">def</span> <span class="nf">cast_of_chars</span><span class="p">(</span><span class="n">txt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+  <span class="k">pass</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># in test_lecture06.py:
+</span><span class="k">def</span> <span class="nf">test_cast_of_chars</span><span class="p">():</span>
+  <span class="k">assert</span> <span class="n">cast_of_chars</span><span class="p">(</span><span class="s">""</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">()</span>
+  <span class="k">assert</span> <span class="n">cast_of_chars</span><span class="p">(</span><span class="s">"Tim"</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s">"TIM"</span><span class="p">}</span>
+  <span class="k">assert</span> <span class="n">cast_of_chars</span><span class="p">(</span><span class="s">"'hello,' said TIM"</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s">"TIM"</span><span class="p">}</span>
+  <span class="k">assert</span> <span class="n">cast_of_chars</span><span class="p">(</span><span class="s">"hello Tim hello Tim hello Annabelle"</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s">"TIM"</span><span class="p">,</span> <span class="s">"ANNABELLE"</span><span class="p">}</span>
+  <span class="c1"># This example points out something we might need to _decide on_. Why?
+</span>  <span class="k">assert</span> <span class="n">cast_of_chars</span><span class="p">(</span><span class="s">"hello Tim hello TiM hello Annabelle"</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s">"TIM"</span><span class="p">,</span> <span class="s">"ANNABELLE"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>Ok, now we have a (very) rough understanding of what the function should do. How do we get started? Well, let’s keep following the recipe.</p>
+
+<ul>
+  <li>We know that we’re taking in a single string containing the text we want to process.</li>
+  <li>We know we want to return a set of strings, each containing fully capitalized words.</li>
+</ul>
+
+<p>Now, let’s break down the task into a bunch of little pieces. What might we need to do?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>In class, some thoughts included:</p>
+
+  <ul>
+    <li>splitting the input into a list of separate words;</li>
+    <li>removing punctuation from the words (not something I started with, but someone asked!);</li>
+    <li>filtering out uncapitalized words; and</li>
+    <li>fully capitalizing each word remaining.</li>
+  </ul>
+</details>
+<p><br /></p>
+
+<p>Note that these suggest a bit of structure: one naturally flows into another, and so on. This won’t always be the case, but it certainly helps here! We can write a skeleton for the function. Maybe we don’t yet know how to actually do all the subtasks, but we can give the result of each a <i>name</i> and record which uses which.</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># in wordcount_test.py:
+</span><span class="k">def</span> <span class="nf">cast_of_chars</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>      
+    <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># ??? should use s
+</span>    <span class="n">caps_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="c1"># ??? should use words
+</span>    <span class="n">cleaned</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="c1"># ??? should use caps_words
+</span>    <span class="n">all_caps</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="c1"># ??? should use cleaned
+</span>    <span class="k">return</span> <span class="n">all_caps</span>
+</code></pre></div>  </div>
+
+</details>
+<p><br /></p>
+
+<p>Do we know how to split a string up by blank space? Yes: use <code class="language-plaintext highlighter-rouge">split()</code>! Also, do we have an idea how we might pass over a list, looking for capitalized words? Yes: use a loop! Even if we don’t know what to do in that loop, or how exactly to detect capitalization, we can fill it in. And so on. (Remember to look for the <code class="language-plaintext highlighter-rouge"># ???</code> comments I’ve left to remind myself to fill in a hole later.)</p>
+
+<p>Let’s run another exercise where you help me figure out where different potential Python lines go. We’ll proceed in a couple stages, however. Starting from the last partial program, let’s add some of that structure. These lines <strong>aren’t</strong> the only lines we’ll need, so just focus on putting them into the stencil roughly where they need to go, and <strong>add some <code class="language-plaintext highlighter-rouge"># ???</code> comments</strong> around where you think there are still holes in the program. This will give you practice structuring a function even if you don’t know how to write some of it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>caps_words.add(word)
+cleaned.add(word) 
+for word in cleaned:
+words = s.split() 
+for word in caps_words: 
+for word in words:         
+all_caps.add(word) 
+</code></pre></div></div>
+
+<p>We might end up somewhere like this, where I’ve completely omitted all the filtering and capitalization:</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># in wordcount_test.py:
+</span><span class="k">def</span> <span class="nf">cast_of_chars</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>      
+    <span class="n">words</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">split</span><span class="p">()</span> <span class="c1"># split by blank space
+</span>    <span class="n">caps_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>         
+        <span class="n">caps_words</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>  <span class="c1"># ??? add only if capitalized
+</span>    <span class="n">cleaned</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">caps_words</span><span class="p">:</span> 
+        <span class="n">cleaned</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="c1"># ??? add version without punctuation             
+</span>    <span class="n">all_caps</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
+        <span class="n">all_caps</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="c1"># ??? add capitalized version
+</span>    <span class="k">return</span> <span class="n">all_caps</span>
+</code></pre></div>  </div>
+
+</details>
+<p><br /></p>
+
+<p>Notice that the <em>shape</em> of the function is beginning to appear, even if we aren’t sure how to do the smaller pieces yet. Instead of trying to write the entire function at once, I’ve got incomplete functionality, like just adding a word instead of cleaning it or capitalizing it first. Gradually, we can fill these in, too.</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># in wordcount_test.py:
+</span><span class="k">def</span> <span class="nf">cast_of_chars</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>      
+    <span class="n">words</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">split</span><span class="p">()</span> <span class="c1"># split by blank space
+</span>    <span class="n">caps_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> 
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span> 
+        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">isupper</span><span class="p">():</span> <span class="c1"># check first letter
+</span>            <span class="n">caps_words</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="n">cleaned</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">caps_words</span><span class="p">:</span> 
+        <span class="n">cleaned</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">","</span><span class="p">,</span> <span class="s">""</span><span class="p">))</span> <span class="c1"># remove commas
+</span>    <span class="n">all_caps</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
+        <span class="n">all_caps</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">upper</span><span class="p">())</span> <span class="c1"># fully uppercase
+</span>    <span class="k">return</span> <span class="n">all_caps</span>
+</code></pre></div>  </div>
+
+</details>
+<p><br /></p>
+
+<p>Breaking problems down like this is useful, even if you have decades of programming experience. If you watch an long-time expert programmer working, it might <i>appear</i> like they aren’t following this process, but they’ve likely internalized it so well that it’s hard to see. If you’re just starting to learn to play piano, would you judge your progress against someone with decades of full-time experience? I hope not!</p>
+
+<h2 id="introducing-comprehensions">Introducing Comprehensions</h2>
+
+<p>I want to very quickly cover a new kind of Python syntax. Think of it as a convenient and concise alternative to <code class="language-plaintext highlighter-rouge">for</code> loops. You aren’t required to use these, but you’ll see them used some in my lecture materials, and you’ll <em>definitely</em> see them if you ever work in Python professionally.</p>
+
+<p>Suppose we’d written this function:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">cast_of_chars</span><span class="p">(</span><span class="n">txt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">txt</span><span class="p">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">isupper</span><span class="p">():</span>
+            <span class="n">s</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">s</span>
+</code></pre></div></div>
+
+<p>Python gives us another way to write the same thing. <em>Comprehensions</em> let us build sets, dictionaries, or lists. Using a comprehension, we could have written:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">cast_of_chars</span><span class="p">(</span><span class="n">txt</span><span class="p">:</span> <span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">txt</span><span class="p">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">isupper</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">s</span>
+</code></pre></div></div>
+
+<h3 id="list-comprehensions">List Comprehensions</h3>
+
+<p>I’ll introduce comprehensions with the <em>list</em> version, because the syntax is largely the same for sets and dictionaries.</p>
+
+<p>The most basic comprehension looks like this:</p>
+
+<p><code class="language-plaintext highlighter-rouge">[x for x in my_list]</code></p>
+
+<p>This loops over <code class="language-plaintext highlighter-rouge">my_list</code> and creates a list of every element. It makes a <i>list</i> because we used square brackets; using squiggly braces would make a set or dictionary.</p>
+
+<p>We could insert something more complicated than just <code class="language-plaintext highlighter-rouge">x</code> into the resulting list by writing that expression instead of <code class="language-plaintext highlighter-rouge">x</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">[x + 1 for x in my_list]</code>
+And we can add a conditional that filters which values will actually get added to the new list:</p>
+
+<p><code class="language-plaintext highlighter-rouge">[x + 1 for x in my_list if x &gt; 4]</code></p>
+
+<p>Note that <code class="language-plaintext highlighter-rouge">my_list</code> can be anything iterable: a list, a set, a dictionary, and so on. So I could write something like this:
+<code class="language-plaintext highlighter-rouge">[k for k in {'a':1, 'b':2}]</code>
+which produces:
+<code class="language-plaintext highlighter-rouge">['a', 'b']</code></p>
+
+<p>This means that comprehensions are great ways to convert between lists, sets, etc. when you don’t want to just copy all the contents of the original verbatim.</p>
+
+<h3 id="set-comprehensions">Set Comprehensions</h3>
+
+<p>In the same way we can build lists with a comprehension, we can build a set—just by using squiggle braces instead of square brackets:</p>
+
+<p><code class="language-plaintext highlighter-rouge">{x + 1 for x in [3,5,7] if x &gt; 4}</code>
+produces:
+<code class="language-plaintext highlighter-rouge">{8, 6}</code></p>
+
+<h3 id="dictionary-comprehensions">Dictionary Comprehensions</h3>
+
+<p>We can also build dictionaries with comprehensions:</p>
+
+<p><code class="language-plaintext highlighter-rouge">{x: x + 1 for x in [3,5,7] if x &gt; 4}</code>
+which gives us:
+<code class="language-plaintext highlighter-rouge">{5: 6, 7: 8}</code></p>
+
+<p>Again, you don’t have to use comprehensions in your own codt, but you can if you want. I’ll be using them sometimes, so I wanted to introduce them now.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

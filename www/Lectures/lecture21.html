@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>More on Exceptions and the Debugger (Bonus Content) | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="More on Exceptions and the Debugger (Bonus Content)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture21.html" />
+<meta property="og:url" content="/Lectures/lecture21.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-25T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="More on Exceptions and the Debugger (Bonus Content)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-25T00:00:00+00:00","datePublished":"2024-10-25T00:00:00+00:00","description":"CSCI 0112","headline":"More on Exceptions and the Debugger (Bonus Content)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture21.html"},"url":"/Lectures/lecture21.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="exceptions-and-the-debugger">Exceptions and the Debugger</h1>
+
+<p><strong>These notes expand on exceptions and the debugger, and are meant to supplement other notes on similar topics. There isn’t a corresponding lecture, but I’m putting the release date as October 27th, when I may be traveling.</strong></p>
+
+<p>Last time, we defined a method in our <code class="language-plaintext highlighter-rouge">LinkedList</code> class to obtain the element at the $n^{th}$ location. It looked something like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">nth_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">nth_from</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">nth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">"index out of range"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">nth_from</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We raised an <em>exception</em> if the index given was out of bounds for the list.</p>
+
+<h2 id="the-bad-old-days">The Bad Old Days</h2>
+
+<p>An alternative approach would have been returning some sort of agreed-upon special “error” value, like <code class="language-plaintext highlighter-rouge">0</code> or <code class="language-plaintext highlighter-rouge">-1</code>. And if you were using Tim’s first programming languages (archaic versions of C and BASIC) that’s probably exactly what you’d do.</p>
+
+<p>So, <em>why didn’t we</em>? Why did we need an <code class="language-plaintext highlighter-rouge">Exception</code>, and why do we want them in a language to begin with?</p>
+
+<h4 id="discussion">Discussion!</h4>
+
+<p>Ok, so maybe a special notion of exception is generally better for exceptional circumstances, like errors or bad inputs.</p>
+
+<p>But there are a few questions remaining, like:</p>
+<ul>
+  <li>What makes one exception better than another?</li>
+  <li>How should we think of using exceptions?</li>
+  <li>How do exceptions even work?</li>
+</ul>
+
+<h2 id="why-is-one-exception-better-than-another">Why is one exception better than another?</h2>
+
+<p>Haven’t we just replaced one exception with another?</p>
+
+<p>Let’s see what happens if we take out the check that Rob added in class on Friday. If we ask for, say, <code class="language-plaintext highlighter-rouge">l.nth(3)</code> in the tests from last time:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">l</span> <span class="o">=</span> <span class="n">LinkedList</span><span class="p">()</span>
+<span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"hello"</span><span class="p">)</span>
+<span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"world"</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>we get:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Traceback (most recent call last):
+  File "/Users/tim/repos/teaching/112/lectures/oct25/prep.py", line 83, in &lt;module&gt;
+    print(l.nth(3))
+  File "/Users/tim/repos/teaching/112/lectures/oct25/prep.py", line 42, in nth
+    return self.nth_from(self.first, n)
+  File "/Users/tim/repos/teaching/112/lectures/oct25/prep.py", line 37, in nth_from
+    return self.nth_from(node.next, n - 1)
+  File "/Users/tim/repos/teaching/112/lectures/oct25/prep.py", line 37, in nth_from
+    return self.nth_from(node.next, n - 1)
+  File "/Users/tim/repos/teaching/112/lectures/oct25/prep.py", line 37, in nth_from
+    return self.nth_from(node.next, n - 1)
+AttributeError: 'NoneType' object has no attribute 'next'
+</code></pre></div></div>
+
+<h3 id="understanding-the-default-python-error">Understanding the default Python error</h3>
+
+<p>This error has 2 parts: the error message <code class="language-plaintext highlighter-rouge">AttributeError: 'NoneType' object has no attribute 'next'</code> and the <em>call stack</em> for the error, which shows how we got to the point that the error occurred.</p>
+
+<p>The message tells us that we tried to access the <code class="language-plaintext highlighter-rouge">next</code> field of something that wasn’t a <code class="language-plaintext highlighter-rouge">ListNode</code> but rather the <code class="language-plaintext highlighter-rouge">None</code> value, and this takes place on the line:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">nth_from</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The call stack shows the list of nested function calls that Python took to reach this point in the program. It looks like the error happened in the third recursive call to <code class="language-plaintext highlighter-rouge">nth_from</code>, and this chain of recursion started with the invocation of <code class="language-plaintext highlighter-rouge">nth</code> by the offending top-level print statement.</p>
+
+<p>That’s what the error tells us, by itself.</p>
+
+<h3 id="but-why-did-the-error-happen">But <em>why</em> did the error happen?</h3>
+
+<p>As the writers of this code, we have the knowledge to go further and infer a more specific cause. Our recursive calls reached the end of the list, but the value of <code class="language-plaintext highlighter-rouge">n</code> was still greater than zero. So Python tried to make another recursive call, and fell off the end of the list.</p>
+
+<p>Note that what we just inferred was <em>different</em> from what the raw error told us. We took our knowledge of the program and used it to <em>interpret</em> the error. Now we have something less low-level and more behavioral. Compare the two:</p>
+<ul>
+  <li>“This series of nested function calls happened, and then the program tried to get the <code class="language-plaintext highlighter-rouge">next</code> field of <code class="language-plaintext highlighter-rouge">None</code>, which didn’t exist.”</li>
+  <li>“The program had already reached the end of the list, but the user’s input wanted us to go further.”</li>
+</ul>
+
+<p>Is everyone who gets the error going to possess the intimate knowledge of our program that we have? If not, there’s a good chance that the default Python error might be unhelpful. The user might say: “Yeah, I know that <code class="language-plaintext highlighter-rouge">None</code> doesn’t have a <code class="language-plaintext highlighter-rouge">next</code> field, but so what?”</p>
+
+<p>And if your user isn’t a programmer, but just someone trying to use a script that calls a library that uses your <code class="language-plaintext highlighter-rouge">LinkedList</code> class, the error is likely even more confusing! What’s <code class="language-plaintext highlighter-rouge">None</code>? What’s <code class="language-plaintext highlighter-rouge">next</code>? They weren’t trying to do anything but order dinner online…</p>
+
+<p>The takeaway here is that your code should always consider what its intended user may be trying to do. 
+This isn’t as easy as it sounds: if you’re writing a data structure, it might be used for just about any purpose. But you can do better than the default Python error: here, the intent of the user (or library using your class) was definitely to index into a <code class="language-plaintext highlighter-rouge">LinkedList</code> and get the <code class="language-plaintext highlighter-rouge">nth</code> element.</p>
+
+<p>So shouldn’t the error be in terms of <em>that goal</em>?</p>
+
+<p>Hence the custom exception. (But we can and will do better, still.)</p>
+
+<h3 id="trying-to-work-with-exceptions"><code class="language-plaintext highlighter-rouge">Try</code>ing to work with Exceptions</h3>
+
+<p>Python gives us a way to <em>catch</em> an exception that something we’ve called produces. We call these a  “try/except”, or, sometimes, a “try/catch”. Concretely, let’s try wrapping the call to <code class="language-plaintext highlighter-rouge">nth_from_</code> in a construct that will stop an exception if one happens:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">nth_from</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="k">except</span> <span class="p">(</span><span class="nb">AttributeError</span><span class="p">):</span>
+    <span class="k">pass</span> <span class="c1"># don't do anything. Will return None
+</span></code></pre></div></div>
+
+<p>If code within the <code class="language-plaintext highlighter-rouge">try:</code> block raises an exception of the appropriate type (here, <code class="language-plaintext highlighter-rouge">AttributeError</code>), the 
+the <code class="language-plaintext highlighter-rouge">except</code> block runs. Just <code class="language-plaintext highlighter-rouge">pass</code> here means that the function will return <code class="language-plaintext highlighter-rouge">None</code>. That’s not great, but we 
+could also have returned -1 or 3 or 17000. We could also raise our own exception!</p>
+
+<p>The key is that once an exception has been caught by an <code class="language-plaintext highlighter-rouge">except</code> block, it’s assumed to have been handled. It won’t propagate any further up through your program unless the code raises it again. The block is there specifically to define fall-back behavior in unusual circumstances, and exceptions embody those circumstances.</p>
+
+<h4 id="how-would-i-re-raise-the-same-exception">How would I re-raise the same exception?</h4>
+
+<p>You’re allowed to give a name to the exception in the <code class="language-plaintext highlighter-rouge">except</code> block. We won’t be talking much about this sort of more advanced exception-engineering in this class, but if you move on to 0200 you’ll see more.</p>
+
+<h2 id="how-do-exceptions-actually-work">How do exceptions actually work?</h2>
+
+<p>It’s easiest to see this live.</p>
+
+<p>Let’s try that access from a few minutes ago in the debugger:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>This time, instead of clicking the Run button, we’ll go to the Run menu and click “Start debugging”:</p>
+
+<p><img src="https://i.imgur.com/wf4Rp6G.png" alt="" /></p>
+
+<p>The debugger will stop at the point that the exception gets thrown, and add a lot of new stuff to the screen:</p>
+
+<p><img src="https://i.imgur.com/Jbf4RDg.png" alt="" /></p>
+
+<p>Let’s pause and look. We see:</p>
+<ul>
+  <li>the code window, highlighting the offending call of <code class="language-plaintext highlighter-rouge">nth_from</code>;</li>
+  <li>a giant red error popup, telling us that an <code class="language-plaintext highlighter-rouge">AttributeError</code> has happened;</li>
+  <li>something that looks like a TV remote control has appeared on the top right of the window.</li>
+</ul>
+
+<p>That remote control contains a bunch of useful buttons for <em>stepping through</em> your code slowly, line by line.</p>
+
+<p>Let’s try the process over from the beginning. We’ll put a <em>breakpoint</em> on the top-level print statement. In VSCode, we can do that by moving the mouse to the left of the line numbers until we see a red circle:</p>
+
+<p><img src="https://i.imgur.com/fX6pOVO.png" alt="" /></p>
+
+<p>Clicking the red circle will add a breakpoint: a point in your program where, if you’re <em>debugging</em> rather than just running, the debugger will pause execution:</p>
+
+<p><img src="https://i.imgur.com/adQIO54.png" alt="" /></p>
+
+<p>Let’s start the debugger again. Now, we see the program paused:</p>
+
+<p><img src="https://i.imgur.com/ZzS6ylv.png" alt="" /></p>
+
+<p>Now click the “step into” button:</p>
+
+<p><img src="https://i.imgur.com/y20t2ku.png" alt="" /></p>
+
+<p>The debugger calls <code class="language-plaintext highlighter-rouge">nth</code> but then <em>stops again</em>: the “step into” button lets a single method or function call happen:</p>
+
+<p><img src="https://i.imgur.com/KFzrpAq.png" alt="" /></p>
+
+<p>On the left, you’ll see the current values of variables in the program dictionary:</p>
+
+<p><img src="https://i.imgur.com/mMa3lKt.png" alt="" /></p>
+
+<p>Since we want to follow Python into the call of <code class="language-plaintext highlighter-rouge">nth_from</code>, we’ll click on step <em>into</em> again. Then we see:</p>
+
+<p><img src="https://i.imgur.com/CkMeArQ.png" alt="" /></p>
+
+<p>Another click and we’ll learn that, since <code class="language-plaintext highlighter-rouge">n</code> isn’t zero, execution steps forward, over the return statement:</p>
+
+<p><img src="https://i.imgur.com/OU9bOPC.png" alt="" /></p>
+
+<p>If we keep following this process, we’ll see the value of <code class="language-plaintext highlighter-rouge">n</code> reduce by 1 every time we recur into <code class="language-plaintext highlighter-rouge">nth_from</code>. This is where the <em>call stack</em> arises from: a series of function or method calls, nested within one another.</p>
+
+<p>But then, disaster strikes:</p>
+
+<p><img src="https://i.imgur.com/PKtdmhk.png" alt="" /></p>
+
+<p>and we see the power of exceptions. The exception immediately takes over execution, and flows back up the previous method calls, looking for a matching <code class="language-plaintext highlighter-rouge">except</code> block. If no such block is found, the program terminates with an error.</p>
+
+<!-- ![](https://i.imgur.com/64jPJzd.png) -->
+
+<h4 id="takeaway">Takeaway</h4>
+
+<p>Up until now, we’ve treated an error as if it were the end. The program would <em>have</em> to crash! And indeed, that’s what happens if the exception propagates all the way to the top-level of hte program: the program halts and prints an error. But <code class="language-plaintext highlighter-rouge">try</code> and <code class="language-plaintext highlighter-rouge">except</code> blocks let us write code that handles, and even possibly recovers, from those errors.</p>
+
+<h2 id="could-we-make-a-better-exception">Could we make a better exception?</h2>
+
+<p>The exception we had before was vague in two ways:</p>
+<ul>
+  <li>It was an <code class="language-plaintext highlighter-rouge">Exception</code>, which is the most general way of representing “Something bad happened!”; and</li>
+  <li>it only contained an error a string (“Bad index”).</li>
+</ul>
+
+<h4 id="fix-1">Fix 1</h4>
+
+<p>One option to improve on this would be to throw the defined Python <code class="language-plaintext highlighter-rouge">IndexError</code> exception type, but with an improved error message. An <code class="language-plaintext highlighter-rouge">IndexError</code> describes the nature of the problem far more faithfully than an <code class="language-plaintext highlighter-rouge">AttributeError</code>: you’re saying that the <em>index</em> the caller provided was wrong.</p>
+
+<h4 id="fix-2">Fix 2</h4>
+
+<p>Another option is to define our own exception. <em>We use inheritance for this.</em></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LinkedListBadIndexError</span><span class="p">(</span><span class="nb">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>We could put more here if we wanted. It’s just a class, 
+and so we could add an <code class="language-plaintext highlighter-rouge">__init__</code> method and anything else we wanted. We could carry the bad index value as a field, etc.</p>
+
+<p>Personally, I prefer the first option (an <code class="language-plaintext highlighter-rouge">IndexError</code>) to a custom exception class <em>for this particular application</em>. It’s easy (just raise an <code class="language-plaintext highlighter-rouge">IndexError</code>) and it communicates the right information. But often there isn’t a good exception for the idea you want to convey; then you’d make your own.</p>
+
+<h2 id="testing-with-exceptions">Testing with Exceptions</h2>
+
+<p>What happens if we try to test with the bad index? What can we even <code class="language-plaintext highlighter-rouge">assert</code>? We use Pytest’s helper:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">linkedlist</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="k">with</span> <span class="n">pytest</span><span class="p">.</span><span class="n">raises</span><span class="p">(</span><span class="n">LinkedListBadIndexError</span><span class="p">):</span>
+  <span class="n">lst</span><span class="p">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>We’re going to ask you to include tests for both normal cases and error cases from now on!</strong></p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>
