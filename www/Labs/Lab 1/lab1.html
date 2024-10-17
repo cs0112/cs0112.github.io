@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>VSCode and Python | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="VSCode and Python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Labs/Lab%201/lab1.html" />
+<meta property="og:url" content="/Labs/Lab%201/lab1.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="VSCode and Python" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"VSCode and Python","url":"/Labs/Lab%201/lab1.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link active" href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Lab 1:
+    
+    VSCode and Python
+  </h2>
+</header>
+
+
+
+  
+  
+    
+  
+
+  
+      <p class="notice"><a href="/Labs/Lab 1/Lab 1.pptx">View presentation</a></p>
+  
+
+  <h2 id="section-1-directory-navigation-and-vscode">Section 1: Directory Navigation and VSCode</h2>
+
+<p>Before we start, make sure you setup VSCode using the class Setup Guide. If you haven’t done so, please follow the instructions in the Setup tab in the course website.</p>
+
+<h3 id="12-understanding-directories-and-file-systems">1.2 Understanding Directories and File Systems</h3>
+
+<p>Before we dive into using VSCode, it’s important to understand how files are organized on your computer:</p>
+
+<ul>
+  <li><strong>Directory (Folder)</strong>: A container for files and other directories.</li>
+  <li><strong>File</strong>: A named collection of data.</li>
+  <li><strong>File System</strong>: The way your computer organizes and stores files.</li>
+</ul>
+
+<p>Your file system is like a tree:</p>
+
+<pre><code>/
+├── Users
+│   └── YourUsername
+│       ├── Documents
+│       ├── Desktop
+│       └── Downloads
+├── Applications
+└── System
+</code></pre>
+
+<p>Here, <code class="language-plaintext highlighter-rouge">/</code> is the root directory. <code class="language-plaintext highlighter-rouge">Users</code>, <code class="language-plaintext highlighter-rouge">Applications</code>, and <code class="language-plaintext highlighter-rouge">System</code> are directories. <code class="language-plaintext highlighter-rouge">Documents</code>, <code class="language-plaintext highlighter-rouge">Desktop</code>, and <code class="language-plaintext highlighter-rouge">Downloads</code> are subdirectories of <code class="language-plaintext highlighter-rouge">YourUsername</code>. To go to root, you can use <code class="language-plaintext highlighter-rouge">/</code> or <code class="language-plaintext highlighter-rouge">~</code> to go to your home directory.</p>
+
+<h3 id="13-basic-terminal-commands">1.3 Basic Terminal Commands</h3>
+
+<p>The terminal (also called command line or console) allows you to interact with your computer using text commands. Here are some essential commands:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pwd</code>: Print Working Directory (shows your current location)</li>
+  <li><code class="language-plaintext highlighter-rouge">ls</code>: List contents of the current directory</li>
+  <li><code class="language-plaintext highlighter-rouge">cd</code>: Change Directory
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">cd DirectoryName</code>: Move into a directory</li>
+      <li><code class="language-plaintext highlighter-rouge">cd ..</code>: Move up one level</li>
+      <li><code class="language-plaintext highlighter-rouge">cd ~</code>: Move to your home directory</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">mkdir</code>: Make a new directory</li>
+  <li><code class="language-plaintext highlighter-rouge">touch</code>: Create a new file</li>
+  <li><code class="language-plaintext highlighter-rouge">rm</code>: Remove a file (use with caution!)</li>
+  <li><code class="language-plaintext highlighter-rouge">rm -r</code>: Remove a directory and its contents (use with extreme caution!)</li>
+  <li><code class="language-plaintext highlighter-rouge">mv</code>: Move a file or directory</li>
+  <li><code class="language-plaintext highlighter-rouge">cp</code>: Copy a file or directory</li>
+</ul>
+
+<h3 id="14-using-the-terminal-in-vscode">1.4 Using the Terminal in VSCode</h3>
+
+<ol>
+  <li>Open VSCode</li>
+  <li>Access the integrated terminal:
+    <ul>
+      <li>Use the menu: View &gt; Terminal</li>
+      <li>Or use the shortcut:
+        <ul>
+          <li>Windows/Linux: Ctrl + `</li>
+          <li>Mac: Cmd + `</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Quick tip:</strong> To open VSCode from terminal, type <code class="language-plaintext highlighter-rouge">code .</code> in the directory you want to open.</p>
+
+<h3 id="15-creating-a-project-directory">1.5 Creating a Project Directory</h3>
+
+<p>Let’s create a directory for your CS112 projects:</p>
+
+<ol>
+  <li>Open the VSCode terminal</li>
+  <li>Navigate to where you want to create your project folder:</li>
+</ol>
+<pre><code>$ cd Documents</code></pre>
+<ol>
+  <li>Create a new directory:</li>
+</ol>
+<pre><code>$ mkdir CS112</code></pre>
+<ol>
+  <li>Verify that the directory was created:</li>
+</ol>
+<pre><code>$ ls</code></pre>
+<ol>
+  <li>Move into this new directory:</li>
+</ol>
+<pre><code>$ cd CS112</code></pre>
+
+<p class="notice"><strong>Task:</strong> Create a new directory called <code class="language-plaintext highlighter-rouge">CS112_Labs</code> within your <code class="language-plaintext highlighter-rouge">CS112</code> directory.</p>
+
+<h3 id="16-opening-a-project-in-vscode">1.6 Opening a Project in VSCode</h3>
+
+<ol>
+  <li>In VSCode, go to File &gt; Open Folder</li>
+  <li>Navigate to and select your CS112_Projects folder</li>
+  <li>Click ‘Select Folder’</li>
+</ol>
+
+<p>Now you’re set up to start coding in your new project directory!</p>
+
+<h2 id="section-2-inventory-access">Section 2: Inventory Access</h2>
+
+<div class="stencil" data-source="inventory_access.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview inventory_access.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>inventory_access.py</code>
+    </a>
+    <a href="inventory_access.py" download="" class="stencil-download" title="Download inventory_access.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy inventory_access.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>Now that we’re familiar with navigating directories and creating Python files/environments in VSCode, let’s tackle a simple inventory access program.</p>
+
+<p>This inventory access program allows the user to collect resources, view their inventory, and craft items with their resources. Take a minute to look at  main to see how these interactions are executed by calling functions that we will complete. Additionally, look at the dictionaries inventory, world, and resources. Our program will be interacting with these data structures. Throughout this lab, you may find some dictionary/list methods and operations useful.</p>
+
+<h3 id="part-1-collect-resources">Part 1: Collect Resources</h3>
+
+<p>One of the fundamental functions of an inventory system is storing items, however before you can store a resource you need to collect it! In this program, our world consists of different biomes, which each have a different combination of resources. We can gather from a biome of choice, however the resource you obtain is random.</p>
+
+<p class="notice"><strong>Task 1:</strong> Define the first of our methods: <code class="language-plaintext highlighter-rouge">collect_resources</code>. This method should process the input biome, and if it is a valid biome in our world, randomly choose one of the resources in the input biome to add to our inventory. We’ve imported the random library, which allows us to use <code class="language-plaintext highlighter-rouge">random.choice</code>. Lastly, your method should return a formatted string containing information about what resource was collected from the input biome.</p>
+
+<p><strong>Note:</strong> Navigate to the documentation for the <a href="https://docs.python.org/3/library/random.html">random module</a> to learn more about the <code class="language-plaintext highlighter-rouge">random.choice</code> method.</p>
+
+<h3 id="part-2-display-inventory">Part 2: Display Inventory</h3>
+
+<p>In addition to updating the inventory, it’s convenient to be able to see what items you have in your inventory, as well as how many of each item you have.</p>
+
+<p class="notice"><strong>Task 2:</strong> Define the method <code class="language-plaintext highlighter-rouge">display_inventory</code>. This method should format and print the current status of your inventory, displaying the item and the quantity (AKA simply printing the inventory dictionary will not suffice!). Note that this method takes no arguments and does not return anything.</p>
+
+<h3 id="part-3-craft-item">Part 3: Craft Item</h3>
+
+<p>Having resources is great, but putting them to use can be even better! If we combine our resources according to a given recipe, we can craft items.</p>
+
+<p class="notice"><strong>Task 3:</strong> Define the method <code class="language-plaintext highlighter-rouge">craft_item</code>. This method should process the input item, and if it is a valid craftable item, check whether or not the user has the required number of resources to craft the item. If so, the user should use these resources to craft the item, subtracting the resources and adding the item to the inventory. Similarly to <code class="language-plaintext highlighter-rouge">collect_resources</code>, this method should return a formatted string containing information about the item crafted.</p>
+
+<h2 id="section-3-youre-all-set">Section 3: You’re All Set!</h2>
+
+<p>Success!
+Congratulations on completing the first lab of cs0112! Please call over a TA to get checked off.</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

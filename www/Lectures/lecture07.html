@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Project 1 and Machine Learning | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Project 1 and Machine Learning" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture07.html" />
+<meta property="og:url" content="/Lectures/lecture07.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-18T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Project 1 and Machine Learning" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-18T00:00:00+00:00","datePublished":"2024-09-18T00:00:00+00:00","description":"CSCI 0112","headline":"Project 1 and Machine Learning","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture07.html"},"url":"/Lectures/lecture07.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="project-1-and-machine-learning">Project 1 and Machine Learning</h1>
+
+<h3 id="drills">Drills</h3>
+
+<p>I’ll always announce when a new drill is released. Remember these are designed to be extremely short, and help me notice when students have questions that I might not think to prepare for otherwise. You get full credit for participation.</p>
+
+<h2 id="a-machine-learning-topic-building-classifiers">A Machine Learning Topic: Building Classifiers</h2>
+
+<p>Suppose we have the job of taking in information about an animal’s <em>size</em> and <em>fuzziness</em> and deciding whether it is a <strong>cat</strong> or a <strong>dog</strong>. (We’ll set aside the false dichotomy here, because this is an example meant to illustrate a shape of problem.)</p>
+
+<p>We could certainly write a Python function that does that; we might even have a guess about how to write it. Something like:</p>
+
+<pre><code class="language-python=">def classify(size: int, fuzziness: int):
+    if size &gt; 10: 
+        return 'dog'
+    if size &gt; 8 and fuzziness &gt; 10: 
+        return 'dog'
+    else:
+        return 'cat'
+</code></pre>
+
+<p>This program would “work” but hopefully you have some questions about it.</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>Among other questions (what are the units? why only size and fuzziness?) you might ask: Where did the 8 and the 10 come from—“expert” knowledge, or somewhere else? If our knowledge changes as we get more dimensions of data, or a new kind of dog or cat is discovered, how should we decide on new numbers?</p>
+</details>
+<p><br /></p>
+
+<h3 id="machine-learning">Machine Learning</h3>
+
+<p>Machine learning is a field concerned with (among other things) finding patterns in data and extrapolating from them. Its ideas are well suited to our classification task, but we’ll have to do a bit of work to make them applicable.</p>
+
+<p>First, let’s collect a large set of size and fuzziness data, and get experts to classify every entry in the dataset as <strong>cat</strong> or <strong>dog</strong>. Because of this expert labeling, we know (in theory, anyway) whether each data point is a dog or cat, and we can use this data to <em>train</em> a classifier using machine learning. Let’s visualize this by drawing a 2-dimensional graph, where the Y axis corresponds to size, and the X axis to fuzziness:</p>
+
+<center>
+<img src="images/lecture07_2_animals.png" alt="Dogs and Cats: Size vs. Fuzziness" width="300" />
+</center>
+
+<p>I’ve put two example animals on the chart: Boatswain the dog, and Charli the cat. We’ll represent dogs as blue circles and cats as orange squares. As Boatswain is much larger than Charli, and a tiny bit more fuzzy, he appears above and slightly to the right of Charli on the graph.</p>
+
+<p>Boatswain was a dog we had when I was young, and I unfortunately don’t have a picture to share. But here’s a picture of Charli helping me prepare to teach.</p>
+
+<center>
+<img src="images/lecture07_charli_helping.jpg" alt="Charli Cat" width="300" />
+</center>
+
+<p>Anyway, let’s add all the other dogs and cats from our training set. Then, a very basic machine learning algorithm might use the existing data to sketch a border line: on one side, it guesses “dogs”, and on the other, “cats”.</p>
+
+<center>
+<img src="images/lecture07_line.png" alt="A Possible Classifier" width="300" />
+</center>
+
+<p>Some approaches build a more complicated border, which might be able to do better than the straight line I’ve drawn here. But this is a decent high-level sketch of how we might try to  build a classifier.</p>
+
+<p>Note that error is always a possibility: here we’ve misclassified one dog as a cat, and one cat as a dog. There are also a couple animals who are quite close to the line, and so might easily see their classification change if the training data are updated.</p>
+
+<h4 id="something-i-wonder">Something I wonder</h4>
+
+<p>This is just a toy example, but already you might see some industrial applications and potential problems that could arise from errors if the system misclassified an animal. What do you see?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>Any veterinarian would tell you that some foods or medicines that are good for a cat might hurt a dog (or the other way around). And foods or medicines that are good for humans might harm both cats and dogs. So even in a toy example like this, there could be real world consequences to errors in a classifier.</p>
+
+  <p>We might build a much better classifier by adding more dimensions of information, but even then, a machine is capable of error just like a human is. Classification is tough, but important.</p>
+</details>
+
+<h3 id="classifying-song-genre">Classifying Song Genre</h3>
+
+<p>Let’s move on to something a bit more complex, a lot more concrete, and hopefully less high-stakes. It’s also more related to your first project. We’re going to try to figure out what genre of music (pop, hip hop, rock, blues, country, metal, …) a song belongs to, just based on its lyrics. Here’s a few example lines from a chorus:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>And here I go again, I'm drinkin' one, I'm drinkin' two
+I got my heartache medication, a strong dedication
+To gettin' over you, turnin' me loose
+On that hardwood jukebox lost in neon time...
+</code></pre></div></div>
+<p>Do you have any guesses about what genre this song is from? If so, why?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>It is, in fact, a country song: “Heartache Medication” by Jon Pardi (2019)</p>
+
+</details>
+
+<p>If we believe there’s a correlation between the words in a song and its genre, it might make sense to use <em>word counts</em> to train a classifier. And that’s what you’ll be doing in Project 1.</p>
+
+<h4 id="term-frequency">Term Frequency</h4>
+
+<p>How might this work? Let’s consider a shorter song, which might be sung at our mascot’s birthday:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Happy Birthday to You
+Happy Birthday to You
+Happy Birthday Dear Bruno
+Happy Birthday to You.
+</code></pre></div></div>
+
+<p>If we ran our word-counting program on this song, we’d get (after removing punctuation!):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s">'Happy'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="s">'Birthday'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="s">'to'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="s">'Dear'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="s">'Bruno'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="s">'You'</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We could get similar word count information for every song in our training set, with values for every word that appears in any song. We’ll call this the <em>term frequency</em> table for a given song.</p>
+
+<p>From there, we can go on to imagine (although I won’t attempt to draw it!) a graph on hundreds or thousands of dimensions, where each dimension corresponds to a word. Then, a song could be put in that graph according to how many times each word appeared in it. If we believe that similar songs (by lyrics) tend to belong to similar genres, that’s a way we could build a classifier.</p>
+
+<p>So far, so good, but:</p>
+<ul>
+  <li>Aren’t some words more important than others?</li>
+  <li>How would we measure distance in this mind-boggling graph?</li>
+  <li>How do we actually go about drawing that line between genre?</li>
+</ul>
+
+<p>We’ll answer the latter 2 questions in the project handout. For now, let’s focus on that first question; it’s vital.</p>
+
+<h4 id="inverse-document-frequency">Inverse Document Frequency</h4>
+
+<p>The country song we looked at a few minutes ago contains quite a few instances of the word “I”. For our classification purposes, do we really care as much about “I” as we do about “drinkin’” or “heartache”?</p>
+
+<p>Probably not, which is where the next idea comes in. We’d like to value difference in some word counts more than others, and to do this we’ll use an idea called <em>inverse document frequency</em>, which essentially means finding out how common a word is in the entire training set. Words like “a” and “I” will be common; words like “drinkin’” will be less so.</p>
+
+<h4 id="tf-idf">TF-IDF</h4>
+
+<p>Putting these two ideas (Term Frequency and Inverse Document Frequency) together gives us a metric called <em>TF-IDF</em>. More details about this in the project handout; for now, just think about it as a sort of multiplier we’ll apply to the term frequency value that makes very common words less important. Here’s what Happy Birthday’s frequency table looks like with an IDF factor applied:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s">'Happy'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="s">'Birthday'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+<span class="s">'to'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="s">'Dear'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="s">'Bruno'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+<span class="s">'You'</span><span class="p">:</span> <span class="mf">1.5</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Hardly any songs use “Birthday” or “Bruno”, but many use “You” and an overwhelming number use “to”.</p>
+
+<h3 id="discussion-lets-think-about-classifiers">Discussion: Let’s think about classifiers</h3>
+
+<p>We saw one possible issue above: errors in classification can cause real consequences. But, it might be that an error about song genre is less dangerous than an error about animal species. There’s still the possibility of errors, though. Since machine learning can be so dependent on training data, let’s think a bit about ways that a machine-learning algorithm might be led astray, or might lead us astray.</p>
+
+<p>This is a really broad question, but it needs to be!</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>A short list of a few factors might include:</p>
+
+  <ul>
+    <li>issues with the features chosen (to discover a relationship between tooth shape and animal species, you need to realize that tooth shape is a thing you should be considering);</li>
+    <li>sampling issues with the data itself (too small a training set, bias in the population sampled, external causes for patterns discovered…)</li>
+    <li>cognitive biases in setting up and analyzing the problem (confirmation, availability, and many others; feedback loops can even form where statistical or ML results reinforce a bias that led to the results).</li>
+  </ul>
+
+</details>
+<p><br /></p>
+
+<p>Whenever you’re learning a new technology, it’s useful to think a bit about potential threats, biases, and other factors that might influence how you use it. You’ll be doing some reading on this concurrently with the project, but I’m glad we got to <em>start</em> the discussion here in class.</p>
+
+<p>I want to tell you a story that might make one of the points above more real to you. During World War 2, the U.S. military was very interested in ways they could reduce the chance of aircraft loss. You can’t afford to armor an airplane as much as you might like to: the more it weighs, the harder it is to get off the ground, the less agile it is, and the more fuel it needs. The U.S. Army and Navy thought that they might be able to look at their planes after a battle and add armor to the places where they saw bullet holes.</p>
+
+<p><a href="https://en.wikipedia.org/wiki/Abraham_Wald">Abraham Wald</a> was a mathematician who was brought in to work on the project.
+Wald was originally from Austria, but was unable to get a University position because of anti-Semitic discrimination at the time. When Germany annexed Austria, he fled and came to the United States.</p>
+
+<p>Wald noticed a problem with the military’s reasoning: something called <em>survivorship bias</em>, which is a kind of sampling bias. Any airplane they could examine for damage after a battle had, by definition, avoided the situation that they wanted to prevent. The others had already crashed, or exploded, or met some other fate that would prevent a careful examination.</p>
+
+<p>Wald found that, rather than armoring the places where surviving planes showed damage, other places (like the fuel supply) needed to be given much more consideration.  It’s estimated that Wald’s statistical work saved hundreds of lives.</p>
+
+<h2 id="project-1">Project 1</h2>
+
+<p>We talked a bit about Project 1; see the project handout for a more detailed presentation. The summary is that we’re asking you to build a classifier for song genre based on a corpus of training data we’ll provide.</p>
+
+<p>For the classifier, you’ll use TF-IDF, and just return the genre of the <em>nearest neighbor</em> in the training data. There are many ways that you might define “nearest”; we’ve given you code for a metric called cosine similarity and suggest you use that. Our focus here isn’t on a deep examination of different similarity metrics, but on the engineering that frames using any metric.</p>
+
+<h2 id="supplement-thinking-more-about-memory">Supplement: Thinking More About Memory</h2>
+
+<p>I wanted to reinforce some of our conversations about memory. Let’s revisit what happens in memory when you create container objects like lists, sets, and dictionaries.</p>
+
+<p>Here’s an example snapshot of part of the state of a Python program. We’ve loaded a bunch of song lyrics into memory, and in this case we’ve chosen to store them all in a dictionary (<code class="language-plaintext highlighter-rouge">songs</code>) indexed by the name of each song.</p>
+
+<p>This snapshot was taken right after executing the line:</p>
+
+<pre><code class="language-python=">happy_words = songs['Birthday']
+</code></pre>
+
+<p>Notice what’s happened. The program knows the name <code class="language-plaintext highlighter-rouge">happy_words</code> now, and the name <code class="language-plaintext highlighter-rouge">happy_words</code> refers to a list in memory that’s storing the lyrics to “Happy Birthday”. In fact, it’s the same list that the dictionary was (and still is) storing as the value for the <code class="language-plaintext highlighter-rouge">'Birthday'</code> key.</p>
+
+<p><img src="/Lectures/images/lecture07_memory.png" alt="" /></p>
+
+<p>Sometimes, this is exactly the situation we want. But sometimes it isn’t. What could go wrong here? 
+(Note that this issue, in another form, came up for some of you on the homework.)</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>Both <code class="language-plaintext highlighter-rouge">happy_words</code> and <code class="language-plaintext highlighter-rouge">songs['Birthday']</code> point to the same list in memory. When we ran <code class="language-plaintext highlighter-rouge">happy_words = songs['Birthday']</code>, we didn’t copy the <em>data</em>, we copied a reference to the list.</p>
+
+  <p>This sort of thing is often normal, but can lead to errors when you modify a list and don’t expect that modification to be reflected elsewhere. If you want to be absolutely safe, you can create what’s called a \defensive copy:</p>
+
+  <pre><code class="language-python=">happy_words = list(songs['Birthday'])
+</code></pre>
+
+  <p>which creates an entirely new list with the same data in it.</p>
+
+  <p>If you’re worried about this kind of thing happening, you can test it using the <code class="language-plaintext highlighter-rouge">id</code> function:</p>
+
+  <pre><code class="language-python=">print(id(songs['Birthday']))
+print(id(happy_words))
+</code></pre>
+
+  <p>When given an object, the <code class="language-plaintext highlighter-rouge">id</code> function returns an identifier for that object. The identifier is guaranteed to be unique and immutable for the duration of the object’s life. (Of course, this means that two objects might be given the same identifier, so long as they can never exist at the same time.)</p>
+
+</details>
+<p><br /></p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

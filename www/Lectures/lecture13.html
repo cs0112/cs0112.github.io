@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Recursive Functions on Trees | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Recursive Functions on Trees" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture13.html" />
+<meta property="og:url" content="/Lectures/lecture13.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-04T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Recursive Functions on Trees" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-04T00:00:00+00:00","datePublished":"2024-10-04T00:00:00+00:00","description":"CSCI 0112","headline":"Recursive Functions on Trees","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture13.html"},"url":"/Lectures/lecture13.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <p><strong>These notes do not exactly match the lecture capture, because we merged some OOP and recursive functions content.</strong></p>
+
+<h1 id="recursive-functions-on-trees">Recursive Functions on Trees</h1>
+
+<p><a href="/Lectures/live/lecture13.py">Livecode</a></p>
+
+<p><a href="/Lectures/live/test_lecture13.py">Tests</a></p>
+
+<h2 id="logistics">Logistics</h2>
+
+<!-- ### Time Investment
+
+I try not to talk about specific amounts of time that I expect you to spend on assignments. If I say "don't go over X hours", often it sounds like I'm saying that I _expect_ you to spend X hours. But that's not the case. So, if you've worked more than (say) 30 hours on this project, stop immediately and get in touch with me directly. Extreme times like that mean something is wrong, and it's probably something that (a) isn't your fault and (b) we can clear up together.  -->
+
+<!-- ### Division By Zero
+
+Some of you are wondering what to do if a word in a song _doesn't_ appear in the corpus. Running TF-IDF the same way as always would produce a division-by-zero error. I left some comments on a recent Ed post, and endorsed it. Have a look.  -->
+
+<h2 id="writing-recursive-functions">Writing Recursive Functions</h2>
+
+<p>Last time we talked about the <code class="language-plaintext highlighter-rouge">HTMLTree</code> type we’ll be using to represent trees. Today, we’ll discuss how to write functions that process tree-structured data. Concretely, we’ll use 2 examples that do computation on HTML documents.</p>
+
+<p>A key insight is that we can’t really use nested <code class="language-plaintext highlighter-rouge">for</code> loops to do this computation. Nesting 2, 3, 4, … layers deep will only let us explore 2, 3, 4, … levels of the HTML document. So we’ll need to use a different technique, one that fits (and exploits!) the recursive tree structure of the <code class="language-plaintext highlighter-rouge">HTMLTree</code>s. The data are recursive, so recursion is a natural thing to try first.</p>
+
+<h2 id="example-1">Example 1</h2>
+
+<p><b>Challenge</b>: given an <code class="language-plaintext highlighter-rouge">HTMLTree</code> document and a tag as input, return the number of times that tag appears in the document.</p>
+
+<p>How would you approach this problem?</p>
+
+<p>Let’s start by writing some examples in a test file! It’s a good idea to mix the simplest possible examples with some more complex ones. Here are some I wrote to prepare for this lecture:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_count_tag</span><span class="p">():</span>
+  <span class="k">assert</span> <span class="n">count_tag</span><span class="p">(</span><span class="n">HTMLTree</span><span class="p">(</span><span class="s">'html'</span><span class="p">,</span> <span class="p">[]),</span> <span class="s">'p'</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+  <span class="k">assert</span> <span class="n">count_tag</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;/html&gt;'</span><span class="p">),</span> <span class="s">'p'</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> 
+  <span class="k">assert</span> <span class="n">count_tag</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;/html&gt;'</span><span class="p">),</span> <span class="s">'html'</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+  <span class="k">assert</span> <span class="n">count_tag</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;p&gt;hello&lt;/p&gt;&lt;strong&gt;&lt;p&gt;world&lt;/p&gt;&lt;/strong&gt;&lt;/html&gt;'</span><span class="p">),</span> <span class="s">'p'</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>If we didn’t have that final test, our suite of tests would pass an implementation that just looked at the top-most tag!</p>
+
+<p>Now let’s get started implementing. The trick will be <em>delegation</em>: we’ll write a function that handles just the top tag of a tree, and delegates work on its children to other invocations of the same function. Here’s a good way to get started:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">count_tag</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">,</span> <span class="n">goal</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>    
+    <span class="k">if</span> <span class="n">doc</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="n">goal</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>This isn’t done, but it’s not wrong: we really do want to check the top-level tag and see whether it’s what we’re looking for. And, on super simple examples, this function would work just fine! The trick will be getting it to <em>delegate</em>. Let’s look at an example from our test suite: <code class="language-plaintext highlighter-rouge">'&lt;html&gt;&lt;p&gt;hello&lt;/p&gt;&lt;strong&gt;&lt;p&gt;world&lt;/p&gt;&lt;/strong&gt;&lt;/html&gt;'</code>. I’ll omit the low-level memory details, and just draw the <em>structure</em> of the tree:</p>
+
+<p><img src="https://i.imgur.com/a7jJEea.png" alt="" /></p>
+
+<p>Note that our helper code turns plain text into <code class="language-plaintext highlighter-rouge">HTMLTree</code> objects with their <code class="language-plaintext highlighter-rouge">tag</code> field set to <code class="language-plaintext highlighter-rouge">'text'</code>, which is why the bottom nodes look the way they do.</p>
+
+<p>If we call the above function on this tree, it will only detect the <code class="language-plaintext highlighter-rouge">html</code> tag, but not the others. So we need to do a bit more work: visit the two child subtrees, and add the results to our total.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">count_tag</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">,</span> <span class="n">goal</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="s">"""return the number of times a particular tag appears in an HTML tree document"""</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">doc</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">goal</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">children</span><span class="p">:</span> 
+        <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="n">count_tag</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">goal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">count</span>    
+</code></pre></div></div>
+
+<p>As you think about how this function executes, remember that each invocation of <code class="language-plaintext highlighter-rouge">count_tag</code> is separate: the <code class="language-plaintext highlighter-rouge">count</code> variable is different for each, as is the input. Because we make the input smaller every time we invoke <code class="language-plaintext highlighter-rouge">count_tag</code>, this technique will eventually return an answer.</p>
+
+<h4 id="with-comprehensions-instead">…with comprehensions instead:</h4>
+
+<p>With more Python experience, you might start using comprehensions here, instead of a <code class="language-plaintext highlighter-rouge">for</code> loop:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">count_tag</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">,</span> <span class="n">goal</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="s">"""return the number of times a particular tag appears in an HTML tree document"""</span>
+    <span class="n">subtotal</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">count_tag</span><span class="p">(</span><span class="n">subdoc</span><span class="p">,</span> <span class="n">goal</span><span class="p">)</span> <span class="k">for</span> <span class="n">subdoc</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">children</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">doc</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="n">goal</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">subtotal</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">subtotal</span>
+</code></pre></div></div>
+
+<h2 id="example-2">Example 2</h2>
+
+<p><b>Challenge</b>: given an <code class="language-plaintext highlighter-rouge">HTMLTree</code> document and a tag as input, return a list containing all of the plain <code class="language-plaintext highlighter-rouge">text</code> elements of the document.</p>
+
+<p>How would you approach this problem?</p>
+
+<p>As before, let’s start by writing some examples to help us get a feel for the computation we’ll need to do. Here are some that I wrote:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_all_text</span><span class="p">():</span>
+  <span class="k">assert</span> <span class="n">all_text</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;/html&gt;'</span><span class="p">))</span> <span class="o">==</span> <span class="p">[]</span>  
+  <span class="k">assert</span> <span class="n">all_text</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'hello'</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s">'hello'</span><span class="p">]</span>  
+  <span class="k">assert</span> <span class="n">all_text</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;hello&lt;/html&gt;'</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s">'hello'</span><span class="p">]</span>    
+  <span class="k">assert</span> <span class="n">all_text</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;p&gt;hello&lt;/p&gt;&lt;strong&gt;&lt;p&gt;world&lt;/p&gt;&lt;/strong&gt;&lt;/html&gt;'</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s">'hello'</span><span class="p">,</span> <span class="s">'world'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>It looks like we are going to need to identify the nodes tagged with <code class="language-plaintext highlighter-rouge">text</code>, and somehow accumulate their contents. Like before, we’ll start with a version of the function that only works locally, at the top level:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">all_text</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">doc</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">"text"</span><span class="p">:</span>
+        <span class="n">text</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>    
+    <span class="k">return</span> <span class="n">text</span>
+</code></pre></div></div>
+
+<p>And, again, this works fine on single-element documents! But (also like before) we need to do a bit more work to process the child sub-trees of <code class="language-plaintext highlighter-rouge">doc</code>. We’ll delegate the problem to other invocations of the <code class="language-plaintext highlighter-rouge">all_text</code> function.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">all_text</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">Tag</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">doc</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">"text"</span><span class="p">:</span>
+        <span class="n">text</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+        <span class="n">text</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">all_text</span><span class="p">(</span><span class="n">child</span><span class="p">))</span> <span class="c1"># uh oh! 
+</span>    <span class="k">return</span> <span class="n">text</span>
+</code></pre></div></div>
+
+<p>Note that I’ve marked a line in the above with a comment that says “uh oh!” There’s a mistake being made here: what is it?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>Calling <code class="language-plaintext highlighter-rouge">text.append</code> on a value will add whatever that value is <em>as a new element in the list</em>. That is, we’ll get the list <code class="language-plaintext highlighter-rouge">all_text(child)</code> added as a single element of the original list, rather than having all the new text elements individually appended to the original list.</p>
+
+  <p>Try it out! This sort of error is common when writing this sort of problem, so it will be useful to recognize the behavior.</p>
+
+  <p>Here’s a fixed version:</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">all_text</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">Tag</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">doc</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">"text"</span><span class="p">:</span>
+        <span class="n">text</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="n">all_text</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+</code></pre></div>  </div>
+
+  <p>We could also have looped over <code class="language-plaintext highlighter-rouge">all_text(child)</code> and added each element individually.</p>
+</details>
+
+<h4 id="with-comprehensions-instead-1">…with comprehensions instead:</h4>
+
+<p>If you like comprehensions, here’s the (fixed) function written in that style:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">all_text</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">doc</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">"text"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">doc</span><span class="p">.</span><span class="n">text</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">text</span> <span class="k">for</span> <span class="n">subdoc</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">children</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">all_text</span><span class="p">(</span><span class="n">subdoc</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<p>Notice that here we manage to get by without creating a new list! Why is that?</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

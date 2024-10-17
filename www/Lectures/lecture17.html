@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Testing Classes, Inheritance | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Testing Classes, Inheritance" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture17.html" />
+<meta property="og:url" content="/Lectures/lecture17.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-11T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Testing Classes, Inheritance" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-11T00:00:00+00:00","datePublished":"2024-10-11T00:00:00+00:00","description":"CSCI 0112","headline":"Testing Classes, Inheritance","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture17.html"},"url":"/Lectures/lecture17.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="testing-classes-inheritance">Testing Classes, Inheritance</h1>
+
+<p><a href="/Lectures/live/lecture17_2024.py">Livecode link</a></p>
+
+<p>Some quick notes:</p>
+<ul>
+  <li>A “field” of a class (also called an attribute) is a variable in the scope of the class. For instance, the <code class="language-plaintext highlighter-rouge">author</code> and <code class="language-plaintext highlighter-rouge">title</code> variables were fields of <code class="language-plaintext highlighter-rouge">Book</code> last time.</li>
+  <li>Fields can be either class-specific or instance-specific. That is, you might have one variable that is <em>shared</em> across all instances of a class, and another that is different for every instance (like the <code class="language-plaintext highlighter-rouge">title</code> of a book).</li>
+</ul>
+
+<p>To tell whether a field is class-specific or instance-specific, just see if it’s defined in the <code class="language-plaintext highlighter-rouge">__init__</code> method (instance-specific) or outside the <code class="language-plaintext highlighter-rouge">__init__</code> methods (class-specific).</p>
+
+<h2 id="another-example-of-polymorphism-str-and-repr">Another Example of Polymorphism: <em>str</em> and <em>repr</em></h2>
+
+<p>Python uses polymorphism ubiquitously. For example, recall that <code class="language-plaintext highlighter-rouge">dataclass</code> instances printed out in a nice way. How can we get similar behavior with our own classes? We’ve seen <code class="language-plaintext highlighter-rouge">__str__</code> already, but it turns out there’s some nuance here: there’s also a <code class="language-plaintext highlighter-rouge">__repr__</code> method.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Book</span><span class="p">:</span>
+
+    <span class="c1"># "human readable" string representation
+</span>    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">+</span> <span class="s">" by "</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">author</span>
+    <span class="c1"># "unambiguous" string representation
+</span>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">'Book("'</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">+</span> <span class="s">'", "'</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">author</span> <span class="o">+</span> <span class="s">'")'</span>
+</code></pre></div></div>
+
+<p>These two methods sound similar, but they get called in different places internally by Python. By convention, <code class="language-plaintext highlighter-rouge">__str__</code> is for end-user focused output, and you want it to be human readable. In contrast, <code class="language-plaintext highlighter-rouge">__repr__</code> should be precise and unambiguous (so I wrote it to produce a string that is, itself, Python code).</p>
+
+<p>If I run <code class="language-plaintext highlighter-rouge">print(library[0])</code>, it prints the book’s title, like: <code class="language-plaintext highlighter-rouge">A Book Title by A Book Author</code>. But if I’m in the Python console and I just type <code class="language-plaintext highlighter-rouge">library[0]</code>, it will produce 
+<code class="language-plaintext highlighter-rouge">Book("A Book Title", "A Book Author")</code>.</p>
+
+<p>Note that this only affects the way Python <em>displays</em> the object; it doesn’t change anything about the object’s internal representation. It’s generally good practice to define at least the <code class="language-plaintext highlighter-rouge">__repr__</code> method in all of your classes. It makes debugging a lot easier when you get an understandable string instead of an object type and ID!</p>
+
+<p>Methods that use the double-underscore notation are usually understood to be special, and interact with some internal Python functionality. By convention we don’t call them directly, but via <em>syntactic sugar</em> they provide. We don’t invoke <code class="language-plaintext highlighter-rouge">__init__</code> to make a new object, we use the <code class="language-plaintext highlighter-rouge">ClassName(...)</code> syntax instead. Likewise, we’ll use (e.g.) <code class="language-plaintext highlighter-rouge">repr(an_object)</code> and <code class="language-plaintext highlighter-rouge">str(an_object)</code>.</p>
+
+<p><em>If you don’t define a <code class="language-plaintext highlighter-rouge">__str__</code>, Python will fall back to using <code class="language-plaintext highlighter-rouge">__repr__</code> instead.</em> And some kinds of collections, like lists, may invoke <em>either</em> of these if you call <code class="language-plaintext highlighter-rouge">str</code> or <code class="language-plaintext highlighter-rouge">repr</code> on them.</p>
+
+<p>Python classes have quite a few of these standard method names. Another is <code class="language-plaintext highlighter-rouge">__eq__</code>, which lets you define how an object should decide whether it’s equal to another. Let’s talk about that, but from the perspective of testing.</p>
+
+<h2 id="testing-classes">Testing Classes</h2>
+
+<p>How should we test our library program? We should write tests for each of the methods. Let’s test the <code class="language-plaintext highlighter-rouge">Book</code> class:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">test_init</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s">"The Nickel Boys"</span><span class="p">,</span> <span class="s">"Colson Whitehead"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">title</span> <span class="o">==</span> <span class="s">"The Nickel Boys"</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">author</span> <span class="o">==</span> <span class="s">"Colson Whitehead"</span>
+
+<span class="k">def</span> <span class="nf">test_matches</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s">"The Nickel Boys"</span><span class="p">,</span> <span class="s">"Colson Whitehead"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Nickel"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Parasite"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Colson"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Notice the pattern here: we’re creating objects in our test functions in order to test the objects’ methods.</p>
+
+<h3 id="equality">Equality</h3>
+
+<p>It’s worth noting, <em>again</em>, that equality is complicated. It’s also used in many different places. For example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">library</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Book</span><span class="p">(</span><span class="s">"The Calculating Stars"</span><span class="p">,</span> <span class="s">"Mary Robinette Kowal"</span><span class="p">),</span>    
+    <span class="n">TVSeries</span><span class="p">(</span><span class="s">"Guardian"</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="p">[</span><span class="s">"Bai Yu"</span><span class="p">,</span> <span class="s">"Zhu Yilong"</span><span class="p">])</span>
+<span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Book</span><span class="p">(</span><span class="s">"The Calculating Stars"</span><span class="p">,</span> <span class="s">"Mary Robinette Kowal"</span><span class="p">)</span> <span class="ow">in</span> <span class="n">library</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>What does this produce? We might expect <code class="language-plaintext highlighter-rouge">True</code> (because the two books are identical) or <code class="language-plaintext highlighter-rouge">False</code> (because the two books are different objects). When we voted on this question earlier in the semester for <em>lists</em>, we discovered that two different list objects that contain the same entries in the same order are equal (<code class="language-plaintext highlighter-rouge">==</code>) in Python. So why is this producing something different from what we’d get with lists?</p>
+
+<p>The problem is that Python has no idea which fields are important to us when deciding equality. Dataclasses automatically define equality to use <em>all</em> fields, but here we need to tell Python exactly what it means for two books to be the same. To tell Python how to interpret <em>equality</em> for <code class="language-plaintext highlighter-rouge">Book</code> objects, we’ll define the <code class="language-plaintext highlighter-rouge">__eq__</code> method:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">author</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">author</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">title</span>
+</code></pre></div></div>
+
+<p>Now the above print statement produces <code class="language-plaintext highlighter-rouge">True</code> like we’d expect.</p>
+
+<p><strong>Important note:</strong> There’s more to this story that we’ll get to later in the semester. For now, defining equality like this should be OK. Pay special attention to equality if you use your objects as keys in data structures that depend on ideas related to equality. If you use objects as keys in something like a dictionary, which uses the hash table idea, you’ll also need to define the <code class="language-plaintext highlighter-rouge">__hash__</code> method, which says how to generate a hash for the object. When we built hash tables in class, we just treated keys as integers and took the remainder of the key after dividing it by the table size. But for arbitrary objects, we need to describe how to turn their field values into a single number.</p>
+
+<h3 id="adding-checkout">Adding checkout</h3>
+
+<p>Let’s say we want to add “checkout” behavior to our library: we want to be able to record that certain items have been checked out or returned, and take this into account when searching. Let’s add this behavior to our tests first:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_init</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s">"The Nickel Boys"</span><span class="p">,</span> <span class="s">"Colson Whitehead"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">title</span> <span class="o">==</span> <span class="s">"The Nickel Boys"</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">author</span> <span class="o">==</span> <span class="s">"Colson Whitehead"</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">b</span><span class="p">.</span><span class="n">checked_out</span>
+
+<span class="k">def</span> <span class="nf">test_checkout</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s">"The Nickel Boys"</span><span class="p">,</span> <span class="s">"Colson Whitehead"</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">library_checkout</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">checked_out</span>
+
+<span class="k">def</span> <span class="nf">test_return</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s">"The Nickel Boys"</span><span class="p">,</span> <span class="s">"Colson Whitehead"</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">library_checkout</span><span class="p">()</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">library_return</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">b</span><span class="p">.</span><span class="n">checked_out</span>
+
+<span class="k">def</span> <span class="nf">test_matches</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s">"The Nickel Boys"</span><span class="p">,</span> <span class="s">"Colson Whitehead"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Nickel"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Parasite"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Colson"</span><span class="p">)</span>
+    
+    <span class="n">b</span><span class="p">.</span><span class="n">library_checkout</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Nickel"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Parasite"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">b</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="s">"Colson"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Then we can add the behavior to our Book class:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Book</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">author</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">author</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">library_checkout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">library_return</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span> <span class="o">=</span> <span class="bp">False</span>
+
+   <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+       <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="ow">or</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">author</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Note that this is a design choice: we could put the check in the class, or we could put the check in the <code class="language-plaintext highlighter-rouge">search</code> function. I’d argue that putting the method here, in the class, is actually <em>less</em> preferable: what if a librarian needs to search the library for books, so that they can track down what’s missing? Better to allow the library functions to make that distinction, and not force it in the <code class="language-plaintext highlighter-rouge">matches</code> method.</p>
+
+<p>So, if I were writing this again, I’d design it differently.</p>
+
+<h2 id="inheritance">Inheritance</h2>
+
+<p>Right now, we’re considering each class to be totally separate, with no shared code or data. For instance, even though <code class="language-plaintext highlighter-rouge">Book</code>s and <code class="language-plaintext highlighter-rouge">Movie</code>s both implement a <code class="language-plaintext highlighter-rouge">matches</code> method, the two methods have completely different implementations. Inheritance gives us a way to share code between classes. Classes can inherit from other classes, like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c1"># fill in "parent"
+</span>
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>  <span class="c1"># note the parameter (A)
+</span>    <span class="k">pass</span> <span class="c1"># fill in "child"
+</span></code></pre></div></div>
+
+<p>When there’s an inheritance relationship like this between two classes, we say that <code class="language-plaintext highlighter-rouge">A</code> is the superclass of <code class="language-plaintext highlighter-rouge">B</code> and <code class="language-plaintext highlighter-rouge">B</code> is a subclass of <code class="language-plaintext highlighter-rouge">A</code>.</p>
+
+<p>Let’s see an example of inheritance in action. Suppose that our library wants to track which items have been checked out, and only return items in a search if they are actually available. First, we’ll implement a <code class="language-plaintext highlighter-rouge">LibraryItem</code> class, which we’ll use as the superclass for both books and movies:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LibraryItem</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">library_checkout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">def</span> <span class="nf">library_return</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span> <span class="o">=</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">LibraryItem</code> class only handles checking items out and back in; it doesn’t know anything about what the items actually are.</p>
+
+<p>In order to use our new parent class, we’ll make some changes to the <code class="language-plaintext highlighter-rouge">Book</code> and <code class="language-plaintext highlighter-rouge">Movie</code> classes:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">LibraryItem</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">author</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">author</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Movie</span><span class="p">(</span><span class="n">LibraryItem</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">director</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">actors</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">director</span> <span class="o">=</span> <span class="n">director</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">actors</span> <span class="o">=</span> <span class="n">actors</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Note well: this is one of the few places where the convention above is conventionally violated: we call <code class="language-plaintext highlighter-rouge">__init__</code> directly here, from within a subclass’s <code class="language-plaintext highlighter-rouge">__init__</code>. This is because we’re in the object already; if we called the constructor for the class we’re inheriting, Python would create a <em>different</em> object. We want to finish initializing this one.</p>
+
+<p>Both <code class="language-plaintext highlighter-rouge">Book</code> and <code class="language-plaintext highlighter-rouge">Movie</code> objects will now <em>automatically</em> have a <code class="language-plaintext highlighter-rouge">checked_out</code> field, as well as the checkout method. We can use the field in each class’s matches method:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">LibraryItem</span><span class="p">):</span>
+      <span class="c1"># other methods elided...
+</span>      <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+          <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="ow">or</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">author</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Movie</span><span class="p">(</span><span class="n">LibraryItem</span><span class="p">):</span>
+      <span class="c1"># other methods elided...
+</span>      <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+          <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span><span class="p">)</span> <span class="ow">and</span>
+             <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="ow">or</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">director</span> <span class="ow">or</span> 
+             <span class="nb">any</span><span class="p">([</span><span class="n">query</span> <span class="ow">in</span> <span class="n">actor</span> <span class="k">for</span> <span class="n">actor</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">actors</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>…although, again, if I were re-writing these, I’d probably put the check in the <code class="language-plaintext highlighter-rouge">search</code> method. Better yet, I’d probably create a <code class="language-plaintext highlighter-rouge">Library</code> class to handle the idea of checking books in and out, rather than making the actual item keep track itself.</p>
+
+<h3 id="inheritance-and-exceptions">Inheritance and Exceptions</h3>
+
+<p>This is how you define your own kinds of exceptions. You just say something like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LibraryError</span><span class="p">(</span><span class="nb">Exception</span><span class="p">):</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Since <code class="language-plaintext highlighter-rouge">LibraryError</code> extends <code class="language-plaintext highlighter-rouge">Exception</code>, it’s possible to <code class="language-plaintext highlighter-rouge">raise</code> one in your code.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

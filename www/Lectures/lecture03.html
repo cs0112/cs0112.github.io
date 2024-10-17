@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Most-Common Words, Data Structures, and Setup | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Most-Common Words, Data Structures, and Setup" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture03.html" />
+<meta property="og:url" content="/Lectures/lecture03.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-09T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Most-Common Words, Data Structures, and Setup" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-09T00:00:00+00:00","datePublished":"2024-09-09T00:00:00+00:00","description":"CSCI 0112","headline":"Most-Common Words, Data Structures, and Setup","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture03.html"},"url":"/Lectures/lecture03.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <p>Today we’ll finish the counting example from last time, and then expand on it. Then, we’ll talk about the merits of different data structures in Python. I’ve also added some optional reading (which may be helpful for supplementing the setup lab this week) to the end of these notes.</p>
+
+<h1 id="most-common-words-data-structures-and-setup">Most-Common Words, Data Structures, and Setup</h1>
+
+<p>(You can find the link to the livecode <a href="/Lectures/live/2022/lecture03.py">here</a> and <a href="/Lectures/live/2022/lecture03a.py">here</a>. The example test file, which we didn’t get to in class is <a href="/Lectures/live/2022/test_lecture03.py">here</a>.)</p>
+
+<h2 id="logistics">Logistics</h2>
+
+<ul>
+  <li>Homework is due on the 10th!</li>
+  <li>Remember tht we have hours today (Sep 9) at 3:30pm.</li>
+</ul>
+
+<p>The first drill is being released after class today. It contains some questions about how to use the data structures from today’s lecture. <strong>This first drill will be due Wednesday at noon</strong>. Drills are due at noon because I will sometimes use the answers from drills to spot issues I might need to call out in class, but I also don’t want to give you a very short duration to reply to them.</p>
+
+<h2 id="most-common-words">Most Common Words</h2>
+
+<!-- #PARSONS --->
+
+<p>Let’s try to figure out what <strong>the most common word</strong> in the text of <em>Frankenstein</em> is. I’d like to make this an exercise in assembling a function from small pieces. Here is a function header for what we’re trying to write:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">most_common</span><span class="p">(</span><span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="s">"""
+    Given a dictionary with integer values, returns the key with the highest value in the dictionary.
+    """</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>and here are a collection of lines of Python code, in no particular order, and without any indentation:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">most_common</span> <span class="o">=</span> <span class="s">''</span>
+<span class="k">if</span> <span class="n">counts</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">most_common_count</span><span class="p">:</span>
+<span class="n">most_common</span> <span class="o">=</span> <span class="n">word</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>   
+<span class="n">most_common_count</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+<span class="k">return</span> <span class="n">most_common</span>
+<span class="n">most_common_count</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>Your job is to assemble these lines into a working implementation of <code class="language-plaintext highlighter-rouge">most_common</code>. <em>This time</em> you can trust that there are no unnecessary lines—I’ve given you exactly what you need to build the function. See if you can arrange them into the right positions.</p>
+
+<p>Here’s the result I got:</p>
+
+<details>
+  <summary>Think, then click!</summary>
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">most_common</span><span class="p">(</span><span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="s">"""
+    Given a dictionary with integer values, returns the key with the highest value in the dictionary.
+    """</span>
+    <span class="n">most_common</span> <span class="o">=</span> <span class="s">''</span>
+    <span class="n">most_common_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>   
+        <span class="k">if</span> <span class="n">counts</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">most_common_count</span><span class="p">:</span>
+            <span class="n">most_common</span> <span class="o">=</span> <span class="n">word</span>
+            <span class="n">most_common_count</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">most_common</span>
+</code></pre></div>  </div>
+</details>
+
+<p>The most-common word isn’t very surprising, in retrospect. It’s quite often the most common word in an English document.</p>
+
+<h3 id="reflection-exercises">Reflection Exercises</h3>
+
+<p><strong>Exercise:</strong> If you’re thinking carefully, you might notice that when I say “the most common word”, I’m not really saying enough. Is there <em>always</em> exactly <em>one</em> most-common word in a document? No! So what is this function really returning, if not “<strong>the</strong> most common word”? How should we change the documentation for the function?</p>
+
+<p><strong>Exercise</strong>: The function sets the value of <code class="language-plaintext highlighter-rouge">most_common</code> to the empty string (<code class="language-plaintext highlighter-rouge">''</code>) at the beginning. What are some potential problems with this choice? (Hint: think about how you might be confused if you called this function and got <code class="language-plaintext highlighter-rouge">''</code> as the result.)</p>
+
+<h2 id="a-few-good-data-structures">A Few Good Data Structures</h2>
+
+<p>I’m going to demo the below in the Python console, but if you want you could put them all into a single Python file and run it.</p>
+
+<h3 id="lists">Lists</h3>
+
+<p>Lists are used to represent <i>sequences</i> of items in a particular order. We can build and add to lists like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">story</span> <span class="o">=</span> <span class="p">[</span><span class="s">"It"</span><span class="p">,</span> <span class="s">"was"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">,</span> <span class="s">"dark"</span><span class="p">,</span> <span class="s">"and"</span><span class="p">,</span> <span class="s">"stormy"</span><span class="p">]</span>
+<span class="n">story</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"night"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We can access and modify particular elements of the list by <i>index</i>. The first element of the list is at index <code class="language-plaintext highlighter-rouge">0</code>, so if we want to change the words above from past to present tense, we would use index <code class="language-plaintext highlighter-rouge">1</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="s">"was"</span>
+<span class="n">story</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s">"is"</span>
+<span class="k">print</span><span class="p">(</span><span class="n">story</span><span class="p">)</span>
+<span class="p">[</span><span class="s">"It"</span><span class="p">,</span> <span class="s">"is"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">,</span> <span class="s">"dark"</span><span class="p">,</span> <span class="s">"and"</span><span class="p">,</span> <span class="s">"stormy"</span><span class="p">,</span> <span class="s">"night"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>We can even add lists together (sometimes you’ll hear people calling this “concatenation”):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">([</span><span class="s">"NARRATOR:"</span><span class="p">]</span> <span class="o">+</span> <span class="n">story</span><span class="p">)</span>
+<span class="p">[</span><span class="s">"NARRATOR:"</span><span class="p">,</span> <span class="s">"It"</span><span class="p">,</span> <span class="s">"is"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">,</span> <span class="s">"dark"</span><span class="p">,</span> <span class="s">"and"</span><span class="p">,</span> <span class="s">"stormy"</span><span class="p">,</span> <span class="s">"night"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>And we can loop over the elements of a list:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">story</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">upper</span><span class="p">())</span>
+<span class="n">IT</span>
+<span class="n">IS</span>
+<span class="n">A</span>
+<span class="n">DARK</span>
+<span class="n">AND</span>
+<span class="n">STORMY</span>
+<span class="n">NIGHT</span>
+</code></pre></div></div>
+
+<p>Notice that some of these operations <i>modify</i> the list, and others <i>return a new list</i>. This is an important distinction, and we’ll talk more about it soon.</p>
+
+<h3 id="dictionaries">Dictionaries</h3>
+
+<p>Dictionaries (often called “hashtables” or “maps” in other contexts) are used to represent mappings between keys and values.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">status</span> <span class="o">=</span> <span class="p">{</span><span class="s">"brightness"</span><span class="p">:</span> <span class="s">"dark"</span><span class="p">,</span> <span class="s">"weather"</span><span class="p">:</span> <span class="s">"stormy"</span><span class="p">}</span>
+<span class="n">status</span><span class="p">[</span><span class="s">"time"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"night"</span>
+</code></pre></div></div>
+
+<p>We access elements by key rather than (as in lists) by index:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">status</span><span class="p">[</span><span class="s">"weather"</span><span class="p">]</span>
+<span class="s">"stormy"</span>
+<span class="n">status</span><span class="p">[</span><span class="s">"weather"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"pleasant"</span>
+<span class="n">status</span>
+<span class="p">{</span><span class="s">"brightness"</span><span class="p">:</span> <span class="s">"dark"</span><span class="p">,</span> <span class="s">"weather"</span><span class="p">:</span> <span class="s">"pleasant"</span><span class="p">,</span> <span class="s">"time"</span><span class="p">:</span> <span class="s">"night"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can check whether the dictionary contains a key:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"weather"</span> <span class="ow">in</span> <span class="n">status</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+
+<p>We can loop over the keys:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">status</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">status</span><span class="p">[</span><span class="n">attribute</span><span class="p">].</span><span class="n">upper</span><span class="p">())</span>
+<span class="s">"DARK"</span>
+<span class="s">"PLEASANT"</span>
+<span class="s">"NIGHT"</span>
+</code></pre></div></div>
+
+<h4 id="a-common-issue">A common issue</h4>
+
+<p>It’s very common to get the following error when you’re working with dictionaries in Python:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TypeError: unhashable type: 'list'
+</code></pre></div></div>
+
+<p>You might see something else there besides <code class="language-plaintext highlighter-rouge">list</code>.</p>
+
+<p>What’s going on? The problem is that dictionary keys can only be specific types of data. Lists cannot be keys in a dictionary. We’ll learn why later; for now, just know what this error means: that the type you want to use as a key can’t be used that way.</p>
+
+<h3 id="sets">Sets</h3>
+
+<p>Sets store <em>unordered</em> collections of elements:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">night</span> <span class="o">=</span> <span class="p">{</span><span class="s">"dark"</span><span class="p">,</span> <span class="s">"stormy"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can add elements, but can never get duplicate elements in the set:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">night</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">"frightening"</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">night</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="n">night</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">"stormy"</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">night</span><span class="p">)</span>
+<span class="mi">3</span>
+</code></pre></div></div>
+
+<p>We can test whether elements are present:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"frightening"</span> <span class="ow">in</span> <span class="n">night</span>
+<span class="bp">True</span>
+<span class="s">"inauspicious"</span> <span class="ow">in</span> <span class="n">night</span>
+<span class="bp">False</span>
+</code></pre></div></div>
+
+<p>Like with lists and dictionaries, we can loop over the elements:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">quality</span> <span class="ow">in</span> <span class="n">night</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">quality</span><span class="p">.</span><span class="n">upper</span><span class="p">())</span>
+<span class="n">FRIGHTENING</span>
+<span class="n">DARK</span>
+<span class="n">STORMY</span>
+</code></pre></div></div>
+
+<p>We can combine sets to get a <em>new</em> set, if we want, without modifying the original:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">night</span> <span class="o">|</span> <span class="p">{</span><span class="s">"inauspicious"</span><span class="p">}</span>
+<span class="p">{</span><span class="s">"dark"</span><span class="p">,</span> <span class="s">"stormy"</span><span class="p">,</span> <span class="s">"frightening"</span><span class="p">,</span> <span class="s">"inauspicious"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can convert a list to a set, and vice versa. But remember that once you convert to a set, duplicates are gone:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">monster</span> <span class="o">=</span> <span class="p">[</span><span class="s">"very"</span><span class="p">,</span> <span class="s">"very"</span><span class="p">,</span> <span class="s">"scary"</span><span class="p">]</span>
+<span class="nb">set</span><span class="p">(</span><span class="n">monster</span><span class="p">)</span>
+<span class="p">{</span><span class="s">"very"</span><span class="p">,</span> <span class="s">"scary"</span><span class="p">}</span>
+<span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">monster</span><span class="p">))</span>
+<span class="p">[</span><span class="s">"very"</span><span class="p">,</span> <span class="s">"scary"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Sets are very useful when we care about which elements are present, but not about their order.</p>
+
+<h4 id="optional-something-i-wonder-about-sets">Optional: something I wonder about sets</h4>
+
+<p>If I can loop over the elements of a set, but sets are unordered, what order will the elements be visited by the loop? (Put another way, should you <em>rely</em> on the order in which the elements will be printed, when the data structure offers no guarantees?)</p>
+
+<h2 id="reflecting">Reflecting</h2>
+
+<p>When should we use lists, dictionaries, and sets?</p>
+
+<p>Let’s say we’re looking at the text of Frankenstein again and want to answer a few questions. Which data structure could we use in order to compute each of the following?</p>
+
+<ul>
+  <li>the number of unique non-capitalized words in Frankenstein; and</li>
+  <li>all of the characters in Frankenstein, ordered by when they appear.</li>
+</ul>
+
+<details>
+  <summary>Think, then click!</summary>
+  <p>Some thoughts:</p>
+  <ul>
+    <li>the number of unique non-capitalized words in Frankenstein
+      <ul>
+        <li>List? This is more or less the format we’ve got to work with at the start. We can extract the data from the list, certainly.</li>
+        <li>Set? If we just wanted to find out what the unique words <em>were</em>, we could use a set (since we wouldn’t need to save duplicates). But we’re after counts, so a set isn’t going to give us what we need directly. However, we could use this set as an intermediate step on the way to producing the count.</li>
+        <li>Dictionary? It’s not clear what the keys would be, since we’re just after “the number of…”</li>
+      </ul>
+    </li>
+    <li>all of the characters in Frankenstein, ordered by when they appear
+      <ul>
+        <li>Set? We don’t need duplicate appearances, so this seems initially promising. Unfortunately, sets don’t have <em>order</em>.</li>
+        <li>Dictionary? We could have the keys be the order of appearance—but this is as bit roundabout compared to…</li>
+        <li>List? Probably the most natural choice. We could get the 17th character via <code class="language-plaintext highlighter-rouge">characters[17]</code>, and we aren’t <em>obligated</em> to have duplicates..</li>
+      </ul>
+    </li>
+  </ul>
+
+</details>
+
+<h2 id="optional-content-vscode-and-common-python-issues">Optional Content: VSCode and Common Python Issues</h2>
+
+<p><strong>These are meant to supplement this week’s lab.</strong></p>
+
+<h3 id="python-2-versus-python-3">Python 2 versus Python 3</h3>
+
+<p>There are 2 major versions of Python currently in use: version 2 and version 3. These versions are different enough that you need to be careful and run the right version: some systems have both installed! For example, this was the state of Tim’s laptop in 2023:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% python --version
+Python 2.7.16
+% python3 --version
+Python 3.7.3
+</code></pre></div></div>
+
+<p>Make sure you run the right version; <b>this class uses Python 3</b>.</p>
+
+<h3 id="testing-your-python-programs">Testing your Python Programs</h3>
+
+<p>We’ll be using <code class="language-plaintext highlighter-rouge">pytest</code> to help us organize tests this semester. I showed you how to write tests with <code class="language-plaintext highlighter-rouge">assert</code> statements. But <code class="language-plaintext highlighter-rouge">pytest</code> makes things a bit better. Suppose I wrote:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">example_input</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">"Why do I feel bitter when I should be feeling sweet?"</span>
+<span class="n">example_output</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">"Why"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"do"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"I"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">"bitter"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"when"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="s">"should"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"be"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"feeling"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"sweet?"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="n">example_input</span><span class="p">)</span> <span class="o">==</span> <span class="n">example_output</span>
+</code></pre></div></div>
+<p>When it fails (I’ve forgotten a word), we just get an <code class="language-plaintext highlighter-rouge">AssertionError</code> without further information. In contrast, if we write a <em>test function</em> like this, and then run <code class="language-plaintext highlighter-rouge">pytest</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_most_common</span><span class="p">():</span>
+    <span class="n">example_input</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">"Why do I feel bitter when I should be feeling sweet?"</span>
+    <span class="n">example_output</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">"Why"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"do"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"I"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">"bitter"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"when"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="s">"should"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"be"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"feeling"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"sweet?"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="n">example_input</span><span class="p">)</span> <span class="o">==</span> <span class="n">example_output</span>
+</code></pre></div></div>
+<p>We get more context with the failure, because <code class="language-plaintext highlighter-rouge">pytest</code> is designed to facilitate testing.</p>
+
+<h3 id="disabling-and-enabling-popups">Disabling and Enabling Popups</h3>
+
+<p>When I’m <em>programming</em>, I like to have popups enabled in VSCode. If I mouse over a function or something like that, it will pop up some documentation for the function. But this is a distraction when I’m presenting! So I’ve turned off that feature. If you want, you can control this in <code class="language-plaintext highlighter-rouge">Code -&gt; Preferences -&gt; Settings</code>. Search for <code class="language-plaintext highlighter-rouge">editor.hover</code> and uncheck the <code class="language-plaintext highlighter-rouge">Enabled</code> entry. If I want to show a popup, I can hit (on a Mac) <code class="language-plaintext highlighter-rouge">Cmd+K</code> and then <code class="language-plaintext highlighter-rouge">Cmd+I</code>.</p>
+
+<h3 id="running-your-programs-at-the-terminal">Running your programs at the terminal</h3>
+
+<p>You can run your programs from outside VSCode via the terminal (which you may also hear me call the “command line”). VSCode gives you a terminal window under your code file, but you can also get a terminal through various operating-system specific means. On MacOS, I can find it under <code class="language-plaintext highlighter-rouge">Applications</code> and then <code class="language-plaintext highlighter-rouge">Utilities</code> in the Finder.</p>
+
+<p>Every terminal window will have a “current directory”, which is the folder it’s currently browsing. Right now, I have Python file called <code class="language-plaintext highlighter-rouge">files_prep.py</code> (from preparing this lecture!) in my <code class="language-plaintext highlighter-rouge">teaching/112/lectures/sep13</code> folder. But if my terminal isn’t browsing that folder, it won’t be able to see the Python file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% python3 files_prep.py
+/usr/local/bin/python3: can't open file '/Users/tim/repos/teaching/112/learning/files_prep.py': [Errno 2] No such file or directory
+</code></pre></div></div>
+
+<p>This is common when, for instance, VSCode thinks the directory you want to be working in is different. Here, I’ve previously told VSCode’s explorer that I wanted to work in a separate, <code class="language-plaintext highlighter-rouge">learning</code> folder! I can fix the problem by just changing directory:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% cd ../lectures/sep13
+% python3 files_prep.py frankenstein.txt
+the
+</code></pre></div></div>
+
+<p class="notice">Don’t confuse the <em>system</em> prompt with the <em>Python</em> prompt! If you run <code class="language-plaintext highlighter-rouge">python</code> with no arguments, it will open up a prompt (like what I used in class today). Usually that prompt starts with <code class="language-plaintext highlighter-rouge">&gt;&gt;&gt; </code>, which is different from your system prompt. To exit the Python prompt, type <code class="language-plaintext highlighter-rouge">exit()</code> and hit enter.</p>
+
+<h4 id="more-on-scripts-and-errors">More on scripts and errors</h4>
+
+<p>You might have noticed the very end of your homework 1 stencil contained some odd text. You might have also, independently, noticed that if you try to run homework 1 via the run arrow in VSCode, you can sometimes get a strange error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>File "/Users/tim/repos/cs0112/materials/Lectures/live/courses.py", line 47, in &lt;module&gt;
+   filename = sys.argv[1]
+IndexError: list index out of range
+</code></pre></div></div>
+
+<p>It turns out these are related. The code at the bottom of the stencil lets the program be run as a <em>script</em> from the terminal. The list <code class="language-plaintext highlighter-rouge">sys.argv</code> contains all the arguments to <code class="language-plaintext highlighter-rouge">python</code>. We can see these by adding <code class="language-plaintext highlighter-rouge">print(sys.argv)</code> right after the <code class="language-plaintext highlighter-rouge">import</code> in that last block of code. If I run the stencil with that addition, I see this before the error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['/Users/tim/repos/cs0112/materials/Lectures/live/courses.py']
+</code></pre></div></div>
+
+<p>This makes sense: the run arrow just executes <code class="language-plaintext highlighter-rouge">python</code> and gives it the Python source file to run. But the way we wrote the stencil, it expects <em>two more</em> arguments:</p>
+<ul>
+  <li>the CSV file to load; and</li>
+  <li>the specific function to call for that CSV file.</li>
+</ul>
+
+<p>We’re getting the <code class="language-plaintext highlighter-rouge">IndexError</code> error because the script is trying to access the second and third elements of that list, and they don’t exist! The script isn’t carefully written enough—the error is terrible, and doesn’t actually say what it needs to! So rather than just say sorry (although I am!) we’re going to fix this here, live.</p>
+
+<p>What do you think the error should be? Let’s add it! Instead of allowing the bad indexing, we’ll raise a better error message first. Here’s 2 lines we might have added:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="c1"># the first argument to the script is the filename
+</span>   <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">):</span>
+      <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">'Missing the name of the CSV file to load. Add it after the Python file name.'</span><span class="p">)</span>
+   <span class="n">filename</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>So there’s an lesson here for your own work: consider the error messages that your users might see, and try to make sure they are given from the user’s perspective. <em>YOU</em> weren’t trying to get a list element that wasn’t there; you just wanted to run the script.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>
