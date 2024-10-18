@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Polymorphism | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Polymorphism" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Labs/Lab%204/lab4.html" />
+<meta property="og:url" content="/Labs/Lab%204/lab4.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Polymorphism" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Polymorphism","url":"/Labs/Lab%204/lab4.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link active" href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Lab 4:
+    
+    Polymorphism
+  </h2>
+</header>
+
+
+
+  
+  
+    
+  
+
+  
+      <p class="notice"><a href="/Labs/Lab 4/Lab 4.pptx">View presentation</a></p>
+  
+
+  <h2 id="section-1-background">Section 1: Background</h2>
+
+<p>Tim is getting ready to go abroad! He is scheduled to give talks in Japan, France, and Germany but because he is so busy preparing his speeches, unfortunately that leaves him little to no time to worry about packing. He throws a few random items into his suitcase and heads to the airport in a hurry. As soon as he arrives at the gate, Tim realizes that he doesn’t know where his plane ticket is amongst the mess of other items in his bag. Help Tim find the correct plane ticket so that he doesn’t miss his big debut on the world stage!</p>
+
+<h2 id="setup">Setup</h2>
+
+<div class="stencil" data-source="your_bag.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview your_bag.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>your_bag.py</code>
+    </a>
+    <a href="your_bag.py" download="" class="stencil-download" title="Download your_bag.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy your_bag.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<h2 id="section-2-polymorphism">Section 2: Polymorphism</h2>
+
+<p>In the stencil, you will see that three classes are already defined: <code class="language-plaintext highlighter-rouge">FlightTicket</code>, <code class="language-plaintext highlighter-rouge">Receipt</code>, and <code class="language-plaintext highlighter-rouge">Phone</code>. These classes represent what kinds of objects populate the user’s bag. These classes also have individual methods that simulate what each object does in the real world.</p>
+
+<p>Below the three classes, you will also find <code class="language-plaintext highlighter-rouge">things_in_bag</code>, which is a list of objects you find while looking through your bag. These are actual instances of the three classes defined above. You are later going to define the <code class="language-plaintext highlighter-rouge">check_item</code> function, which will look at an object and see if it is a type of flight ticket.</p>
+
+<h3 id="part-1-defining-the-polymorphic-method">Part 1: Defining the Polymorphic Method</h3>
+<p>Once you’ve opened the bag, we are going to define the polymorphic method that will help us find the ticket easily. You might notice that in each class, there is a method called is_ticket. This allows our search method to later call this method on an object contained in the list, regardless of what type that object may be. Polymorphism in action!</p>
+
+<p class="notice"><strong>Task 1:</strong> Define the <code class="language-plaintext highlighter-rouge">is_ticket</code> method for each of the three different classes! This method takes in a string <code class="language-plaintext highlighter-rouge">country_name</code> representing which country the ticket is for and returns a boolean value (which is the result of checking whether the current object is the ticket we are looking for).</p>
+
+<p><strong>Hint:</strong> You would only want the flight ticket to be able to return True when called on a ticket. So, the Receipt and Phone classes’ is_ticket methods can never return true - they might look very simple!</p>
+
+<h3 id="part-2-defining-the-check_item-method">Part 2: Defining the check_item Method</h3>
+
+<p>Now that we’ve defined the <code class="language-plaintext highlighter-rouge">is_ticket</code> method for each of the three classes, we are going to define our <code class="language-plaintext highlighter-rouge">check_item</code> method to locate the flight ticket from our list! This is where we’ll make use of our polymorphic method. Because we are looping through the list at the end of the program (where our search method will be used), our job right now is to call the <code class="language-plaintext highlighter-rouge">is_ticket</code> method to check whether each item is a flight ticket or not.</p>
+
+<p class="notice"><strong>Task 2:</strong> Define the <code class="language-plaintext highlighter-rouge">check_item</code> method.
+The item to check will come from the given list, and you want to return a boolean value signifying whether this object is a flight ticket or not. If it is a flight ticket, check whether the flight ticket is for the proper country name.</p>
+
+<p><strong>Note:</strong> Do not modify the <code class="language-plaintext highlighter-rouge">things_in_bag</code> list! This will be used to check if your code is functional.</p>
+
+<h3 id="part-3-is-your-ticket-there">Part 3: Is Your Ticket There?</h3>
+
+<p>Hurray! You’ve filled out all the methods. Now, we want to check if your code works.</p>
+
+<p class="notice"><strong>Task 3:</strong> Run the program and check if your code works. If it does, you should see the following output:</p>
+
+<pre><code>This is not the flight ticket.
+This is not the flight ticket.
+The flight ticket for France is in the bag!
+This is not the flight ticket.
+This is not the flight ticket.
+</code></pre>
+
+<p>This is because the flight ticket to France is the third item in the <code class="language-plaintext highlighter-rouge">things_in_bag</code> list.</p>
+
+<p>If you find a bug (for example, your program only prints out one kind of statement), then try to use print lines to figure out how your code is being executed. If you have any questions, raise your hand and your Lab TA will help!</p>
+
+<h2 id="section-3-youre-all-set">Section 3: You’re All Set!</h2>
+<p>Success!
+You’ve found the flight ticket, and the user is happy!</p>
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

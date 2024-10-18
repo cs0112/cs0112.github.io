@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Designing Object-Oriented Programs | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Designing Object-Oriented Programs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture18.html" />
+<meta property="og:url" content="/Lectures/lecture18.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-18T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Designing Object-Oriented Programs" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-18T00:00:00+00:00","datePublished":"2024-10-18T00:00:00+00:00","description":"CSCI 0112","headline":"Designing Object-Oriented Programs","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture18.html"},"url":"/Lectures/lecture18.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="designing-object-oriented-programs">Designing Object-Oriented Programs</h1>
+
+<p><a href="/Lectures/live/lecture18.py">Livecode link</a>
+<a href="/Lectures/live/2022/lecture18.py">Old Livecode link</a></p>
+
+<h2 id="animal-classes">Animal classes</h2>
+
+<p>Let’s (pretend to) use Python to model some ecological ideas. Consider four concepts that we will model using classes:</p>
+
+<ul>
+  <li>Animal</li>
+  <li>Tiger</li>
+  <li>Moose</li>
+  <li>Habitat</li>
+</ul>
+
+<p>Types of objects can stand in different kinds of relations to each other. One kind is an <em>“is-a” relationship</em>: a tiger is an animal, and a moose is an animal. In Python we typically represent this relationship using subclasses: we would define a superclass <code class="language-plaintext highlighter-rouge">Animal</code> that is extended by the <code class="language-plaintext highlighter-rouge">Tiger</code> and <code class="language-plaintext highlighter-rouge">Moose</code> subclasses.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span><span class="p">:</span>
+  <span class="k">pass</span> 
+
+<span class="k">class</span> <span class="nc">Tiger</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+  <span class="k">pass</span> 
+
+<span class="k">class</span> <span class="nc">Moose</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span> 
+  <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>Where does a habitat fit into this picture? An animal isn’t a habitat, and a habitat isn’t an animal. There’s functionality that a habitat has that an animal doesn’t, and vice versa.</p>
+
+<p>But there’s still a connection: habitats “contain” animals. We can call this a <em>“has-a” relationship.</em> These tend to be represented by data fields in an object.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Habitat</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">animals</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div></div>
+
+<h2 id="car-classes">Car classes</h2>
+
+<p>We can play the same game with another list of concepts:</p>
+
+<ul>
+  <li>Car</li>
+  <li>Engine</li>
+  <li>Convertible</li>
+</ul>
+
+<p>Every convertible is a car, so this is an is-a relationship. And every car has an engine. (Transitively, every convertible has an engine.)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Engine</span><span class="p">:</span>
+  <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Car</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Convertible</span><span class="p">(</span><span class="n">Car</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+
+<span class="n">miata</span> <span class="o">=</span> <span class="n">Convertible</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">miata</span><span class="p">.</span><span class="n">engine</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="library-classes">Library classes</h2>
+
+<p>For yet another example, consider the <code class="language-plaintext highlighter-rouge">Library</code> code we’ve been writing. <code class="language-plaintext highlighter-rouge">Book</code>s and <code class="language-plaintext highlighter-rouge">TVSeries</code> <em>are</em> “library items”, so they are subclasses of <code class="language-plaintext highlighter-rouge">LibraryItem</code>. But if we define a <code class="language-plaintext highlighter-rouge">Library</code> class that contains a list of library items, the picture gets more complicated. What is the has-a relationship? A <code class="language-plaintext highlighter-rouge">Library</code> has library items, but each library item is also associated with some library, so the arrow could go the other direction. How do we represent this in our code? It depends what we want to model! Depending on how our code will be applied, we may want a library to track its items, a library item to track its library, or perhaps both.</p>
+
+<p>Tracking a bi-directional “has-a” relationship can be a bit tricky. Consider this code:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Library</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">items</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">items</span> <span class="k">if</span> <span class="n">item</span><span class="p">.</span><span class="n">matches</span><span class="p">(</span><span class="n">query</span><span class="p">)]</span>
+
+<span class="k">class</span> <span class="nc">LibraryItem</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">library</span><span class="p">:</span> <span class="n">Library</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">library</span> <span class="o">=</span> <span class="n">library</span>
+
+    <span class="k">def</span> <span class="nf">checkout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">LibraryItem</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">author</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">library</span><span class="p">:</span> <span class="n">Library</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">author</span> <span class="o">=</span> <span class="n">author</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">library</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="ow">or</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">author</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Movie</span><span class="p">(</span><span class="n">LibraryItem</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">director</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">actors</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">library</span><span class="p">:</span> <span class="n">Library</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">director</span> <span class="o">=</span> <span class="n">director</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">actors</span> <span class="o">=</span> <span class="n">actors</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">library</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">checked_out</span><span class="p">)</span> <span class="ow">and</span> \
+            <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">title</span> <span class="ow">or</span> <span class="n">query</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">director</span> <span class="ow">or</span> \
+            <span class="nb">any</span><span class="p">([</span><span class="n">query</span> <span class="ow">in</span> <span class="n">actor</span> <span class="k">for</span> <span class="n">actor</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">actors</span><span class="p">])</span>
+
+<span class="n">prov_pub</span> <span class="o">=</span> <span class="n">Library</span><span class="p">()</span>
+<span class="n">cc</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s">"Cat's Cradle"</span><span class="p">,</span> <span class="s">"Kurt Vonnegut"</span><span class="p">,</span> <span class="n">prov_pub</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We’ve created a book that belongs to the Providence Public Library, but the library doesn’t know about it yet! This isn’t exactly broken code, but it could get very confusing. It’s a reasonable assumption for us to make as developers that:</p>
+
+<blockquote>
+  <p>A book belongs to a library if and only if that book is in that library’s list of items.</p>
+</blockquote>
+
+<p>But this assumption isn’t right, given how we’ve written the classes above. We might write code that assumes this and will break when it comes across this orphaned copy of Cat’s Cradle. So we need to be careful, either not to break this symmetry, or not to assume that this symmetry holds.</p>
+
+<p>More generally we call properties that we want to assume always hold, and may rely on that in our programming, <em>invariants</em>.</p>
+
+<p>How could we fix this problem in the above code?</p>
+
+<details>
+  <summary>Think, then click!</summary>
+
+  <p>We could add the book to the library in the book’s <code class="language-plaintext highlighter-rouge">__init__</code> method. We’d have to be careful, though: equality is important here. For example, do we like the idea of the library being able to have multiple copies of the same book? Then using a <code class="language-plaintext highlighter-rouge">list</code> rather than a <code class="language-plaintext highlighter-rouge">set</code> to store the library’s contents is a good idea. But then what should we do if someone manually adds the same book object later—do we want to allow duplicates of the same physical book?</p>
+
+  <p>Even more, we should avoid <em>directly setting or modifying</em> fields of another class; ideally the class would provide a method to make that change instead. Why is this important? Suppose that a library needed to keep its catalog <em>sorted</em>. A book or movie etc. wouldn’t necessarily know that, and indeed <em>shouldn’t have to!</em>. Making the addition via a method allows the library to perform any post-processing, repair, access control, etc. it might need to.</p>
+  <details>
+
+There are other concerns, too, such as the fact that we now require every book to belong to a library. Thinking through these use cases is a major part of object-oriented design (and software design in general).
+
+## Space classes
+
+For one final inheritance exercise: let's figure out the relationships between the terms
+* Star
+* Planet
+* Gas giant
+* Galaxy
+* Spiral Galaxy
+* Earth
+* Jupiter
+
+<details>
+<summary><b>Think, then click!</b></summary>
+The answer isn't unique. One reasonable way to do it would be:
+A spiral galaxy is a galaxy. A gas giant is a planet. Earth is a planet. Jupiter is a gas giant. A galaxy has stars and planets. A star has planets (that orbit it).
+
+But let's focus on the lines "Earth is a planet. Jupiter is a gas giant." Again, depending on what exactly we're trying to model, this could be interpreted in _different ways_:
+
+```python
+class Planet:
+  pass
+
+class GasGiant(Planet):
+  pass
+
+class Earth(Planet):
+  pass
+
+class Jupiter(GasGiant):
+  pass
+```
+
+or, instead, 
+```python
+class Planet:
+  pass
+
+class GasGiant(Planet):
+  pass
+
+earth = Planet()
+jupiter = Planet()
+```
+
+A class describes a _kind_ of thing. So:
+* if we wanted to model multiple versions of Earth that had different _kinds of pertinent data_, or provided _different interaction_ via methods, we'd create separate classes for them (say, `Earth` and `AlternateEarth`; but
+* if we wanted to model multiple versions of earth that had the same kinds of data and interactions but perhaps very different underlying data values (say, Earth now vs. a billion years ago) we could create two objects of the `Earth` (or even `Planet`) class.
+</details>
+
+## Dataclasses
+
+One last note on setting up classes. We used the `@dataclass` feature for a while, and then slowly dropped it for more flexible plain `class`es. But using `@dataclass` does some nice things for us. We can display them easily (because `__str__` and `__repr__` are automatically defined), and also compare them (because `__eq__` is defined): two objects of the same dataclass are equal exactly when _all_ of their fields are equal.
+
+As a general heuristic, it makes sense to use dataclasses to store "records," pieces of key-value data that you might use a dictionary to store, but want a bit more structure (e.g., no accidentally referencing the wrong field). Frozen dataclasses (`@dataclass(frozen=True)`) are especially useful for representing immutable data, even if you don't plan on placing them in a `set` or use them as keys in a `dict`. 
+
+In our library example: it might make sense to track authors, directors, etc. using a `Person` dataclass that stores a name, year of birth, etc. This is static information. But it would make less sense for a `Library` to be a `@dataclass` of the sort we've been using, because we need more customization.
+</details>
+</details>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

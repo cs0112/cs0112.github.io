@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Exploring Course Data with Python | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Exploring Course Data with Python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Homeworks/hw1/hw1.html" />
+<meta property="og:url" content="/Homeworks/hw1/hw1.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Exploring Course Data with Python" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Exploring Course Data with Python","url":"/Homeworks/hw1/hw1.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      HW 1:
+    
+    Exploring Course Data with Python
+  </h2>
+</header>
+
+
+
+  
+  
+    
+      <div class="notice">
+        
+          <p><strong>Due:</strong> Sun, Sep 10 2023 at  9:00 PM EST</p>
+        
+        
+        
+          <p><strong>Released:</strong> Mon, Sep  4 2023</p>
+        
+      </div>
+    
+  
+
+  
+
+  <p>The goal of this assignment is to refresh your memory of how to write Python programs, to get practice organizing data for particular computations, and to get practice working with CSV files. Don’t worry if you’re a little rusty – we’ll be reviewing these concepts in the first lab as well!</p>
+
+<h2 id="setup">Setup</h2>
+
+<div class="stencil" data-source="courses.csv">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview courses.csv">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>courses.csv</code>
+    </a>
+    <a href="courses.csv" download="" class="stencil-download" title="Download courses.csv">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy courses.csv to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="courses.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview courses.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>courses.py</code>
+    </a>
+    <a href="courses.py" download="" class="stencil-download" title="Download courses.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy courses.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="courses_test.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview courses_test.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>courses_test.py</code>
+    </a>
+    <a href="courses_test.py" download="" class="stencil-download" title="Download courses_test.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy courses_test.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="README.txt">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>README.txt</code>
+    </a>
+    <a href="README.txt" download="" class="stencil-download" title="Download README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy README.txt to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>On your desktop, create a cs0112 folder. Inside this folder, create a new folder called hw1. Move all the files you downloaded into the hw1 folder.</p>
+
+<h2 id="the-assignment">The Assignment</h2>
+
+<p>Tim is preparing for a talk on courses at Brown and he wants <em>YOU</em> to help! He has a list of names, departments, and the number of courses a student has taken, but you want to extract useful information from this large database.</p>
+
+<h3 id="part-1-understanding-the-data">Part 1: Understanding the Data</h3>
+
+<p>You are provided with a CSV file that contains information about the courses students have taken. Each row in the file contains a student’s name, the department of the course they took, and the number of courses they took in that department. For example, a row in this database might look like this:</p>
+
+<pre><code>Ashley,MATH,4</code></pre>
+
+<p>This means that Ashley has taken four courses in the Mathematics Department. Check your <code class="language-plaintext highlighter-rouge">courses.csv</code> file for more examples.</p>
+
+<details><summary>What is a CSV file?</summary>
+    A CSV file is a comma-separated values file, which allows data to be saved in a tabular format. Each line of the file is a data record. Each record consists of one or more fields, separated by commas. A CSV file typically looks like this:<br />
+
+    <pre><code>
+    name,department,courses
+    Ashley,MATH,4
+    Ben,MATH,8
+    Ben,EAST,1
+    David,BIOL,5
+    </code></pre>
+
+    You can think of this like an excel spreadsheet, where each row is a record and each column is a field. In this case, the fields are `name`, `department`, and `courses`.
+</details>
+<p><br /></p>
+
+<p>Notice that any student could have taken courses in multiple departments, and any given department could have multiple students taking courses in them.</p>
+
+<p>In addition, there can be two entries with the same student and the same department, but different counts. In that case, the course count would accumulate for that student and that particular department. For example, there can be <code class="language-plaintext highlighter-rouge">Ashley,ANTH,4</code> entry early in the file, and then <code class="language-plaintext highlighter-rouge">Ashley,ANTH,12</code> appear in the later part of the file; in this case, Ashley has taken a total of 16 courses from the Anthropology department.</p>
+
+<h3 id="part-2-storing-the-data">Part 2: Storing the Data</h3>
+
+<p>Now that we understand the format of our data, the next thing you should do is decide how you want to structure the data you read within your code. There are multiple approaches that will work fine and some that are less good – think about how you will want to access the data in order to write each function!</p>
+
+<p class="notice"><strong>Task 1:</strong> Complete the <code class="language-plaintext highlighter-rouge">load_data</code> function, which takes in the name of a CSV file and should return your structured data. <br /></p>
+
+<p><strong>Note:</strong> You can convert a <code class="language-plaintext highlighter-rouge">str</code> to an <code class="language-plaintext highlighter-rouge">int</code> with the <code class="language-plaintext highlighter-rouge">int</code> function; for instance, <code class="language-plaintext highlighter-rouge">int("4") == 4</code>.</p>
+
+<h3 id="part-3-using-the-data">Part 3: Using the Data</h3>
+
+<p>Let’s put our data to use! For these analysis functions, you don’t need to worry about CSV files — each one takes in your structured data.</p>
+
+<p><strong>Note:</strong> You may find that once you start writing your analysis functions, you want to change the way your data are structured –– <em>this is expected!</em> Keep in mind, though, that every analysis function needs to use the same input data structure.</p>
+
+<p class="notice"><strong>Task 2:</strong> What is the department with the most taken courses? Write a function <code class="language-plaintext highlighter-rouge">most_taken</code> that returns the name of the department with the highest total number of courses taken by all students.</p>
+
+<p class="notice"><strong>Task 3:</strong> Which student has the widest-ranging course set (i.e. has taken courses from the biggest number of departments)? Write a function <code class="language-plaintext highlighter-rouge">widest_ranging</code> that returns the name of the student who has taken courses from the maximum number of departments.</p>
+
+<p class="notice"><strong>Task 4:</strong> How many total courses did each student take, on average? Write a function <code class="language-plaintext highlighter-rouge">average_courses</code> that returns the average number of courses taken per student.</p>
+
+<p class="notice"><strong>Task 5:</strong> Which departments have had only one student take courses in them? Write a function <code class="language-plaintext highlighter-rouge">only_once</code> that returns a list of departments in which only one student took a course.</p>
+
+<h3 id="part-5-running-your-code">Part 5: Running Your Code</h3>
+
+<p>To run your code, you can use the provided <code class="language-plaintext highlighter-rouge">courses.py</code> file. If you want to run the <code class="language-plaintext highlighter-rouge">average_courses</code> function on the <code class="language-plaintext highlighter-rouge">courses.csv</code> file, you would run the following command:</p>
+
+<pre><code>$ python3 courses.py courses.csv average_courses</code></pre>
+
+<p><strong>Note:</strong> Things to run in your terminal will be marked with a <code class="language-plaintext highlighter-rouge">$</code> symbol. Only the code that follows the <code class="language-plaintext highlighter-rouge">$</code> should be run in the terminal.</p>
+
+<p>You can check how we run your code by looking at the main block in <code class="language-plaintext highlighter-rouge">courses.py</code>. This block of code will run your functions and print the results.</p>
+
+<h3 id="part-4-testing-your-code">Part 4: Testing Your Code</h3>
+
+<p class="notice"><strong>Task 6:</strong> Write tests for each of the functions you implemented in <code class="language-plaintext highlighter-rouge">courses.py</code>. You can find the test file in <code class="language-plaintext highlighter-rouge">courses_test.py</code>. No need to write tests for the <code class="language-plaintext highlighter-rouge">load_data</code> function.</p>
+
+<p>With Pytest, tests are written as Python functions in a testing file (<code class="language-plaintext highlighter-rouge">test_*.py</code> or <code class="language-plaintext highlighter-rouge">*_test.py</code>). For example, to test your only_once function, you’d write something like this:</p>
+
+<pre><code>def test_only_once():
+    test_data = { ... }
+    assert only_once(test_data) == [ ... ]</code></pre>
+
+<p>Remember that each analysis function should be tested with a variety of inputs, including edge cases. For example, you might want to test what happens when there are no students in the data, or when there are no departments.</p>
+
+<p>Run your tests with the following command:</p>
+
+<pre><code>$ pytest courses_test.py</code></pre>
+
+<p><strong>Note:</strong> Make sure all the files are in the same directory (folder) before running the tests! Otherwise, you may get a scary <code class="language-plaintext highlighter-rouge">FileNotFoundError</code>.</p>
+
+<h3 id="part-5-readme">Part 5: README</h3>
+
+<p>A README is a text file that contains information about your code. For our purposes, instead of writing comments in your code, we will ask you to write a README that answers some questions about your implementation.</p>
+
+<p>You should answer the following questions in your README:</p>
+<ul>
+  <li>How did you structure your data? How did you decide on this structure?</li>
+  <li>Did you end up needing to change the structure once you started writing your analysis functions?</li>
+  <li>Would any of the functions have been easier to write if you had chosen a different structure?</li>
+</ul>
+
+<h2 id="submission">Submission</h2>
+
+<p>Please follow the <a href="https://cs0112.github.io/Pages/syntax_testing.html">design and clarity guide</a>–part of your grade will be for code style and clarity. Additionally, you should be adhering to the course <a href="https://cs0112.github.io/Pages/design-recipe.html">design recipe</a>.  After completing the homework, you will submit:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">courses.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">courses_test.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+</ul>
+
+<p>Please don’t put your name in your code files, as we grade anonymously. If you have any questions about the assignment, please post on Ed.</p>
+
+<p>You can only use a maximum of 3 late days per assignment. If the assignment is late (and you do NOT have anymore late days) no credit will be given.</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

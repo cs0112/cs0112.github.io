@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>(Removed) Building a Simple Hash Table | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="(Removed) Building a Simple Hash Table" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture11.html" />
+<meta property="og:url" content="/Lectures/lecture11.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-09-27T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="(Removed) Building a Simple Hash Table" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-09-27T00:00:00+00:00","datePublished":"2023-09-27T00:00:00+00:00","description":"CSCI 0112","headline":"(Removed) Building a Simple Hash Table","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture11.html"},"url":"/Lectures/lecture11.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <!-- 
+**THIS LECTURE DATE MAY BE CANCELLED AND ABSORBED INTO PRIOR CLASSES**
+
+# Loose Ends, Building a Simple Hash Table
+
+<!-- ## Project 1 Q&A: Continuing to Learn 
+
+Some of you may have (very reasonably!) wondered why we don't ask you to add new points to the dataset once your code has classified them. It's certainly true that more data can lead to better classification! However, there are some risks. Consider a situation like this:
+
+![Continuing to Learn (Wrongly)](/Lectures/images/why_not_learn.png)
+
+We've classified an incoming data point as a cat, and then added the point to our training set. Then, because of that point, we classified another incoming point as a cat. And then another. Soon, we're at risk of our dataset being biased by the specific queries we've received up to that point. So we avoid the problem by not saving a history of classifications made. 
+
+More advanced machine-learning techniques exist, and you can learn about them if you take more CS. -->
+
+<!-- ## Hashing More Complicated Keys 
+
+In principle, you can use any datatype you'd like as either the key or value in a hash table (and thus in a Python set or dictionary). There's one snag: the key needs to be something that can be reliably hashed. And if the key is a mutable datatype, like a list, it might hash to one value today and a different value tomorrow. Python avoids this problem by forcing us to use _immutable_ datatypes as keys in sets and dictionaries. Numbers, strings, etc. are all OK. But if we try to use a list:
+
+```python
+class_time = ['BH 141', '1:00pm']
+classes = {class_time: 'CSCI 0112'}
+```
+we'll get a `TypeError: unhashable type: 'list'` error. 
+
+If you want to use something like a list, check out the `tuple` datatype instead, which is always immutable (and fixed-length):
+
+```python
+class_time = ('BH 141', '1:00pm')
+classes = {class_time: 'CSCI 0112'}
+``` -->
+
+<!-- ### Dataclasses
+
+Recall that Python's analogue to Pyret's data definitions is called a _dataclass_. (See [this 0111 textbook chapter](https://dcic-world.org/2022-01-25/part_pyret-to-python.html#%28part._.Accessing_.Fields_within_.Dataclasses%29).) E.g.:
+
+```python
+ @dataclass
+ class Location:
+      lat: int
+      long: int
+```
+
+If you want to use a dataclass as a key, you need to tell Python that the data cannot be changed by using the `frozen=True` annotation, like this:
+
+```python
+ @dataclass(frozen=True)
+ class Location:
+      lat: int
+      long: int
+```
+
+There is a lot more to hash tables than we have time to discuss in 0112. If you want to learn more (without official 0112 support) about how hashing works in Python, check out the documentation on the `__hash__` method of objects. If you want to learn more in the context of a course, check out 0200.
+
+## Hashing Perspective
+
+In CS, we often make tradeoffs between memory and time. The most common example is _caching_ (storing work done to avoid re-doing it in the future). But in hashing we saw a new kind of tradeoff: giving up _correctness_ in a very careful way, in exchange for performance. 
+
+The "very careful way" has to do with both the selection of the hash function and how collisions get resolved. My favorite way to resolve collisions is to store _another list_ at every location in the overall list. Then, if two elements get hashed to the same location, Python can store them both in the sub-list. Searching now needs to loop through the entire sub-list, and with a good hash function elements are _usually_ (but not necessarily) uniformly distributed between locations in the top-level list. It might look something like this:
+
+![A "chained" hash table](/Lectures/images/chained_hash.png) -->
+
+<!-- #### Tim's Homework
+
+Last time someone asked whether a program could have runtime _inversely_ proportional to the size of the input. Here's an example of how factors like that can appear when we're thinking about scaling. 
+
+Imagine a program tries to find a _random_ element of a set built using this technique. It generates a random key, hashes it, and checks for an element at that location. If no element is present, it keeps searching. In the best case, the entire set is full. In the worst case, there's only one thing in the set. -->
+
+<!-- ## Practice: A Simple Hash Table
+
+Let's do another code-arrangement exercise. This time we'll be writing _a real hash-table_, using the sublist method of collision-handling. You'll fill in 3 functions:
+
+```python
+def add(table: list, element: str):
+    '''Add an element to the hash-table set'''
+    
+def search(table: list, element: str):
+     '''search for an element in the hash-table set'''
+
+def demo(table_size: int, num_elements: int, element_length: int):
+    '''Add a large number of random elements to the hash-table set, then
+        show how well-distributed the random elements were'''
+```
+
+Using these lines:
+
+```python
+table[idx].append(element)
+table = [[] for _ in range(table_size)]
+print([len(sublist) for sublist in table])
+idx = hash(element) % len(table)
+if element not in table[idx]:
+idx = hash(element) % len(table)
+return element not in table[idx]
+idx = hash(element)
+if element in table[idx]:
+random_element = ''.join(choices(ascii_letters + digits, k=element_length))
+for _ in range(num_elements):
+return element in table[idx]
+add(table, random_element)
+```
+
+Note that, unlike last time, you might not need all of these. I've also used list-comprehension and a random-choice library you won't have seen before. What's the point? To show you that you don't need to know exactly how to do a low-level thing in Python to be able to know _how to start solving the problem_.
+
+You can find a solution in the [livecode](/Lectures/live/lecture11.py).
+
+## Testing Our Hash Table
+
+We've got 2 functions to test (the `demo` function is just a demonstration).
+* Our `add` function modifies the state of objects in memory. Specifically, it modifies the `table` list, and potentially all sublists contained in it. 
+* Our `search` function doesn't modify the state, but it does depend on that state. 
+
+Remember that, when we're testing _side effects_ (e.g., adding elements to our table) we can't just write assertions by themselves. We need to assert something about the effects _on the state_. E.g., for `add` maybe we could create an empty table and then see if it contains what we expect. 
+
+But how should we check what the table contains? Since the `hash` of every element, changes between program runs, we can't rely on the location of an element being consistent. And just checking to see if _any_ sublist contains the element is too broad, since `search` will only check a single sublist. Let's just use `search`. E.g., 
+
+```python
+def test_single_element():
+    table = [[] for _ in range(10)]
+    add(table, 'Hi, everybody!')
+    assert search(table, 'Hi, everybody!') == True    
+    # ...once this function returns, `table` disappears
+    # future tests can make their own `table` list
+```
+
+**What other tests would you write?** -->
+<p>–&gt;</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>
