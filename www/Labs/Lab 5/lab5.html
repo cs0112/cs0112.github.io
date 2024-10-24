@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Web Scraping | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Web Scraping" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Labs/Lab%205/lab5.html" />
+<meta property="og:url" content="/Labs/Lab%205/lab5.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Web Scraping" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Web Scraping","url":"/Labs/Lab%205/lab5.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link active" href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Lab 5:
+    
+    Web Scraping
+  </h2>
+</header>
+
+
+
+  
+  
+    
+  
+
+  
+      <p class="notice"><a href="/Labs/Lab 5/Lab 5.pptx">View presentation</a></p>
+  
+
+  <p class="notice"><strong>Note:</strong> We expect this lab to take around 2 hours to complete. This is mostly because this is also part of the Project stencil.</p>
+
+<h2 id="section-1-background">Section 1: Background</h2>
+
+<p>As an avid reader, Tim is looking for a break from industry articles and is turning to students’ theses and dissertations. However, with the vast number of theses written over the years, Tim wants to streamline his process for finding his next paper to read. The solution? Tim wants you to scrape just the information about each paper (title, publishing year, authors, etc.).</p>
+
+<p>In this lab, we’ll be focusing on web scraping techniques to extract information from the Brown Digital Repository (BDR), specifically the Theses and Dissertations collection.</p>
+
+<h2 id="section-2-setup">Section 2: Setup</h2>
+
+<div class="stencil" data-source="lab5.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview lab5.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>lab5.py</code>
+    </a>
+    <a href="lab5.py" download="" class="stencil-download" title="Download lab5.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy lab5.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>Download the stencil file above and open it in VSCode. Install required libraries:</p>
+
+<pre><code>$ pip3 install bs4 requests</code></pre>
+
+<h2 id="section-2-understanding-the-website">Section 2: Understanding the Website</h2>
+
+<h3 id="what-is-the-brown-digital-repository">What is the Brown Digital Repository?</h3>
+
+<p>The <a href="https://repository.library.brown.edu/studio/">Brown Digital Repository (BDR)</a> is maintained by the Brown University Library as “a place to gather, index, store, preserve, and make available digital assets produced via the scholarly, instructional, research, and administrative activities at Brown”. Throughout this lab and Project 3, you will see the terminology “item” and “collection”. An item is any file uploaded to the BDR, such as an image, pdf, or audio file. A collection is a related group of items. We’ll be focusing on the collections of Brown’s academic departments, specifically their Theses and Dissertations.</p>
+
+<p class="notice"><strong>Task 1:</strong> Open the <a href="https://repository.library.brown.edu/studio/">Brown Digital Repository</a> and navigate to the <a href="https://repository.library.brown.edu/studio/collections/bdr:tkz6xrdc/">American Studies Theses and Dissertations</a> collection. Take a look at the structure of the website and the information available for each paper. See if you can identify the HTML tags that contain the information you need to scrape.</p>
+
+<p><strong>Tip:</strong> If you’re having trouble finding the information you need, you can use the <a href="https://developer.mozilla.org/en-US/docs/Tools/Page_Inspector">Inspect Element</a> tool in your browser to view the HTML structure of the page.</p>
+
+<h3 id="part-2-storing-the-data">Part 2: Storing the Data</h3>
+
+<p>Now that we understand the structure of the website, the next thing you should do is decide how you want to structure the data you scrape within your code. For each paper, you will need to store the title, year, contributor(s), subject(s), abstract, and notes. There are multiple approaches that will work fine and some that are less good – think about how you will want to access the data in order to write each function!</p>
+
+<p class="notice"><strong>Task 1:</strong> Define the dataclass <code class="language-plaintext highlighter-rouge">BDRItem</code> with the information you want to scrape from each item page.</p>
+
+<h2 id="section-3-data-scraping">Section 3: Data Scraping</h2>
+
+<p>Our first step is to make a mini function that will retrieve links to the items from only the first page of the collection. We will worry about getting links from multiple pages later.</p>
+
+<p class="notice"><strong>Task 2:</strong> Complete the <code class="language-plaintext highlighter-rouge">get_items_from_url</code> function, which takes in the URL of a collection page and should return a list of BeautifulSoup objects, one for each item page. Your TA will guide you through the process of scraping the information from the item pages.</p>
+
+<p>But you might notice that there are items marked as “Available to Brown-affiliated users only”. We will need to handle these items differently. Think about the ethical implications of scraping this data and how you might handle this situation.</p>
+
+<p>Now that we have the information from the item pages, we can move on to getting the information from the collection pages and extracting the contents of the item pages.</p>
+
+<p class="notice"><strong>Task 3:</strong> Complete the <code class="language-plaintext highlighter-rouge">scrape_item</code> function, which takes in a <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> object representing an item page and should return a <code class="language-plaintext highlighter-rouge">BDRItem</code> object with the information from the page.</p>
+
+<p>Try to use helper functions to make your code more readable and modular! TAs will guide you through <code class="language-plaintext highlighter-rouge">get_title</code>, <code class="language-plaintext highlighter-rouge">get_year</code>, and <code class="language-plaintext highlighter-rouge">get_abstract</code> functions.</p>
+
+<pre><code>def scrape_item(item_page: BeautifulSoup) -&gt; BDRItem:
+    """
+    Extracts relevant information from an item page and returns an Item object.
+    
+    :param item_page: BeautifulSoup object of the item page
+    :return: BDRItem object containing the scraped information
+    """
+    # TODO: Implement this function
+    title = get_title(page)
+    year = get_year(page)
+    contributor = get_contributor(page)
+    subject = get_subject(page)
+    abstract = get_abstract(page)
+    notes = get_notes(page)
+    return BDRItem(title, year, contributor, subject, abstract, notes)
+</code></pre>
+
+<h3 id="part-4-advanced-data-scraping">Part 4: Advanced Data Scraping</h3>
+
+<p>Now that we have the basic data scraping functions, we can move on to more advanced scraping tasks. We will need to extract information from multiple pages of the collection and handle items that are only available to Brown-affiliated users.</p>
+
+<p>Take a minute to navigate between the pages of the collections. How does the URL change depending on what page you are on?</p>
+
+<p class="notice"><strong>Task 4:</strong> Complete the <code class="language-plaintext highlighter-rouge">get_pages_from_id</code> function, which takes in the id of a collection (7 character string, ex: gwy9dgfq) and the number of pages to retrieve and should return a list of <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> objects, one for each page. Note that if the number of pages requested is more pages than the collection has, this function should return however many pages there are.</p>
+
+<pre><code>def get_pages_from_id(collection_id: str, num_pages: int = 1) -&gt; list[BeautifulSoup]:
+    """
+    Retrieves and parses the specified number of pages from a collection.
+    
+    :param collection_id: ID (7 character string, ex: gwy9dgfq) of the collection
+    :param num_pages: Number of pages to retrieve (default is 1)
+    :return: List of BeautifulSoup objects, one for each page
+    """
+    # TODO: Implement this function
+    pass
+</code></pre>
+
+<p class="notice">In<code class="language-plaintext highlighter-rouge">get_items_from_url</code> function, we got a list of <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> objects, one for each item page, from a single collection page. Now that we have multiple collection pages, we need to do this process for every single collection page. Note that our return is a list, rather than a list of lists, because we no longer want to group by page but rather collection.</p>
+
+<p><strong>Task 5:</strong> Complete the <code class="language-plaintext highlighter-rouge">get_items_from_pages</code> function, which takes in a list of <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> objects representing collection pages and should return a list of <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> objects, one for each item page.</p>
+
+<pre><code>def get_items_from_pages(collection_pages: list[BeautifulSoup]) -&gt; list[BeautifulSoup]:
+    """
+    Extracts individual item pages from the collection pages.
+    
+    :param collection_pages: List of BeautifulSoup objects representing collection pages
+    :return: List of BeautifulSoup objects, one for each item page
+    """
+    # TODO: Implement this function
+    passs
+</code></pre>
+
+<h2 id="section-3-youre-all-set">Section 3: You’re all set!</h2>
+<p>That’s all for lab this week! Be sure to ask any questions as this will be the same Web Scraping format that we follow for Project 3 and may be helpful in the final project as well.</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

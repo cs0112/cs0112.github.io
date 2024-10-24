@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>More trees, introduction to objects | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="More trees, introduction to objects" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture14.html" />
+<meta property="og:url" content="/Lectures/lecture14.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-04T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="More trees, introduction to objects" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-04T00:00:00+00:00","datePublished":"2024-10-04T00:00:00+00:00","description":"CSCI 0112","headline":"More trees, introduction to objects","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture14.html"},"url":"/Lectures/lecture14.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <p><strong>These notes do not exactly match the lecture capture, because we merged some OOP and recursive functions content.</strong></p>
+
+<h1 id="more-trees-introduction-to-objects">More trees, introduction to objects</h1>
+
+<!-- Because of the long weekend, we're giving you an extra day on Homework 3. The next assignment (project 2) will go out as usual, but as it is a 2-week assignment we think the 1-day overlap will be more helpful for you than not. -->
+
+<p>Today’s notes contain another recursion example that <em>wasn’t discussed in class</em> but might be useful to you. Please read it! In class, we ran through the <code class="language-plaintext highlighter-rouge">all_text</code> function from last time (see <a href="/Lectures/live/lecture13.py">live/lecture13.py</a>), and introduced <em>objects</em> in Python.</p>
+
+<p><a href="/Lectures/live/lecture14.py">Livecode</a></p>
+
+<h2 id="comments-on-the-drill">Comments on the drill</h2>
+
+<p>Recall this example from Monday’s class:</p>
+
+<p><img src="https://i.imgur.com/a7jJEea.png" alt="" /></p>
+
+<p>In this visualization of the tree, every <code class="language-plaintext highlighter-rouge">HTMLTree</code> object is a <em>node</em>, and the edges between nodes represent the contents of the list in each node’s <em>children</em> field. A <em>leaf</em> of the tree is a node without any children (here, the two text nodes).</p>
+
+<p>It’s both common and reasonable to ask: “Why did you name the dataclass <code class="language-plaintext highlighter-rouge">HTMLTree</code>, when it only contains the data for one node of the tree?” It’s true that other names would have worked. We chose to include the word “<code class="language-plaintext highlighter-rouge">Tree</code>” in the name to reinforce the idea of delegating work for each child <em>tree</em> to a new computation for each child <em>object</em>.</p>
+
+<h2 id="example-3">Example 3</h2>
+
+<p>Let’s build one more function on trees</p>
+
+<h4 id="challenge">Challenge</h4>
+
+<p>Write a function <code class="language-plaintext highlighter-rouge">replace_text</code> that:</p>
+<ul>
+  <li>accepts as input: an <code class="language-plaintext highlighter-rouge">HTMLTree</code>, a text string to search for, and a replacement string; and</li>
+  <li><em>changes</em> the input tree so that instances of the search string have been replaced with the replacement string.</li>
+</ul>
+
+<p>This function is a little bit more complicated than those we wrote on Wednesday, so let’s definitely write some example tests first. And while we do so, it’s worth asking: what might somebody writing this function get <em>wrong</em>?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>Here are some <a href="live/test_lecture14.py">starter tests</a> I came up with:</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_replace_text</span><span class="p">():</span>
+  <span class="c1"># Wrapping long lines outside parens: 
+</span>  <span class="c1">#   backslash (watch out for any blank space after the backslash)   
+</span>  
+  <span class="c1"># don't replace in tags
+</span>  <span class="k">assert</span> <span class="n">replace_text</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;/html&gt;'</span><span class="p">),</span> <span class="s">'html'</span><span class="p">,</span> <span class="s">'foo'</span><span class="p">)</span> <span class="o">==</span> \
+         <span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;/html&gt;'</span><span class="p">)</span>   
+  <span class="c1"># replace at nested depths
+</span>  <span class="k">assert</span> <span class="n">replace_text</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;p&gt;hello&lt;/p&gt;&lt;p&gt;&lt;strong&gt;world&lt;/strong&gt;&lt;/p&gt;&lt;/html&gt;'</span><span class="p">),</span> <span class="s">'hello'</span><span class="p">,</span> <span class="s">'greetings'</span><span class="p">)</span> <span class="o">==</span> \
+         <span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;p&gt;greetings&lt;/p&gt;&lt;p&gt;&lt;strong&gt;world&lt;/strong&gt;&lt;/p&gt;&lt;/html&gt;'</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="n">replace_text</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;p&gt;greetings&lt;/p&gt;&lt;p&gt;&lt;strong&gt;world&lt;/strong&gt;&lt;/p&gt;&lt;/html&gt;'</span><span class="p">),</span> <span class="s">'world'</span><span class="p">,</span> <span class="s">'fellow students'</span><span class="p">)</span> <span class="o">==</span> \
+         <span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;p&gt;greetings&lt;/p&gt;&lt;p&gt;&lt;strong&gt;fellow students&lt;/strong&gt;&lt;/p&gt;&lt;/html&gt;'</span><span class="p">)</span>
+  <span class="c1"># replace partial words
+</span>  <span class="c1">#   (you don't NEED the backslash, but I find having it on one line is less readable)
+</span>  <span class="k">assert</span> <span class="n">replace_text</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;chocolate cake&lt;/html&gt;'</span><span class="p">),</span> <span class="s">'chocolate'</span><span class="p">,</span> <span class="s">'dog-safe'</span><span class="p">)</span> <span class="o">==</span> <span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;dog-safe cake&lt;/html&gt;'</span><span class="p">)</span>   
+</code></pre></div>  </div>
+</details>
+
+<p>We still can start in the same way as before: first we’ll solve the “base case” (where no recursion is needed) and then the recursive case. So: if we only had <em>one</em> node in the tree, what would the function look like?</p>
+
+<p>Probably something like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">replace_text</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">,</span> <span class="n">find</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">replace</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tree</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">'text'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tree</span><span class="p">.</span><span class="n">text</span> <span class="o">==</span> <span class="n">find</span><span class="p">:</span>
+            <span class="n">tree</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">replace</span>        
+</code></pre></div></div>
+
+<p>But that’s not entirely right. One of the above tests is failing (why?)</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>That function would only work if the entire text field were the search string. It fails on our “chocolate cake” to “dog-safe cake” example. Instead, let’s use a built-in Python function:</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">replace_text</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">,</span> <span class="n">find</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">replace</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tree</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">'text'</span><span class="p">:</span>
+        <span class="n">tree</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">tree</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">find</span><span class="p">,</span> <span class="n">replace</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+</details>
+
+<p>Where should we go from here? Just like before, we need to handle the children somehow. And since we don’t know how deep the tree will go, we’ll use recursion.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">replace_text</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">,</span> <span class="n">find</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">replace</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+        <span class="n">replace_text</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">find</span><span class="p">,</span> <span class="n">replace</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tree</span><span class="p">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">"text"</span><span class="p">:</span>
+        <span class="n">tree</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">tree</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">find</span><span class="p">,</span> <span class="n">replace</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>What does this function return?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>Just <code class="language-plaintext highlighter-rouge">None</code>. We’ve built this function to modify the existing tree, rather than manufacturing any new objects. We can do this because <code class="language-plaintext highlighter-rouge">HTMLTree</code> isn’t <code class="language-plaintext highlighter-rouge">frozen</code>, but as a result we won’t be able to use <code class="language-plaintext highlighter-rouge">HTMLTree</code> as a key in sets or dictionaries.</p>
+
+</details>
+
+<h4 id="i-wonder">I wonder…</h4>
+
+<p>How would we change this function so that, instead of <em>changing</em> the input tree, it returned an entirely new tree structure with the needed changes?</p>
+
+<h2 id="introduction-to-objects-">Introduction to Objects <a name="objects"></a></h2>
+
+<p>Imagine you’re a DJ at a radio station. You only play songs that your listeners call in and request. In addition, every thousandth listener who calls in gets a prize! You want to keep track of the queue of songs you’ve been asked to play, as well as enough information to give out prizes.</p>
+
+<p>To do this, we need a list of songs and a counter that says how many callers we’ve had so far. (Why can’t we get by with just the list?)</p>
+
+<p>We could implement this with a custom data type like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">DJData</span><span class="p">:</span>
+  <span class="n">num_callers</span><span class="p">:</span> <span class="nb">int</span>
+  <span class="n">queue</span><span class="p">:</span> <span class="nb">list</span>
+</code></pre></div></div>
+
+<p>We can implement a function to update our data and to figure out what we’re going to say to a listener:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">DJData</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">song</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+  <span class="n">data</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
+  <span class="n">data</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="k">if</span> <span class="n">data</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s">"Congrats, "</span> <span class="o">+</span> <span class="n">caller</span> <span class="o">+</span> <span class="s">"! You get a prize!"</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s">"Cool, "</span> <span class="o">+</span> <span class="n">caller</span>
+</code></pre></div></div>
+
+<p>So here we’ve got a datatype and a function that reads and modifies that datatype’s contents. We can see how it works:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">the_dj</span> <span class="o">=</span> <span class="n">DJData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[])</span>
+<span class="n">request</span><span class="p">(</span><span class="n">the_dj</span><span class="p">,</span> <span class="s">"Tim"</span><span class="p">,</span> <span class="s">"French Fries w/Pepper"</span><span class="p">)</span>
+<span class="s">"Cool, Tim"</span>
+</code></pre></div></div>
+<p>We could have written this slightly differently:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">DJData</span><span class="p">:</span>
+  <span class="n">num_callers</span><span class="p">:</span> <span class="nb">int</span>
+  <span class="n">queue</span><span class="p">:</span> <span class="nb">list</span>
+
+  <span class="c1"># This is now *part* of the DJData class; a "method" of the class
+</span>  <span class="c1"># The convention is that the object being operated on is the first argument (self)
+</span>  <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">song</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">return</span> <span class="s">"Congrats, "</span> <span class="o">+</span> <span class="n">caller</span> <span class="o">+</span> <span class="s">"! You get a prize!"</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="s">"Cool, "</span> <span class="o">+</span> <span class="n">caller</span>
+</code></pre></div></div>
+
+<p>To do this, we put the request function inside the definition of <code class="language-plaintext highlighter-rouge">DJData</code>. We’ve also modified the method a bit: instead of taking a data argument, we’ve called the argument <code class="language-plaintext highlighter-rouge">self</code> and left off the type annotation. This function is now a <em>method</em> on the DJData class. Which means we can call it like we’ve been calling methods of other things like lists or dictionaries:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">the_dj</span> <span class="o">=</span> <span class="n">DJData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[])</span>
+<span class="n">the_dj</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"Tim"</span><span class="p">,</span> <span class="s">"Whirling-In-Rags, 8PM"</span><span class="p">)</span>
+<span class="s">"Cool, Tim"</span>
+</code></pre></div></div>
+
+<p>We call methods by writing the name of an object (<code class="language-plaintext highlighter-rouge">the_dj</code>, in this case), then a dot, then the method arguments, excluding <code class="language-plaintext highlighter-rouge">self</code>. Since we’re not passing <code class="language-plaintext highlighter-rouge">self</code> in, how does Python know which object to call the method on?</p>
+
+<p>We’ll keep learning about classes, objects and methods. I want to re-emphasize, though, that you’ve seen this before. We’ve called methods on lists, sets, etc. For instance, <code class="language-plaintext highlighter-rouge">l.append(2)</code>. What we’re seeing now is how to add methods to our custom objects!</p>
+
+<h4 id="note-on-dataclass">Note on <code class="language-plaintext highlighter-rouge">@dataclass</code></h4>
+
+<p>Remember that <code class="language-plaintext highlighter-rouge">@dataclass</code> tells Python to help us by automatically defining some useful methods. For example, <code class="language-plaintext highlighter-rouge">@dataclass</code> will automatically tell Python how to display one of these objects as a string (the <code class="language-plaintext highlighter-rouge">str</code> method, which we’ll cover next week).</p>
+
+<h2 id="the-__init__-method">The <code class="language-plaintext highlighter-rouge">__init__</code> method</h2>
+
+<p>Up until now we’ve been using the dataclasses library to make our custom datatypes work more like Pyret’s. But from this point on, we will generally not use it unless we need to, so that we can see how Python’s objects work.</p>
+
+<p>One of the features that <code class="language-plaintext highlighter-rouge">@dataclass</code> gives us is easy initialization: e.g., because <code class="language-plaintext highlighter-rouge">HTMLTree</code> is a dataclass, we can easily create <code class="language-plaintext highlighter-rouge">HTMLTree</code> objects by writing <code class="language-plaintext highlighter-rouge">HTMLTree(...)</code> where the <code class="language-plaintext highlighter-rouge">...</code> gives a tag, a child list, and an optional text field. The <code class="language-plaintext highlighter-rouge">HTMLField</code> function is called a <em>constructor</em> or an <em>initializer</em>.</p>
+
+<p>Non-dataclass objects need you to define their constructor yourself! To do this, we’ll define <code class="language-plaintext highlighter-rouge">__init__()</code> methods to initialize data on objects:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Notice we took away the @dataclass annotation
+</span><span class="k">class</span> <span class="nc">DJData</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">song</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Congrats, "</span> <span class="o">+</span> <span class="n">caller</span> <span class="o">+</span> <span class="s">"! You get a prize!"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Cool, "</span> <span class="o">+</span> <span class="n">caller</span>
+</code></pre></div></div>
+
+<p>Python calls the <code class="language-plaintext highlighter-rouge">__init__</code> method in order to initialize an object’s fields when it is created. We can construct instances of the DJData class like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">the_dj</span> <span class="o">=</span> <span class="n">DJData</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="n">the_dj</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"Tim"</span><span class="p">,</span> <span class="s">"Paper Bag"</span><span class="p">)</span>
+<span class="s">"Cool, Tim"</span>
+</code></pre></div></div>
+
+<p>Note that this gives us a bit more control over how fields are initialized. We could do anything we’d like inside <code class="language-plaintext highlighter-rouge">__init()__</code>: print things, run algorithms automatically, send email messages, etc.</p>
+
+<p>…but, we’ve also lost the help that <code class="language-plaintext highlighter-rouge">@dataclass</code> was giving us. If we print out <code class="language-plaintext highlighter-rouge">the_dj</code> now, we won’t get a nicely formatted string anymore. It’s now going to be our responsibility to fill in such methods.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

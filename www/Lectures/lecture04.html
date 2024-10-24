@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Testing and Memory | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Testing and Memory" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture04.html" />
+<meta property="og:url" content="/Lectures/lecture04.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-11T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Testing and Memory" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-11T00:00:00+00:00","datePublished":"2024-09-11T00:00:00+00:00","description":"CSCI 0112","headline":"Testing and Memory","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture04.html"},"url":"/Lectures/lecture04.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="testing-and-memory">Testing and Memory</h1>
+
+<p>Today we’re going to have the talk about testing we didn’t get to last time. We’ll use that to frame a few useful discussions about what happens when we run a Python program.</p>
+
+<h2 id="logistics">Logistics</h2>
+
+<ul>
+  <li>Homework 2 will be released!</li>
+  <li>Please check EdStem and use it as a resource! We’ll be making a FAQ for assignments, but please also post questions. It’s helpful to your fellow students (in my experience) to see others asking questions they have too.</li>
+  <li>Lab 1 is coming Thursday and Friday. Attend a section.</li>
+  <li>The first drill is out. I’ve extended it to noon Friday because I forgot to say out loud that it was released.</li>
+</ul>
+
+<h2 id="more-about-testing">More About Testing</h2>
+
+<p>Let’s write some tests for <code class="language-plaintext highlighter-rouge">count_words</code>. At the top of a new file, we can put:
+<code class="language-plaintext highlighter-rouge">from lecture03 import *</code>.</p>
+
+<p>We’ll see more examples of this later. For now, the only thing to remember is that this lets us refer to all of the functions we have written in <code class="language-plaintext highlighter-rouge">lecture03.py</code>. That will be useful if we want to test them.</p>
+
+<p>The convention we’ll use for this class (and which is often used in practice) is each function in the file we’re testing (<code class="language-plaintext highlighter-rouge">wordcount.py</code>) corresponds to a function in the test file whose name starts with <code class="language-plaintext highlighter-rouge">test_</code>. So, we’ll write tests like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def test_count_words():
+   pass
+</code></pre></div></div>
+
+<p>What would be a good set of test cases for <code class="language-plaintext highlighter-rouge">count_words</code>? Remember that it takes a <code class="language-plaintext highlighter-rouge">string</code> and returns a <code class="language-plaintext highlighter-rouge">dictionary</code>.</p>
+
+<details>
+  <summary>Think, then click!</summary>
+  <p>Here’s an example set of tests:</p>
+
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def test_count_words():
+   assert count_words("") == {}
+   assert count_words("word") == {"word": 1}
+   assert count_words("word word") == {"word": 2}
+   assert count_words("word other word") == {"word": 2, "other": 1}
+</code></pre></div>  </div>
+</details>
+<p><br /></p>
+
+<p>Of course, unless we actually <em>call</em> <code class="language-plaintext highlighter-rouge">test_count_words</code>, the tests will never be run! We could do that explicitly, like last time, but today we’ll start using a more professional tool called <code class="language-plaintext highlighter-rouge">pytest</code>.</p>
+
+<p>You might already have <code class="language-plaintext highlighter-rouge">pytest</code> installed! You can test by running it (instead of <code class="language-plaintext highlighter-rouge">python3</code>) on your test file. You can also run it by typing <code class="language-plaintext highlighter-rouge">python3 -m pytest</code>; that’s what I’ll be doing in class.
+If you don’t have <code class="language-plaintext highlighter-rouge">pytest</code> installed, there are a few ways to get it. One is to type <code class="language-plaintext highlighter-rouge">python3 -m pip install pytest</code> into the terminal; we give more instructions in our setup guide. If you experience issues with this, definitely reach out!</p>
+
+<h2 id="data-structures-and-memory">Data Structures and Memory</h2>
+
+<p>Let’s talk a bit more about how Python sets, etc. work. 
+If I create a new list, and then immediately update it, like so:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dry_ingredients = ['flour', 'baking powder']
+dry_ingredients = dry_ingredients + ['cinnamon']
+</code></pre></div></div>
+
+<p>The contents of <code class="language-plaintext highlighter-rouge">dry_ingredients</code> have changed! The list now contains <code class="language-plaintext highlighter-rouge">['flour', 'baking powder', 'cinnamon']</code>.</p>
+
+<p>Sets work the same: they aren’t “atomic” values like integers; they are storage containers for collections. This can sometimes have unintended consequences! 
+Let’s look at <a href="live/lecture04a.py">this Python program</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>recipes = {'pbj': {'peanut butter', 'jelly', 'bread'},
+           'smoothie': {'peanut butter', 'banana', 'oat milk'}}
+chocolate_smoothie = recipes['smoothie']
+chocolate_smoothie.add('cocoa powder')
+berry_smoothie = recipes['smoothie'] | {'berries'}
+</code></pre></div></div>
+
+<p>What do all of these collections look like at the end of the program? (Try it!)</p>
+
+<details>
+  <summary>Think, then click!</summary>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>recipes={'pbj': {'bread', 'jelly', 'peanut butter'}, 'smoothie': {'cocoa powder', 'oat milk', 'banana', 'peanut butter'}}
+chocolate_smoothie={'cocoa powder', 'oat milk', 'banana', 'peanut butter'}
+berry_smoothie={'cocoa powder', 'oat milk', 'peanut butter', 'banana', 'berries'}
+</code></pre></div>  </div>
+
+  <p>Notice that <code class="language-plaintext highlighter-rouge">recipes</code> has <em>changed</em>!</p>
+</details>
+
+<p>To help understand what’s going on, let’s draw a picture. Things like sets and dictionaries and lists in Python live someplace in memory. When we give a name to, say, a dictionary (saying <code class="language-plaintext highlighter-rouge">recipes = ...</code>) Python assigns the name to <em>a reference to that place in memory</em>. In this picture, we see <code class="language-plaintext highlighter-rouge">recipes</code> pointing to the actual dictionary table, stored in memory. Similarly, since the dictionary’s values are sets, <em>those</em> also have their own location in memory, which the dictionary stores.</p>
+
+<p><img src="/Lectures/images/lecture04_choices.png" alt="Two Possibilities" /></p>
+
+<p>The question is, what does <code class="language-plaintext highlighter-rouge">chocolate_smoothie</code> refer to, once we assign the name? There are two possibilities: either it refers to a new copy of the set (a new identity entirely!), or to the already-existing set that <code class="language-plaintext highlighter-rouge">recipes</code> refers to (an alias for an old identity!). Which do you think it is?</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

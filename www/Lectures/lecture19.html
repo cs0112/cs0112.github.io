@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Linked Lists (Part 1) | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Linked Lists (Part 1)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture19.html" />
+<meta property="og:url" content="/Lectures/lecture19.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-21T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linked Lists (Part 1)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-21T00:00:00+00:00","datePublished":"2024-10-21T00:00:00+00:00","description":"CSCI 0112","headline":"Linked Lists (Part 1)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture19.html"},"url":"/Lectures/lecture19.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="linked-lists">Linked Lists</h1>
+
+<p><a href="/Lectures/live/lecture19.py">Livecode link</a></p>
+
+<h2 id="another-use-for-objects">Another Use for Objects</h2>
+
+<p>So far, we’ve mostly used objects to represent real-world entities (animals etc.). We can also use objects to implement data structures.</p>
+
+<p>Let’s say we want a data structure that has the following operations:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">append(value)</code>: stores a value;</li>
+  <li><code class="language-plaintext highlighter-rouge">nth(n)</code>: retrieve the n-th value stored; and</li>
+  <li><code class="language-plaintext highlighter-rouge">remove(n)</code>: remove the n-th value stored (and move any later elements up an index).</li>
+</ul>
+
+<p>These operations should sound familiar: they are the core operations on lists. We saw a similar type in Pyret, too! The essential operations are the same. But what about the underlying implementation?</p>
+
+<h3 id="python-lists">Python Lists</h3>
+
+<p>Python’s lists are implemented using contiguous chunks of memory. We took advantage of this to create hash tables earlier in the semester.</p>
+
+<p><img src="https://i.imgur.com/pBvmbZv.png" alt="A Python List" /></p>
+
+<h3 id="pyret-lists">Pyret Lists</h3>
+
+<p>Pyret’s lists are different: they are constructed as a <em>linked</em> structure, where each link in the list contains a value and a reference to the next link. For reference, they’re defined more or less like this, as a datatype with two variants:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data List:
+  | empty
+  | link(fst, rst :: List)
+end
+</code></pre></div></div>
+
+<p>Here’s two pictures illustrating the difference.</p>
+
+<p><img src="https://i.imgur.com/Ozq2t8C.png" alt="A Pyret List" /></p>
+
+<p>Notice that the Pyret list is a bit more complicated. It’s constructed from links that might be scattered around in memory, and those links are connected via <em>references</em> to each link’s successor (or <code class="language-plaintext highlighter-rouge">empty</code>, which means the list has ended).</p>
+
+<p>I’ve used two colors to help contrast two different ways you’ll see these lists drawn. In reality, the arrows from link to link (shown in the black-colored list) are references to memory addresses (made explicit in the orange-colored list).</p>
+
+<p>This style of list is called a <em>Linked List</em> (because of how it’s structured like links in a chain).</p>
+
+<h3 id="so-whats-the-difference">So what’s the difference?</h3>
+
+<p>Both of these low-level data structures can provide all the features of a “list”: adding, removing, accessing the $n^{th}$ element, and so on. But how long does each operation take? E.g.,</p>
+<ul>
+  <li>Adding a new element to the end of the list:
+    <ul>
+      <li>Python lists can add new elements to the end of the list in constant ($O(1)$) time, <em>provided that there is unused room in the available block of memory</em>.</li>
+      <li>Pyret lists (at least as shown above, where the list reference just points to the first link) need to find the end of the list before they can add a new element, meaning they need linear ($O(n)$) time to add a new element to the end.</li>
+      <li>We could imagine an optimization to Pyret lists, where we store a reference to both the front <em>and</em> back of the list, which would let us add new elements in constant time.</li>
+    </ul>
+  </li>
+  <li>Finding the element at an arbitrary index $k$ into the list:
+    <ul>
+      <li>Python lists can find this element in constant time.</li>
+      <li>Pyret lists need to count forward $k$ elements.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>What are linked lists good for, then? That is, what are their advantages over the contiguous array implementation?</p>
+
+<p><strong>Exercise:</strong> Think about various operations on lists. Which might linked lists (Pyret style) have an advantage on?</p>
+
+<details>
+  <summary>Think, then click!</summary>
+
+  <p>Think about what happens if Python needs to insert a new element into the <em>middle</em> of a list. If the program is already “in the neighborhood” (that is, it knows the address of the element it will need to modify to add the new one) it doesn’t need to follow the chain of links. In this situation, a Pyret-style list can insert a new element in constant time.</p>
+
+</details>
+
+<h2 id="building-linked-lists-in-python">Building Linked Lists in Python</h2>
+
+<p>Could we build something similar to Pyret’s lists in Python? Yes! Let’s write down some examples first. In Pyret we might write:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>empty
+link(1, empty)
+link(1, link(2, empty))
+</code></pre></div></div>
+
+<p>Let’s make some classes that let us turn this into something we can write in Python. The picture above is a hint: we should probably have a kind of object to represent those links.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ListNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p>Now we can write <code class="language-plaintext highlighter-rouge">ListNode(1)</code> to represent the list storing the value <code class="language-plaintext highlighter-rouge">1</code>. But that’s not yet enough: we need to handle the first and third examples (the empty list, and a list with multiple elements).</p>
+
+<p>We’ll do this by adding another class, one that represents an entire list in itself. We’ll give it one field, <code class="language-plaintext highlighter-rouge">first</code>, to represent the first <code class="language-plaintext highlighter-rouge">ListNode</code> it contains. When we first make a <code class="language-plaintext highlighter-rouge">LinkedList</code>, it will be empty (represented by <code class="language-plaintext highlighter-rouge">None</code> in the <code class="language-plaintext highlighter-rouge">first</code> field).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LinkedList</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">first</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<h4 id="i-wonder">I wonder…</h4>
+
+<p>How would the picture of the Pyret linked list above change to account for this new <code class="language-plaintext highlighter-rouge">LinkedList</code> class? It’s not quite the same shape, and we’ll notice reasons why as we keep going.</p>
+
+<h4 id="what-if">What if…</h4>
+
+<p>Could we model linked lists more similarly to Pyret, with a <code class="language-plaintext highlighter-rouge">ListNode</code> object that takes <em>both</em> the value and the next node? Yes! We’d write something like:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ListNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="nb">next</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="nb">next</span>
+</code></pre></div></div>
+
+<p>Either option works. We’ll use the first version, however, because it will be useful later.</p>
+
+<h4 id="updating-our-examples">Updating our examples</h4>
+
+<p>Let’s translate those rough Pyret examples into Python code that creates them.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">empty</code> would be <code class="language-plaintext highlighter-rouge">LinkedList()</code>: just a list without any <code class="language-plaintext highlighter-rouge">ListNodes</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">link(1, empty)</code> would now be …</li>
+</ul>
+
+<p>Oh bother. We aren’t done; we need some way of <code class="language-plaintext highlighter-rouge">append</code>ing new values to an existing list. Right now, we can represent standalone nodes, but we can’t actually store them in the list without manually modifying the list’s fields (which is usually a bad idea).</p>
+
+<h2 id="implementing-append">Implementing <code class="language-plaintext highlighter-rouge">append</code></h2>
+
+<p>(All code in this section is in methods inside the <code class="language-plaintext highlighter-rouge">LinkedList</code> class; I’ve just left that out for readability.)</p>
+
+<p>Let’s start with an empty method:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>We’ll proceed, as we have before, by making a skeleton of the method and adding details as we go. When <code class="language-plaintext highlighter-rouge">append</code> is called with a new piece of <code class="language-plaintext highlighter-rouge">data</code> to add, what do we have to work with? Just:</p>
+<ul>
+  <li>the <code class="language-plaintext highlighter-rouge">data</code> value; and</li>
+  <li>the fields of the <code class="language-plaintext highlighter-rouge">LinkedList</code> being appended to, which the method calls <code class="language-plaintext highlighter-rouge">self</code>.</li>
+</ul>
+
+<p>Probably we’ll need to make a new <code class="language-plaintext highlighter-rouge">ListNode</code> object to hold the new data value, so let’s do that now:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_node</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now we need to add it into the list’s chain of nodes. The list gives us one field, <code class="language-plaintext highlighter-rouge">self.first</code>, which points to the first node in the list. We could certainly change it:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="bp">self</span><span class="p">.</span><span class="n">first</span> <span class="o">=</span> <span class="n">new_node</span>
+</code></pre></div></div>
+
+<p>Is that the right thing to do?</p>
+
+<h3 id="the-empty-list-case">The Empty-List Case</h3>
+
+<p>Well, <em>sometimes</em> it is. If the list is empty, there is no first node yet, so we’re free to just make the new node the first node in the list. But if the list already contains nodes, we need to traverse the list until we find the end, and then add the new node there. So we’ll split the function, leaving the second case unfinished for now:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>        
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">first</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># ??? need to update LATER in the list
+</span></code></pre></div></div>
+
+<h3 id="the-non-empty-list-case">The Non-Empty List Case</h3>
+
+<p>Now we need to do 2 things:</p>
+<ul>
+  <li>find the last node in the list; and</li>
+  <li>add the new node as its successor.</li>
+</ul>
+
+<p>Let’s solve these problems backwards. If we find the last node, making the new node its successor is straightforward:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">last_node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>(Remember that the new node will have <code class="language-plaintext highlighter-rouge">None</code> in its <code class="language-plaintext highlighter-rouge">next</code> field.)</p>
+
+<p>How can we get to the end of the list? We <em>could</em> use a loop, but this is also a great place for recursion, just like it was in Pyret. We can write a function that passes the obligation to add a new value down the list, until (eventually) that obligation can be met:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># internal helper method, not called from outside the class
+</span>    <span class="c1"># we'll use the double-underscore convention to label this as "private"
+</span>    <span class="k">def</span> <span class="nf">__append_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__append_to</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># this is the method that a caller would invoke
+</span>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">fst</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__append_to</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>And now we’ve written <code class="language-plaintext highlighter-rouge">append</code>.</p>
+
+<p>Or have we? We couldn’t write tests easily before, but now we can. And next time we’ll have other methods that we can use to make our tests even better.</p>
+
+<p>(I suggest looking at how the <code class="language-plaintext highlighter-rouge">append</code> method works in the VSCode debugger; it will help you see the sequence of steps that Python is taking to add elements to a progressively longer list.)</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

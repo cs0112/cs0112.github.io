@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Tree Structured Data (Web Documents) | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Tree Structured Data (Web Documents)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture12.html" />
+<meta property="og:url" content="/Lectures/lecture12.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-30T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Tree Structured Data (Web Documents)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-30T00:00:00+00:00","datePublished":"2024-09-30T00:00:00+00:00","description":"CSCI 0112","headline":"Tree Structured Data (Web Documents)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture12.html"},"url":"/Lectures/lecture12.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="tree-structured-data-web-documents">Tree Structured Data (Web Documents)</h1>
+
+<p><a href="/Lectures/live/lecture_12.py">HTML Livecode</a></p>
+
+<p><a href="/Lectures/live/htmltree.py">HTMLTree library</a></p>
+
+<h2 id="web-documents">Web documents</h2>
+
+<p>There’s a lot of useful data out there on the web. For example, <a href="https://en.wikipedia.org/wiki/Python">this</a> disambiguation page on Wikipedia for “Python”, or <a href="https://cs.brown.edu/courses/">this</a> list of courses offered by the CSCI department.</p>
+
+<p><b>Is there any data out there on the web that you’d like to be able to analyze, do computation over, or otherwise make use of?</b> Then you’re in luck: today we’re going to start a portion of the class devoted to working with the kind of data you’ll find on a webpage.</p>
+
+<p>You’re probably viewing these notes in your web browser. 
+Most browsers have a “View Source” menu item somewhere:</p>
+
+<ul>
+  <li>In Safari: Command + Option + U;</li>
+  <li>In (Windows) Firefox: Control + U;</li>
+  <li>In (MacOS) Firefox: Command + U.</li>
+</ul>
+
+<p>Use this option to open up the source of this page. What does the source look like? There’s a lot here, so instead let’s start with a simpler page: <a href="/Lectures/lecture12_html.html">this one</a>. (You can also find this on the CS department’s page <a href="https://cs.brown.edu/courses/csci0112/fall-2021/lectures/lectures-assets/simple.html">here</a>). Its source looks like this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>This is a page<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Here is a paragraph of text<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Another paragraph, with <span class="nt">&lt;strong&gt;</span>bold<span class="nt">&lt;/strong&gt;</span> text<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>And a list:
+      <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li&gt;</span>Item 1<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>Item 2<span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>And a bolded list:
+      <span class="nt">&lt;strong&gt;</span>
+        <span class="nt">&lt;ul&gt;</span>
+          <span class="nt">&lt;li&gt;</span>Item 1<span class="nt">&lt;/li&gt;</span>
+          <span class="nt">&lt;li&gt;</span>Item 2<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;/ul&gt;</span>
+      <span class="nt">&lt;/strong&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>What do we notice about the structure of this source?</p>
+
+<p>Webpages are generally written using this language, which is called HTML (short for Hyper-Text Markup Language). HTML is made up of <em>tags</em> (the things in angle brackets). A tag can contain text; it can also contain other tags, which can contain still more tags, and so on.</p>
+
+<p>Why does HTML look like this? Because HTML documents have structure. They aren’t just plain text: they have a header and a document body, formatting like paragraph and boldface text, and even formatted lists.</p>
+
+<p>We won’t really learn how to write HTML in this course. We will however, learn how to do <em>computations</em> over HTML documents in Python, because web pages can be an excellent source of data. If we want to extract that data and work with it, we need to be able to turn it into a useful form.</p>
+
+<p>So: how might we represent the HTML document above in a data structure?</p>
+<ul>
+  <li>We could hold the HTML document in a string, but a string doesn’t have any structure to it. It would be tough to do useful computation on just a string. For instance, we might want to look at the above document and extract all the entries in the <em>second</em> list. A string wouldn’t help us with that at all.</li>
+  <li>We could turn the document into a list of words, like we did with Frankenstein and The Death of Arthur. That gives us a little bit of structure (the document separated into words and the bracketed beginning and ending tags) but it’s also not ideal.</li>
+</ul>
+
+<p>The problem is that the tags are <em>nested</em>: tags contain tags which contain tags, and so on. So far we haven’t learned any data structures in Python that are good for working with that sort of document.</p>
+
+<h2 id="trees">Trees</h2>
+
+<p>Data with nested structure is quite common in computer science. In CSCI 0111, we saw one example: ancestry trees, recording the parents of individuals (and their parents, and their parents, and so on). Because this sort of data can resemble a family tree, we’ll call it <em>tree structured</em>. Let’s build a tree-shaped data structure for storing HTML documents.</p>
+
+<p>Our tree type will look like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">HTMLTree</span><span class="p">:</span>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">children</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s">""</span>
+</code></pre></div></div>
+
+<p>Each instance of the <code class="language-plaintext highlighter-rouge">HTMLTree</code> datatype represents a single tag. The name of the tag (<code class="language-plaintext highlighter-rouge">'p'</code>, <code class="language-plaintext highlighter-rouge">'strong'</code>, etc.) is in the <code class="language-plaintext highlighter-rouge">tag</code> field. The tag’s children are in the <code class="language-plaintext highlighter-rouge">children</code> field.</p>
+
+<p>In the HTML document above, there’s text contained within the tags in some places. In our HTMLTree class, we’ll represent these, not as values in the <code class="language-plaintext highlighter-rouge">text</code> field for arbitrary tags, but as objects with <code class="language-plaintext highlighter-rouge">tag</code> field equal to <code class="language-plaintext highlighter-rouge">'text'</code>. The actual text then goes in the text field. Objects with a <code class="language-plaintext highlighter-rouge">tag</code> value of <code class="language-plaintext highlighter-rouge">'text'</code> should never have children, if we’ve built them properly.</p>
+
+<p>If we wanted to represent the HTML linked above using this data structure, it might look something like this in memory:</p>
+
+<p><img src="/Lectures/images/lecture12_html.png" alt="" /></p>
+
+<h2 id="working-with-html">Working with HTML</h2>
+
+<p>Here’s how we’d create a very basic document in Python:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HTMLTree</span><span class="p">(</span><span class="s">"p"</span><span class="p">,</span> <span class="p">[</span><span class="n">HTMLTree</span><span class="p">(</span><span class="s">"text"</span><span class="p">,</span> <span class="p">[],</span> <span class="s">"Text in a paragraph"</span><span class="p">)])</span>
+</code></pre></div></div>
+
+<p>This corresponds to the HTML:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p&gt;</span>Text in a paragraph<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+
+<p>If our documents get much bigger, defining them by hand in Python like this is going to get pretty annoying. To help with this, we’ve written a little HTML library for the class (which is also where HTMLTree is defined). You can download the
+Python file from <a href="/Lectures/live/htmltree.py">this link</a>. There’s a function in the library to take a string of HTML and turn it into a tree. Here’s how you might use it to produce <code class="language-plaintext highlighter-rouge">HTMLTree</code>s from strings, alongside the purely-Python constructor approach:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">htmltree</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># directly via constructor
+</span><span class="n">tree1</span> <span class="o">=</span> <span class="n">HTMLTree</span><span class="p">(</span><span class="s">"p"</span><span class="p">,</span> <span class="p">[</span><span class="n">HTMLTree</span><span class="p">(</span><span class="s">"text"</span><span class="p">,</span> <span class="p">[],</span> <span class="s">"Text in a paragraph"</span><span class="p">)])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tree1</span><span class="p">)</span>
+<span class="c1"># parsed into an HTMLTree via our helper code
+</span><span class="n">tree2</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s">'&lt;p&gt;Some other text&lt;/p&gt;'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tree2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We can also print out the HTML string a tree corresponds to by using the provided <code class="language-plaintext highlighter-rouge">print_html</code> function:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; print_html(tree)
+&lt;p&gt;Text in a paragraph&lt;/p&gt;
+</code></pre></div></div>
+
+<p>This is enough to start working with the HTML source of webpages. Over the next few days, we’ll build the skills needed to search, generate statistics over, and even edit HTML documents. And these skills aren’t just about HTML. Tree-shaped data is common. In fact, you’ve been working with tree-shaped data all semester without thinking much about it.</p>
+
+<p><strong>Exercise:</strong> What other tree-structured data formats have you used a lot already? Think about examples from other things you’ve studied at and before Brown.</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>Elm trees, oak trees, …</p>
+
+  <p>Ok, no, seriously: here are three tree-shaped formats you may be familiar with:</p>
+  <ul>
+    <li>taxonomies, org-charts, biological parentage, etc.;</li>
+    <li>algebraic expressions;</li>
+    <li>Python (and Pyret, and Java, and…) code; and</li>
+    <li>the English language.</li>
+  </ul>
+
+  <p>Expressions you might enter into your calculator are all tree-shaped. Consider something like <code class="language-plaintext highlighter-rouge">(1+2)*(17/4)</code>. The operators are intermediate nodes in the tree, and the numbers are the leaf nodes at the bottom. The same goes for more complicated algebraic expressions. Indeed, the order of operator precedence we all learned in algebra class exists to help us draw the proper tree for an expression: turning something ambiguous like <code class="language-plaintext highlighter-rouge">1 + 2 * 3</code> into an unambiguous tree, where the order of operations is explicit.</p>
+
+  <p>Every time you run a Python program, the <code class="language-plaintext highlighter-rouge">python3</code> executable first turns your program text into something called an <em>abstract syntax tree</em>, which it then tries to optimize and run. You can look at any of the programs you’ve written, and see if you can break it up into a tree: functions and classes at the top level, etc. In fact, Python’s indentation reinforces the idea of the syntax tree.</p>
+
+  <p>If you’ve ever diagrammed a sentence in English class, you’ve done manual computation over tree-shaped data. This word is a noun; that word is a verb. And so on.</p>
+
+</details>
+
+<h2 id="a-note-on-python-vs-pyret-lists-">A Note on Python vs. Pyret lists <a name="lists"></a></h2>
+
+<p>This isn’t strictly about trees, but it will come up in a lab soon.</p>
+
+<p>Earlier this week, we used the fact that Python’s lists are <em>contiguous blocks of memory</em> to build very fast set and dictionary data structures. If you took 0111, you might recall that Pyret’s lists don’t work that way. Instead, they are built up recursively—very like the way we built the <code class="language-plaintext highlighter-rouge">HTMLTree</code> dataclass. Here’s a sketch of the difference:</p>
+
+<p><img src="/Lectures/images/lecture12_pyret_lists.png" alt="" /></p>
+
+<p>You haven’t yet been able to exercise all the skills you developed in 0111 to work with Pyret lists. But those skills are about to become valuable, because, computationally speaking, trees look an awful lot like Pyret lists: they’re a <em>linked</em> data structure, rather than made from one block of memory; the difference is that instead of having a single successor (as in a Pyret list) here a node has multiple successors. 
+&lt;!–</p>
+<h4 id="what-does-that-mean">What does that mean?</h4>
+
+<p><strong>Exercise:</strong> how would I write a function that measures the <em>depth</em> of an HTML Tree? (Hint: start with how you’d measure the size of a Pyret list, and adapt that idea to work for trees.) –&gt;</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

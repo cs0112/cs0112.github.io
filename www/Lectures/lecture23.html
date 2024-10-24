@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Web Scraping | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Web Scraping" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture23.html" />
+<meta property="og:url" content="/Lectures/lecture23.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-16T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Web Scraping" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-16T00:00:00+00:00","datePublished":"2024-10-16T00:00:00+00:00","description":"CSCI 0112","headline":"Web Scraping","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture23.html"},"url":"/Lectures/lecture23.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="web-scraping">Web Scraping</h1>
+
+<p>The <a href="/Lectures/live/webscraping.py">livecode prep</a>.</p>
+
+<p>The <a href="/Lectures/live/webscraping_inclass.py">in-class livecode</a>.</p>
+
+<h2 id="lab-and-project-3">Lab and Project 3</h2>
+
+<p>This week we’re introducing a new way to get data: web scraping. Since HTML is tree-based, this is a great chance to get more practice working with tree-shaped data.</p>
+
+<p>When Project 3 is released, you’ll analyze data obtained <em>in the wild</em>! That is to say, you’ll be scraping data directly from the web. Once you’ve got that data, the tasks are structurally similar to what you did for Homework 1.</p>
+
+<p>Web scraping involves more work than reading in data from a file. Sites are structured in a general way, but the specifics of each site you have to discover yourself (often with some trial and error involved). And, since these are live websites, someone might change the shape of the data at any time!</p>
+
+<h3 id="looking-ahead-to-apis">Looking Ahead to APIs</h3>
+
+<p>There’s another way to get data from the web that we’ll offer a lab on in the near future: APIs. Don’t think of web scraping as the <em>only</em> way to obtain data. More on that soon.</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>I’m going to run you through a demo, that’s colored by my own experiences learning how to web scrape. We’ll use 2 libraries in Python that you might not have installed yet:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">bs4</code> (used for parsing and processing HTML; think of this as a more professional, more robust version of the HTMLTree we wrote earlier in the semester); and</li>
+  <li><code class="language-plaintext highlighter-rouge">requests</code> (used for sending web requests and processing the results).</li>
+</ul>
+
+<p>You should be able to install both of these via <code class="language-plaintext highlighter-rouge">pip3</code>. On my Mac, this took 2 commands at the terminal:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip3 install bs4
+pip3 install requests
+</code></pre></div></div>
+
+<p>If you have multiple installations of Python, you might use:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 -m pip install bs4
+python3 -m pip install requests
+</code></pre></div></div>
+
+<p>where <code class="language-plaintext highlighter-rouge">python3</code> is the installation you’re using for this class.</p>
+
+<h2 id="goals">Goals</h2>
+
+<p>Today we’ll write a basic web-scraping program that extracts data from the CSCI 0112 course webpage. In particular, we’re going to get the names of all the homeworks, along with their due-dates, available to work with in Python. If time permits, we’ll do the same (with help from you!) for the list of staff members.</p>
+
+<h4 id="testing">Testing</h4>
+
+<p>Depending on how complex your web-scraping program is, testing it can sometimes be challenging. Why?</p>
+
+<details>
+<summary><b>Think, then click!</b></summary>
+    Because you're testing your script against a moving target! Sites can change, be reformatted, go down, etc. So you'll likely want to test on a static HTML page that you've stored locally. But even that can be challenging if you need to scrape data from pages that change in response to input or other events.
+    
+There are advanced testing techniques that address these challenges, but for this class we won't expect you to use them. Testing on static pages saved in a file is a good idea, though! 
+</details>
+
+<h4 id="documentation">Documentation</h4>
+
+<p>Throughout this class, we’ll consult the 
+<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">BS4 Documentation</a>, and you should definitely use the docs to help you navigate the HTML trees that you scrape from the web.</p>
+
+<h4 id="general-sketch">General sketch</h4>
+
+<p>We’ll use the following recipe for web scraping:</p>
+<ul>
+  <li>Step 1: Make a web request for the desired page, and obtain the result (using the <code class="language-plaintext highlighter-rouge">requests</code> library);</li>
+  <li>Step 2: Parse the content of the reply (the raw HTML) into a <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> object (the <code class="language-plaintext highlighter-rouge">bs4</code> library does that for us);</li>
+  <li>Step 3: Extract the information we want from the <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> tree into a reasonable data structure.</li>
+  <li>Step 4: Use that data structure for the computation we desire.</li>
+</ul>
+
+<h2 id="step-1-getting-the-data">Step 1: Getting the data</h2>
+
+<p>Getting the content of a static web page is pretty straightforward. We’ll use the <code class="language-plaintext highlighter-rouge">requests</code> library to ask for the page, like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Give a convenient name to the URL
+</span><span class="n">assignments_url</span> <span class="o">=</span> <span class="s">"https://cs0112.github.io/Pages/assignments.html"</span>
+<span class="c1"># Send a GET request, obtain the text
+</span><span class="n">assignments_text</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">assignments_url</span><span class="p">).</span><span class="n">content</span>
+</code></pre></div></div>
+<p>Note that <code class="language-plaintext highlighter-rouge">.content</code> at the end; that’s what gets the <em>text</em>; if we leave that off we’ll have an object containing more information about the response to the request. If you forget this, you’re likely to get a confusing and annoying error message: 
+<code class="language-plaintext highlighter-rouge">TypeError: object of type 'Response' has no len()</code>.</p>
+
+<h2 id="step-2-parsing-the-data">Step 2: Parsing the data</h2>
+
+<p>Now we’ll give that text to beautiful soup, to be converted into a (professional-grade, robust) HTML tree:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">assignments_page</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">assignments_text</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s">'html.parser'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This returns a tree node, just like our more lightweight <code class="language-plaintext highlighter-rouge">HTMLTree</code> class from before. What’s with <code class="language-plaintext highlighter-rouge">'html.parser'</code>? This is just a flag telling the library how to interpret the text (the library can also parse other tree-shaped data, like XML).</p>
+
+<p>If we print out <code class="language-plaintext highlighter-rouge">assignments_page</code> it will look very much like the original text. This is because the class implements <code class="language-plaintext highlighter-rouge">__repr__</code> in that way; under the hood, <code class="language-plaintext highlighter-rouge">assignments_page</code> really is an object representing the root of an HTML tree. And we can look at the docs to find out how to use it. For instance: <code class="language-plaintext highlighter-rouge">assignments_page.title</code> ought to be the title of the page.</p>
+
+<p>Unlike our former <code class="language-plaintext highlighter-rouge">HTMLTree</code>s, which added a special <code class="language-plaintext highlighter-rouge">text</code> tag for text, <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> objects can give you the text of any element directly. E.g., <code class="language-plaintext highlighter-rouge">assignments_page.text</code>.</p>
+
+<h2 id="step-3-extracting-information-the-hard-part">Step 3: Extracting Information (The Hard Part)</h2>
+
+<p>We’d like to extract the contents of some of these table cells. 
+<img src="https://i.imgur.com/JdFWaco.png" alt="" /></p>
+
+<p>Concretely, we want the name and due-date of each assignment. Let’s aim to construct a dictionary with those as the keys and values. But these cells are buried deep down inside an HTML Tree. Yeah, we have a <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> object for that tree, but how should we navigate to the information we need?</p>
+
+<p>Modern browsers usually have an “inspector” tool that lets you view the source of a page. Often, these will highlight the area on the page corresponding to each element. Here’s what the inspector looks like in Firefox, highlighting the first <code class="language-plaintext highlighter-rouge">&lt;table&gt;</code> element on the page:</p>
+
+<p><img src="https://i.imgur.com/kG7xF7C.png" alt="" /></p>
+
+<p>This is a great way to explore the structure of the HTML document and identify the location you want to isolate. Using the inspector, we can discover that there are 2 <code class="language-plaintext highlighter-rouge">&lt;table&gt;</code> elements in the document, and that the first table is the one we’re interested in.</p>
+
+<p>Beautiful Soup provides a <code class="language-plaintext highlighter-rouge">find_all</code> method that is useful for this sort of goal:</p>
+
+<pre><code class="language-python=">hw_table = assignments_page.find_all('table')[0]
+</code></pre>
+
+<p>Looking deeper into the HTML tree via Firefox’s inspector, we see that we’d like to extract all the rows from that first table:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">hw_rows</span> <span class="o">=</span> <span class="n">hw_table</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'tr'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Unfortunately, there is a snag: the header of the table is itself a row. We’d like to remove that row from consideration, otherwise we’ll get an entry in the dictionary whose key is <code class="language-plaintext highlighter-rouge">'Assignment'</code> and whose value is <code class="language-plaintext highlighter-rouge">'Due'</code>.</p>
+
+<p>There are a few ways to fix this. Here, we might use a list comprehension to retain only the rows which contain <code class="language-plaintext highlighter-rouge">&lt;td&gt;</code> elements. It would also work to remove the rows which contain <code class="language-plaintext highlighter-rouge">&lt;th&gt;</code> (table header) elements. We could also simply look only within the <code class="language-plaintext highlighter-rouge">&lt;tbody&gt;</code> element:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">homework_rows</span> <span class="o">=</span> <span class="n">first_table</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'tbody'</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="n">find_all</span><span class="p">(</span><span class="s">'tr'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Next, we’ll use a <em>dictionary comprehension</em> to concisely build a dictionary pairing for each row, containing the assignment name and date:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cleaned_hw_cells</span> <span class="o">=</span> <span class="p">{</span><span class="n">row</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'td'</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="n">text</span> <span class="p">:</span> <span class="n">row</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'td'</span><span class="p">)[</span><span class="mi">3</span><span class="p">].</span><span class="n">text</span> 
+                    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">homework_rows</span><span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>Notice that getting text from each table cell was easy. But, for clarity, I sometimes like to make a helper function for each. Like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">scrape_homework_row_due</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="s">'''Nested helper to processes a table row and return a _value_ to place in our dictionary'''</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'td'</span><span class="p">)[</span><span class="mi">3</span><span class="p">].</span><span class="n">text</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Our old HTMLTree library added special <code class="language-plaintext highlighter-rouge">&lt;text&gt;</code> tags for text, but Beautiful Soup just lets us get the <code class="language-plaintext highlighter-rouge">text</code> inside an element directly.</p>
+
+<h3 id="whats-the-general-pattern">What’s the general pattern?</h3>
+
+<p>Here, we found the right table, then isolated it. Then we built and cleaned a list of rows in that table. And finally we extracted the columns we wanted.</p>
+
+<p>This is a common pattern when you’re building a web scraper. You’ll find yourself repeatedly alternating between Python and the inspector, gradually refining the data you’re scraping.</p>
+
+<h3 id="how-could-this-break">How could this break?</h3>
+
+<p>I might add new assignments, but fortunately the script is written independent of the number of rows in the table.</p>
+
+<p>If I swap the order of tables, or add another table before the homework one, the script would break. Likewise, if I change column orders, add new columns, remove a column, etc. that might also break the script.</p>
+
+<p>These are all realistic problems in web-scraping, because you’re writing code against an object that the site owner or web dev might change at any moment. But at least we’d like to write a script that won’t break under common, normal modifications (like adding a new homework).</p>
+
+<h2 id="a-cleaned-up-end-result">A Cleaned-Up End Result</h2>
+
+<p>Here’s a somewhat cleaner implementation. It also contains something we didn’t get to in class: a scraper to extract staff names from the staff webpage. (It turned out that this was more complicated, because the the staff names are best identified by looking at the element class)</p>
+
+<p>I’ve also added, at the end, an example of how to test with a static, locally-stored HTML file.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span> 
+<span class="kn">from</span> <span class="nn">requests</span> <span class="kn">import</span> <span class="n">get</span>
+
+<span class="c1"># pip3 install bs4
+# pip3 install requests
+</span>
+<span class="c1"># I like to have a variable name for the URL, because otherwise the code below can get verbose.
+</span><span class="n">assignments_url</span> <span class="o">=</span> <span class="s">"https://cs0112.github.io/Pages/assignments.html"</span>
+<span class="n">staff_url</span>       <span class="o">=</span> <span class="s">"https://cs0112.github.io/Pages/staff.html"</span> 
+
+<span class="c1"># send a GET request and obtain the response (we imported this function)
+</span><span class="n">assignments_response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">assignments_url</span><span class="p">)</span>
+<span class="c1"># get the HTML content of the response as text
+</span><span class="n">assignments_text</span> <span class="o">=</span> <span class="n">assignments_response</span><span class="p">.</span><span class="n">content</span>
+<span class="c1"># create a BeautifulSoup object tree that we can easily explore
+# the 'html.parser' parameter says what language we're parsing. This parser
+# is much more sophisticated than the toy one we used a few weeks ago. 
+</span><span class="n">assignments_page</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">assignments_text</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s">'html.parser'</span><span class="p">)</span>
+
+<span class="c1"># By default, this only prints a response code; 200 means successful for us
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'assignments_response: </span><span class="si">{</span><span class="n">assignments_response</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+<span class="c1"># But the content of the reply contains more info: the HTML as a raw string 
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'assignments_text: </span><span class="si">{</span><span class="n">assignments_text</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+<span class="c1"># Finally, the object containing the explorable tree
+#   (This class has a very nice __repr__ method! Note the indentation.)
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'assignments_page: </span><span class="si">{</span><span class="n">assignments_page</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">scrape_homeworks</span><span class="p">(</span><span class="n">page</span><span class="p">:</span> <span class="n">BeautifulSoup</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s">'''Accepts a BeautifulSoup tree of the 0112 homeworks page, and returns a homework dictionary'''</span>
+    <span class="c1"># We noticed that the homeworks were in the _first_ HTML Table
+</span>    <span class="n">first_table</span> <span class="o">=</span> <span class="n">page</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'table'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># We noticed that the table body contained rows, one row per homework
+</span>    <span class="n">homework_rows</span> <span class="o">=</span> <span class="n">first_table</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'tbody'</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="n">find_all</span><span class="p">(</span><span class="s">'tr'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">homework_rows</span><span class="p">)</span><span class="si">}</span><span class="s"> rows.'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">scrape_homework_row_name</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="s">'''Nested helper to process a table row and return a _key_ to place in our dictionary'''</span>
+        <span class="c1"># Eliding type hints for some of this, because they get difficult. the .text field of 
+</span>        <span class="c1">#   an element returns its text, and then we use Python's string.strip() method to remove
+</span>        <span class="c1">#   blank spaces, etc.
+</span>        <span class="n">cells</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'td'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">text</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">scrape_homework_row_due</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="s">'''Nested helper to processes a table row and return a _value_ to place in our dictionary'''</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'td'</span><span class="p">)[</span><span class="mi">3</span><span class="p">].</span><span class="n">text</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span>
+    
+    <span class="n">homework_assignments</span> <span class="o">=</span> <span class="p">{</span><span class="n">scrape_homework_row_name</span><span class="p">(</span><span class="n">row</span><span class="p">):</span> <span class="n">scrape_homework_row_due</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> 
+                            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">homework_rows</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">homework_assignments</span>
+
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'scraped homeworks: </span><span class="si">{</span><span class="n">scrape_homeworks</span><span class="p">(</span><span class="n">assignments_page</span><span class="p">)</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="c1">########################################################
+## staff names
+</span>
+<span class="n">staff_page</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="n">staff_url</span><span class="p">).</span><span class="n">content</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s">'html.parser'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">scrape_staff_names</span><span class="p">(</span><span class="n">page</span><span class="p">:</span> <span class="n">BeautifulSoup</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="c1"># Doesn't deliver anything
+</span>    <span class="c1"># names = [name.find('span').strip() for name in page.find_all('staff-name')]
+</span>    <span class="c1"># Look for a header-3 element with "class name" 
+</span>    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">page</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'h3'</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s">'staff-name'</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">names</span>
+
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'scraped staff names: </span><span class="si">{</span><span class="n">scrape_staff_names</span><span class="p">(</span><span class="n">staff_page</span><span class="p">)</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="c1">###################################################
+### How can I test this with a local HTML file? ###
+</span>
+<span class="c1"># test_file = open('downloaded.html', 'r')
+# test_text = test_file.read()
+# test_file.close()
+# test_page = BeautifulSoup(test_text, features='html.parser')
+# Now use test_page as you would something you scraped from the web
+</span></code></pre></div></div>
+
+<h2 id="optional-classes-in-bs4-anticipated-error-message">Optional: Classes in BS4, Anticipated Error Message</h2>
+
+<p>Last year in class, we tried chaining <code class="language-plaintext highlighter-rouge">find_all</code> calls like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">assignments_page</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'table'</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="n">find_all</span><span class="p">(</span><span class="s">'tr'</span><span class="p">).</span><span class="n">find_all</span><span class="p">(</span><span class="s">'td'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>and got a very nice error message, like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s">"/usr/local/lib/python3.9/site-packages/bs4/element.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2253</span><span class="p">,</span> <span class="ow">in</span> <span class="n">__getattr__</span>
+    <span class="k">raise</span> <span class="nb">AttributeError</span><span class="p">(</span>
+<span class="nb">AttributeError</span><span class="p">:</span> <span class="n">ResultSet</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">'find_all'</span><span class="p">.</span> <span class="n">You</span><span class="s">'re probably treating a list of elements like a single element. Did you call find_all() when you meant to call find()?
+&gt;&gt;&gt; 
+</span></code></pre></div></div>
+
+<p>I was surprised, because the <code class="language-plaintext highlighter-rouge">list</code> that <code class="language-plaintext highlighter-rouge">find_all</code> produces has no <code class="language-plaintext highlighter-rouge">find_all</code> attribute, sure, but Beautiful Soup would have no way to interpose this luxurious and informative error on lists.</p>
+
+<p>The answer to <em>how</em> they did this is in the text of the error. It’s just that <code class="language-plaintext highlighter-rouge">find_all</code> doesn’t actually return a list. It returns a <code class="language-plaintext highlighter-rouge">ResultSet</code>, which is where this error is implemented. Python lets us treat a <code class="language-plaintext highlighter-rouge">ResultSet</code> like a list because various methods are implemented, like <code class="language-plaintext highlighter-rouge">__iter__</code> and others, which tell Python how to (say) loop over elements of the <code class="language-plaintext highlighter-rouge">ResultSet</code>.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

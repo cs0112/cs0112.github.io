@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Binary Search Trees (Part 1) | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Binary Search Trees (Part 1)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture24.html" />
+<meta property="og:url" content="/Lectures/lecture24.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-11-01T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Binary Search Trees (Part 1)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-11-01T00:00:00+00:00","datePublished":"2024-11-01T00:00:00+00:00","description":"CSCI 0112","headline":"Binary Search Trees (Part 1)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture24.html"},"url":"/Lectures/lecture24.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="binary-search-trees">Binary Search Trees</h1>
+
+<p>Today we’re going to combine what we learned about linked lists and HTML Trees to build a new type of data structure. It’s slightly more complex, but along the way we’ll pick up useful tools and valuable intuition.</p>
+
+<p>Here’s an example of the data structure we’ll be building. It’s a tree, but not an HTML tree:</p>
+
+<p><img src="https://i.imgur.com/CAA40Hz.png" alt="" /></p>
+
+<h3 id="what-do-you-notice-about-this-tree">What do you notice about this tree?</h3>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>Two things you might notice (among others) are:</p>
+  <ul>
+    <li>Every node has at most 2 children. Some have 2, some have 1, and some have 0. We call trees like this <em>binary trees</em>.</li>
+    <li>If you scan the tree left-to-right, it’s <em>sorted</em>.  (What is it about the structure of the tree that guarantees that? Could we express it as something that’s true for every individual node of the tree?)</li>
+  </ul>
+
+</details>
+<p><br /></p>
+
+<p>A <em>Binary Search Tree</em> is a binary tree, with the requirement that, for all nodes $N$ in the tree:</p>
+<ul>
+  <li>left descendants have value less than the value of $N$; and</li>
+  <li>right descendants have value greater than the value of $N$.</li>
+</ul>
+
+<p>(We’ll support duplicate values later; for now let’s assume that the tree is only storing one of any given value.)</p>
+
+<h3 id="what-could-we-do-if-we-wanted-to-find-9-in-the-tree">What could we do if we wanted to find 9 in the tree?</h3>
+
+<p>Like most trees, we’ll have to start at the <em>root</em>. The root’s value is 7, so if we’re looking for 9, we immediately know that we should go <em>right</em>: the property we identified above guarantees that we’ll never find a 9 to the left of the root.</p>
+
+<p><img src="https://i.imgur.com/3OWqiF4.png" alt="" /></p>
+
+<p>Something very important just happened. Because we could rule out the left subtree, our search could <em>ignore half the tree</em>.
+And then another half of the remaining tree:</p>
+
+<p><img src="https://i.imgur.com/xle8NHK.png" alt="" /></p>
+
+<p>Then, when we visit the 10 node, we know we need to go left but there’s nothing there. So 9 cannot be in the tree.</p>
+
+<p><img src="https://i.imgur.com/uuns4uK.png" alt="" /></p>
+
+<h3 id="what-just-happened">What just happened?</h3>
+
+<p>We seem to be reducing the “work” by half every time we descend.</p>
+
+<p>The tree stores 7 numbers, but we only had to visit and examine 3 of the nodes in the tree. Concretely, we needed to visit at most one node for every level of the tree.</p>
+
+<p>What’s the relationship between the number of nodes that a binary tree can store, and its depth?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>depth 1: 1 node
+depth 2: 3 nodes
+depth 3: 7 nodes
+depth 4: 15 nodes
+depth 5: ...
+</code></pre></div></div>
+
+<p>Since the number of nodes that can be stored at every depth <em>double</em> when the depth increases, this will be an exponential progression: $2^d - 1$ nodes total, for a tree of depth $d$.</p>
+
+<p>So: what’s the performance of <em>searching for a value</em> in one of these trees, if the tree has $n$ nodes? It’s the inverse relationship: $2^d - 1$ nodes means the depth of the tree is $O(log_2(n))$. Computer scientists will often write this without the base: $O(log(n))$. This is the “logarithmic time” you may have seen before: not as good as constant time, but pretty darn good!</p>
+
+<p>If you’re seeing a possible snag in the above argument, good. We’ll get there!</p>
+
+<h4 id="i-wonder-if-bsts-only-work-on-numbers">I wonder if BSTs only work on numbers?</h4>
+
+<p>We can apply BSTs to any datatype we have a total ordering on. Strings, for instance, we might order alphabetically. It’s not about numeric value, it’s about less-than and greater-than.</p>
+
+<h3 id="how-would-we-add-a-number-to-a-tree">How would we add a number to a tree?</h3>
+
+<p>Suppose I want to add $4$ to this tree. What new binary trees might we imagine getting as a result? Here are 4 different places we could put 4. Are some better than others?</p>
+
+<p><img src="https://i.imgur.com/IWKQs41.png" alt="" /></p>
+
+<details>
+    <summary><b>Think, then click!</b></summary>
+Adding 4 below the 10 and 6 would violate the BST condition:
+    * 10 is in the _left_ subtree of 7, but 4 is less than 7;
+    * 6 is in the _right_ subtree of 5, but 4 is less than 5. 
+    
+This is a great example of how the BST requirement applies to _all_ descendants of a node, not just its children. To see why, what would happen if we searched for 4 after adding it in one of these two ways?
+    
+Separately, changing the entire left subtree of 7 just to add 4 seems like a great deal of work, compared to adding it below 3.
+</details>
+
+<p>We’d like to insert a new value with as little work as possible. If we have to make sweeping adjustments to the tree, we run the risk of taking linear time to update it. It’d be great if, for instance, we could add a new value in logarithmic time.</p>
+
+<p>If we want to add nodes in logarithmic time, what’s the intuition? Ideally, we’d like to avoid changes that aren’t local to a single path down the tree. What might that path be?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>We’ll <em>search for the value</em> we’re trying to insert. If we don’t find it, we’ve found a place where it could go. Adding it will be a local change: just adjust its new parent’s left or right child field.</p>
+
+</details>
+
+<h3 id="tree-structure-matters">Tree structure matters</h3>
+
+<p>Here’s another BST with the same values:</p>
+
+<p><img src="https://i.imgur.com/GXI7hww.png" alt="" /></p>
+
+<p>Let’s search for 20 in this tree.</p>
+
+<p><img src="https://i.imgur.com/EkVp4PK.png" alt="" /></p>
+
+<p>That doesn’t look like $O(log n)$. That looks like $O(n)$: an operation per node. What’s going on here?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>The tree’s <em>balance</em> is important. Our worst-case bounds above only applied if the tree is balanced. Adding new nodes can push trees out of balance, after which they need correction. We won’t worry about auto-balancing yet; future courses show auto-balancing variants of what we’ll build today.</p>
+
+</details>
+
+<h2 id="implementing-bsts">Implementing BSTs</h2>
+
+<p>We’ll get to this next time!`</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

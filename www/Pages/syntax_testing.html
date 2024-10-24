@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Python Syntax and Testing Guide | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Python Syntax and Testing Guide" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Pages/syntax_testing.html" />
+<meta property="og:url" content="/Pages/syntax_testing.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Python Syntax and Testing Guide" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Python Syntax and Testing Guide","url":"/Pages/syntax_testing.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="python-syntax-and-testing-guide">Python Syntax and Testing Guide</h1>
+
+<h2 id="testing">Testing</h2>
+
+<ol>
+  <li>All functions require examples/test cases, including helper functions.</li>
+  <li>Examples/test cases should reflect various input scenarios so that you exercise the possible main behaviors of your function. You do not need to test every input or every input combination, but rather enough to be confident that your function works with various inputs.</li>
+  <li>Test the “edge cases” of functions. For example, functions that take in numeric inputs and work differently depending on the range that number is in should test the boundaries of those ranges.</li>
+  <li>Even if your function does not work as expected, you can still write examples/test cases for it and receive full testing credit.</li>
+  <li>If a function has a side effect (like modifying a list), <strong>test that side effect</strong>.</li>
+  <li>If a function both has a side effect <em>and</em> returns information, test <strong>both the main return and the side effect</strong>.</li>
+  <li>If a function modifies (or mutates) data, set up testing data rather than working on a global piece of data/dataset.</li>
+  <li>You can find out about how to test exceptions <a href="https://dev.to/wangonya/asserting-exceptions-with-pytest-8hl">here</a> and <a href="http://doc.pytest.org/en/latest/assert.html">here</a>.</li>
+</ol>
+
+<h2 id="design">Design</h2>
+
+<ol>
+  <li>Use constants where appropriate.</li>
+  <li>Use helper functions where appropriate.</li>
+  <li>Make sure your helper functions and constants are not redundant.
+ There is no point in making the following function since you could always use s.lower() instead.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> def string_to_lower(s: str) -&gt; str:
+     return s.lower()
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="clarity">Clarity</h2>
+
+<ol>
+  <li>
+    <p>Write docstrings for all functions, including helper and nested functions.</p>
+
+    <p>A good docstring gives a description of the function, including its input(s) and output. Ideally, by looking at the docstring you know what the function does and how to use it without looking at the function body itself.</p>
+  </li>
+  <li>
+    <p>Give constants and helper functions useful names.</p>
+  </li>
+  <li>
+    <p>All functions require type annotations on inputs and output. You can omit output annotation for functions that have no return (for example functions that only need to <code class="language-plaintext highlighter-rouge">print</code>).</p>
+  </li>
+  <li>
+    <p>Names of constants and functions should be lower case and underscore separated. For configuration constants (for example the height of a character) it is acceptable to use all caps names.</p>
+  </li>
+  <li>
+    <p>Keep lines under 120 characters.</p>
+  </li>
+  <li>Indent your code properly and keep arguments of functions lined up:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> def func_name(long_parameter_1: int, long_parameter_2: str
+                 long_parameter_3: list, long_parameter_4: list) -&gt;  int:
+     ...
+
+ func_name(long_argument_1, long_argument_2,
+             long_argument_3, long_argument_4):
+     ...
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">return</code> statements should be be written like this:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> return value
+</code></pre></div>    </div>
+    <p><strong>not</strong> like this:</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> return(value)
+</code></pre></div>    </div>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">if</code> statements should be written with new lines:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> if condition1:
+     print('condition1')
+ elif condition2:
+     print('condition2')
+ else:
+     print('condition3')
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Welcome to CS0112 | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Welcome to CS0112" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture01.html" />
+<meta property="og:url" content="/Lectures/lecture01.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-04T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Welcome to CS0112" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-04T00:00:00+00:00","datePublished":"2024-09-04T00:00:00+00:00","description":"CSCI 0112","headline":"Welcome to CS0112","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture01.html"},"url":"/Lectures/lecture01.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="welcome-to-csci-0112">Welcome to CSCI 0112</h1>
+
+<p>Welcome to CSCI 0112!</p>
+
+<p>Today we’re going to do a little bit of discussion, set the stage for the class, and learn about some historical context.</p>
+
+<h2 id="how-to-use-these-notes">How to use these notes</h2>
+
+<p>Notes in 0112 contain pauses for in-class exercises where appropriate. So if you’re reading these notes without having been in lecture, and you see a collapsible section, don’t immediately expand it. Think about the question first! If you don’t, you’ll be robbing yourself of a chance to participate and learn.</p>
+
+<p>So that you can spot them in the future, exercises will look like the following:</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>Answer here!</p>
+</details>
+<p><br /></p>
+
+<p>The answers I give in lecture notes are frequently not the <i>only</i> reasonable answer; in class someone often gives a good answer that wasn’t in my notes! <b>So don’t worry about whether my answer is the same as yours.</b></p>
+
+<p>All notes in 0112 are written by Tim Nelson (the current instructor). In some cases, they are adapted from material by Doug Woos, Kathi Fisler, Rob Lewis, and others involved with the development of the course.</p>
+
+<h2 id="what-is-good-code">What is “good” code?</h2>
+
+<p>You’ve probably written several programs before—likely in CSCI 0111, although some of you may have had different first courses in programming. So you’re starting to develop a sense of what might make a program “good” or not. What do you think makes a program “good”?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>Frequent answers to this question include:</p>
+
+  <ul>
+    <li>readability</li>
+    <li>extensibility</li>
+    <li>performance</li>
+    <li>fitness to purpose</li>
+    <li>positive impact on the world, rather than negative</li>
+    <li>safety or robustness against error</li>
+  </ul>
+
+  <p>This semester, we’ll learn how to write programs that are “better” in all of these ways. Since this is a shortened lecture, we won’t dive in very deep today, but we’ll talk about a useful historical example.</p>
+</details>
+<p><br /></p>
+
+<h2 id="landing-humans-on-the-moon">Landing Humans on the Moon</h2>
+
+<p align="center"><i>(And returning them safely to the earth!)</i></p>
+
+<p><a href="https://en.wikipedia.org/wiki/Margaret_Hamilton_(software_engineer)">Margaret Hamilton</a> was the Director of the Software Engineering Division at MIT’s Draper Laboratory in the 60s. Among other things, she was in charge of the team that developed the in-flight software that ran on the Apollo 11 mission, which took humans to the Moon. She was also one of the inventors of the term “software engineering”, which describes the study of how to effectively build reliable software.</p>
+
+<p>How many lines of code would you guess were in the Apollo in-flight system?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>About 145,000.</p>
+</details>
+
+<p>In CSCI 0111, you mostly wrote programs that were less than 100 lines of code or so (usually much less). When writing a program of that size, you might be able to hold the whole thing in your head at once–the whole thing might even fit on your screen! When you’re writing 145,000 lines of code, that’s probably not possible.</p>
+
+<p>Is this a problem? Why?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>Because software is written by people.</p>
+
+  <p>The Apollo 11 team had to be able to reliably think about particular pieces of code in isolation, without worrying about the details of other parts of the code. That’s a lot harder than it may sound. In a large system, it’s very easy for one component to influence the behavior of another. This means that techniques for developing components in isolation are vital.</p>
+
+  <p>If the Apollo 11 team hadn’t managed that, lives would have been put at risk.</p>
+</details>
+
+<p>An example of this kind of technique: functions! When you write a function that does some particular task, the code you write that calls the function doesn’t need to worry about the function’s body. We’ll be talking a lot about other similar ideas in 0112.</p>
+
+<h3 id="what-did-their-code-look-like-anyway">What did their code look like, anyway?</h3>
+
+<p>By the way, here’s a chunk of the Apollo 11 code we grabbed at random (the source code is available <a href="https://github.com/chrislgarry/Apollo-11">here</a>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SETWO           TC      WOZERO          # GO SET WORD ORDER CODE TO ZERO.
+        +1      CA      DNECADR         # RELOAD A WITH THE DNADR.
+        +2      AD      MINB1314        # IS THIS A REGULAR DNADR?
+                EXTEND
+                BZMF    FETCH2WD        # YES.  (A MUST NEVER BE ZERO)
+                AD      MINB12          # NO.  IS IT A POINTER (DNPTR) OR A
+                EXTEND                  #       CHANNEL(DNCHAN)
+                BZMF    DODNPTR         # IT'S A POINTER.  (A MUST NEVER BE ZERO)
+
+DODNCHAN        TC      6               # (EXECUTED AS EXTEND)  IT'S A CHANNEL
+                INDEX   DNECADR
+                INDEX   0       -4000   # (EXECUTED AS READ)
+                TS      L
+                TC      6               # (EXECUTED AS EXTEND)
+                INDEX   DNECADR
+                INDEX   0       -4001   # (EXECUTED AS READ)
+                TS      DNECADR         # SET DNECADR
+                CA      NEGONE          #       TO MINUS
+                XCH     DNECADR         #               WHILE PRESERVING A.
+                TCF     DNTMEXIT        # GO SEND CHANNELS
+</code></pre></div></div>
+
+<p>I can’t completely understand what this code does, because I don’t know the language. But let’s look at it together anyway. We can learn things from it without understanding it. What do you <em>notice</em> about this code?</p>
+
+<p><br /></p>
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>Here are a couple of the things I noticed:</p>
+  <ul>
+    <li>Almost every line of code has a comment explaining what it’s doing! (The comments are the bits after the # on each line)</li>
+    <li>Nevertheless, the code is pretty hard to read. It’s written in a very old, very low-level programming language called AGC assembly language.</li>
+  </ul>
+
+  <p>Luckily, in this class you’ll be working in Python, not AGC assembly language. Python has built-in support for the kinds of software engineering techniques and concepts we’ll learn in the course, like functions. <b>However, clean code with well-isolated components can be written in any programming language!</b> Modern languages just make it easier.</p>
+</details>
+<p><br /></p>
+
+<p>As an aside: Apollo 11 had 145,000 lines of code. Google has about 2 billion lines of code (as of 2020). Part of what makes that possible is that Google’s code is mostly written in languages like Python, not in AGC assembly language, and can take advantage of modern methods of organization and engineering.</p>
+
+<h2 id="measure-twice-cut-once">Measure twice, cut once</h2>
+
+<p>Carpentry, and other physical engineering disciplines, have a saying: “Measure Twice, Cut Once!”. Why is this so important for them? <strong>Cost</strong>! If you’re building something, and cut a piece of lumber too short, make the cut in the wrong direction versus the grain, you may have to pay:</p>
+<ul>
+  <li>a cost in materials (you likely need an entirely new piece of wood); and</li>
+  <li>the cost in time (all the effort involved in preparing the wood up to that point is lost). 
+So if you find yourself building something, measure twice! Measuring three times would be OK too.</li>
+</ul>
+
+<p>Fortunately, we don’t have the same problem when we’re building <em>software</em>, right? Because code is just data, you never really lose any materials if you make a mistake. And because compilers are pretty fast these days, you lose hardly any time at all.</p>
+
+<p>Stop. <strong>Think carefully</strong>. It’s very comforting to us as engineers to think that our mistakes won’t have as much impact as they might in other disciplines. We might have even heard similar statements from important, experienced, revered people. The above paragraph might even be correct <em>from a certain point of view</em>.</p>
+
+<p>So: <strong>stop and think carefully.</strong> Is it actually the case, for you, as a working software engineer, that your mistakes are “free”? Look for the costs.</p>
+
+<details>
+  <summary>Think, then click!</summary>
+
+  <ul>
+    <li>If you haven’t kept backups of your code from <em>before</em> you broke it, you might have to re-create it. Even if you’ve got backups, finding the right version might take a lot of work.</li>
+    <li>If you discover your error late, it’s going to be harder to fix. For a physical-engineering example, see the <a href="https://en.wikipedia.org/wiki/Millennium_Bridge,_London">London Millennium Bridge</a>. For a software example, see literally every entry in <a href="https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=windows">this list of historical Windows security bugs</a>.</li>
+    <li>Is recompiling the fix <em>really</em> the biggest time sink when you have a bug? You’ve fixed bugs before—did any of them that weren’t typos take less time to fix than they took to compile? Very few. Focusing on compilation time is outdated and misleading.</li>
+    <li>At scale, all these factors become even worse! Different pieces of code, and duplicates of the same code, might be running on different machines around the world.</li>
+    <li>Is time <em>really</em> the main factor here? We’re humans, and we (at time of writing) are limited by the nature of the human hybrid chemical/electric brain. We get tired, and work less efficiently. We get angry or frustrated, and work less efficiently. We all have a limited amount of executive, creative, social, and analytical energy. Debugging chews up mental resources you could have spent in other ways. In class, I’ll call this resource “brain juice”, and it’s why sometimes you can angrily debug for hours, go to sleep, and solve the problem in 2 minutes after waking up.</li>
+  </ul>
+</details>
+<p><br /></p>
+
+<p>There are at least three takeaways. First, bugs <em>aren’t</em> cheap. It’s worth learning to think about how we write code, what we’re trying to accomplish when we do, and approach fixing problems carefully. Second, we might have more in common with physical engineering disciplines than you might at first think. Third, <em>always think critically</em> about glib and comforting generalizations.</p>
+
+<p>We’ll return to this topic from a few angles as the semester continues.</p>
+
+<h2 id="some-logistics">Some Logistics</h2>
+
+<p>See the webpage for assignment, etc. due dates. The first assignment goes out today! It’s meant as a review of Python skills, but for some of you it might introduce a couple new concepts. So that you can engage with this, we’ll be grading the first Python homework <em>for participation and engagement</em>; focus on your learning more than points.</p>
+
+<h3 id="accommodations">Accommodations</h3>
+
+<p>You can read more about my accommodations philosophy in the <a href="https://cs0112.github.io/Pages/course-missive.html">course missive</a>, but I want to emphasize that I mean it. And, especially right now, I want to make sure that all my students can engage with my courses in a healthy way. If that is ever not the case, reach out. I’ll listen.</p>
+
+<h3 id="notes-from-tim">Notes from Tim</h3>
+
+<p>I am fully vaccinated, and yet will still sometimes wear a mask.  One of the things I hope we learn from the pandemic here in the U.S. is being considerate of others when we’re ill. (If you’re sick, please wear a mask, or don’t come to class. Being considerate of others won’t be penalized.)</p>
+
+<p>I can sometimes have hearing problems in certain classrooms. (This is a hidden reason why I tend to bounce around and get close to people who are asking questions; I’m not just excited to hear you, but I also just want to hear you!) Please don’t be shy about speaking up, and be patient if I ask you to repeat yourself.</p>
+
+<p>I have ADHD. To keep myself from getting too off-track or over time in lectures and office hours, I will sometimes need to cut off great questions or fun discussions. Please forgive me if I do this, and never hold back questions because of it. My lectures (even in a large class) run on interaction, and so I try to strike a balance. And finally, I’m not ignoring your email; please ping me if I don’t answer in a reasonable amount of time—if you want to schedule a meeting, suggest a concrete set of times.</p>
+
+<h3 id="any-questions-worries-goals">Any questions? Worries? Goals?</h3>
+
+<p>I like to spend some time learning about your goals, needs, and worries about the class. Since I don’t know what you’re going to say yet, I can’t put anything in the notes! Instead, I’ll be handing out note cards in person, and have prepared a <a href="https://forms.gle/Ss3jeLsL395GJNHa7">Google form</a>. I want to include those who are unable to make it in person today.</p>
+
+<p>Any remaining time in class will be devoted to Q&amp;A about the course.</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>
