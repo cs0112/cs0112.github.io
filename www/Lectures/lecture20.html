@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Linked Lists (Part 2) | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Linked Lists (Part 2)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture20.html" />
+<meta property="og:url" content="/Lectures/lecture20.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-28T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linked Lists (Part 2)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-28T00:00:00+00:00","datePublished":"2024-10-28T00:00:00+00:00","description":"CSCI 0112","headline":"Linked Lists (Part 2)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture20.html"},"url":"/Lectures/lecture20.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <!-- NOTE: the next lecture is lecture "23" (web scraping). 
+     Lecture 21 is "bonus content". These are a bit out of order now. -->
+
+<h1 id="linked-lists-part-2">Linked Lists (Part 2)</h1>
+
+<p>We left off having defined a <code class="language-plaintext highlighter-rouge">LinkedList</code> class with some basic methods. The code from last time is <a href="/Lectures/live/lecture19.py">here</a>, and by the time this class is over we’ll end up <a href="/Lectures/live/lecture20.py">here</a>. <strong>Importantly, in class I polled the audience on what they might want <code class="language-plaintext highlighter-rouge">LinkedList</code> to do.</strong> The notes here contain different functionality than the livecode will, because I wanted to respect that spirit of inquiry! The Python docs that I referred to are <a href="https://docs.python.org/3/library/functions.html#len">here</a>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ListNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="k">class</span> <span class="nc">LinkedList</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">first</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__append_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__append_to</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">first</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">__append_to</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Without implementing more, it’s hard to test that our append method is doing what we expect! So let’s keep going and make our class more complete. It’s easy to guess what we might want to add, since the actions available to a <code class="language-plaintext highlighter-rouge">LinkedList</code> should be pretty similar to those available for a normal Python list.</p>
+
+<h2 id="length">length</h2>
+
+<p>First: length. We’ll follow exactly the same pattern as <code class="language-plaintext highlighter-rouge">append</code>, with a case distinction on whether there’s a first element, and a recursive helper method that walks down the elements of a nonempty list.</p>
+
+<p>Help me with this one! We should be able to copy the code for <code class="language-plaintext highlighter-rouge">append</code> and modify it only a little bit.</p>
+
+<details>
+  <summary>Think, then click!</summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__length_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">__length_from</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__length_from</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+  <p>The <code class="language-plaintext highlighter-rouge">__length_from</code> method starts at some node in our list, and counts the number of nodes that come after it (including itself). This is done recursively: if nothing comes after, return 1. Otherwise, count the length from <code class="language-plaintext highlighter-rouge">next</code>, and add 1 to that length.</p>
+
+</details>
+
+<p>There are two important things to notice here. First of all, <code class="language-plaintext highlighter-rouge">length</code> and <code class="language-plaintext highlighter-rouge">__length_from</code> return a value, instead of modifying the list like <code class="language-plaintext highlighter-rouge">append</code>. So we need <code class="language-plaintext highlighter-rouge">return</code> in both the base and recursive cases. If the recursive case read <code class="language-plaintext highlighter-rouge">1 + self.__length_from(node.next)</code> (without the <code class="language-plaintext highlighter-rouge">return</code>), it would compute the correct length, but we couldn’t access its value afterward.</p>
+
+<p>Second, even though we don’t use the <code class="language-plaintext highlighter-rouge">self</code> argument in <code class="language-plaintext highlighter-rouge">__length_from</code>, we have to include it if <code class="language-plaintext highlighter-rouge">__length_from</code> is a method of the <code class="language-plaintext highlighter-rouge">LinkedList</code> class. This is a little ugly, and indeed, it feels unnecessary. We could implement <code class="language-plaintext highlighter-rouge">__length_from</code> as a regular function instead. Even better, we could implement it internally to the <code class="language-plaintext highlighter-rouge">length</code> function. After all, nobody should be calling <code class="language-plaintext highlighter-rouge">__length_from</code> except from inside <code class="language-plaintext highlighter-rouge">length</code>! So an alternative way to write this would be:</p>
+
+<pre><code class="language-python=">    def length(self) -&gt; int:
+        def length_from(node: ListNode) -&gt; int:
+            if not node.next:
+                return 1
+            return 1 + length_from(node.next)
+        
+        if not self.first:
+            return 0
+        return length_from(self.first)
+</code></pre>
+
+<p>Either way, we can add some test cases that make sure our function works well with <code class="language-plaintext highlighter-rouge">append</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">l</span> <span class="o">=</span> <span class="n">LinkedList</span><span class="p">()</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"hello"</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"world"</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="access-the-nth-value">Access the nth value</h2>
+
+<p>The next useful part of a list interface is a function to access the <code class="language-plaintext highlighter-rouge">n</code>th value of a list. Here we have to be careful with the input. What if it’s too high, or negative? Python lists throw an exception, so we’ll do the same. More on this on Monday!</p>
+
+<p>Note that if <code class="language-plaintext highlighter-rouge">n</code> is at least 0, and strictly less than the length of the list, the list cannot be empty. (In that case the length of the list would be 0.) So in <code class="language-plaintext highlighter-rouge">nth</code>, our bound check on <code class="language-plaintext highlighter-rouge">n</code> rules out that base case already.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">__nth_from</code> method is interesting. Like <code class="language-plaintext highlighter-rouge">__length_from</code>, we have a base case and a recursive case. But the base case checks whether <code class="language-plaintext highlighter-rouge">n == 0</code> instead of whether <code class="language-plaintext highlighter-rouge">node.next</code> is <code class="language-plaintext highlighter-rouge">None</code>. This makes sense, because we want to stop our recursion when we reach the node we’re looking for, which might not be the end of the list! Instead, we recur with the value <code class="language-plaintext highlighter-rouge">n-1</code>, since taking <code class="language-plaintext highlighter-rouge">n</code> steps from <code class="language-plaintext highlighter-rouge">node</code> is the same as taking <code class="language-plaintext highlighter-rouge">n-1</code> steps from <code class="language-plaintext highlighter-rouge">node.next</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__nth_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__nth_from</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">nth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">"index out of range"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">__nth_from</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Note the lack of type annotations. We don’t know what type of value <code class="language-plaintext highlighter-rouge">nth</code> or <code class="language-plaintext highlighter-rouge">nth_from</code> will produce, because our lists are <em>heterogenous</em>—they could contain any types of data in any combination. We don’t know in advance what type of value is stored in <code class="language-plaintext highlighter-rouge">data</code>. If we had a list that was <em>homogenous</em> (containing some type we don’t know in advance, but guaranteed to be the same) we could use a type variable.</p>
+
+<p>Again, let’s add some tests.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">l</span> <span class="o">=</span> <span class="n">LinkedList</span><span class="p">()</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"hello"</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s">"hello"</span><span class="p">)</span>
+
+<span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">"world"</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s">"hello"</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">l</span><span class="p">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s">"world"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Try out what happens if you ask for a value that’s out of range.</p>
+
+<h2 id="repr">repr</h2>
+
+<p>Finally, if we want to see the entire list we’re building, we can implement <code class="language-plaintext highlighter-rouge">repr</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__repr_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s">", "</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">__repr_from</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="nb">next</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"[]"</span>
+        <span class="k">return</span> <span class="s">"["</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">__repr_from</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">first</span><span class="p">)</span> <span class="o">+</span> <span class="s">"]"</span>
+</code></pre></div></div>
+
+<p>Next time, we’ll build on all this to explore another new data structure: binary search trees.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

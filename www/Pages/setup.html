@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Setup Instructions | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Setup Instructions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Pages/setup.html" />
+<meta property="og:url" content="/Pages/setup.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Setup Instructions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Setup Instructions","url":"/Pages/setup.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link active" href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+  <!--<header class="post-header">-->
+  <!--  <h1 class="post-title">Setup Instructions</h1>-->
+  <!--</header>-->
+  <div class="post-content">
+    <p><br />
+Welcome to CS112! To complete and submit course assignments, you’ll need to set up your development environment. Follow these instructions to get started:</p>
+
+<h2 id="part-1-visual-studio-code-vscode">Part 1: Visual Studio Code (VSCode)</h2>
+
+<p>VSCode is a powerful, lightweight code editor that we’ll use throughout the course.</p>
+
+<h3 id="installation">Installation</h3>
+
+<ol>
+  <li>Visit the <a href="https://code.visualstudio.com/">Visual Studio Code website</a> and download the appropriate version for your operating system.</li>
+  <li>Follow the installation prompts to complete the setup.</li>
+</ol>
+
+<h3 id="setting-up-line-length-indicator">Setting Up Line-Length Indicator</h3>
+
+<p>Long lines can make your code less readable, especially on smaller screens or when viewing multiple files. We recommend a maximum of 120 characters per line. Here’s how to add a visual guide in VSCode:</p>
+
+<ol>
+  <li>Open Settings in VSCode:
+    <ul>
+      <li>On Mac: Go to <strong>Code &gt; Preferences &gt; Settings</strong></li>
+      <li>On Windows/Linux: Go to <strong>File &gt; Preferences &gt; Settings</strong></li>
+    </ul>
+  </li>
+  <li>In the search bar, type “Editor: Rulers”</li>
+  <li>Click “Edit in settings.json” under the “Editor: Rulers” setting
+<img src="/Pages/vscode/setting_rulers.png" alt="" /></li>
+  <li>In the <code class="language-plaintext highlighter-rouge">settings.json</code> file that opens, add or modify the “editor.rulers” setting as follows:</li>
+</ol>
+
+<pre><code>"editor.rulers": [
+   120
+]
+</code></pre>
+
+<ol>
+  <li>
+    <p>Save the <code class="language-plaintext highlighter-rouge">settings.json</code> file</p>
+  </li>
+  <li>
+    <p>You should now see a vertical line at column 120, as pictured below:</p>
+
+    <p><img src="/Pages/vscode/ruler_example.png" alt="" /></p>
+  </li>
+</ol>
+
+<h3 id="configuring-vscode-for-python">Configuring VSCode for Python</h3>
+
+<p>Next, you’ll need to install the Python extension for VSCode:</p>
+
+<ol>
+  <li>Open VSCode after installation.</li>
+  <li>Go to the Extensions view by clicking on the square icon in the left sidebar or pressing <code class="language-plaintext highlighter-rouge">Ctrl+Shift+X</code> (Windows/Linux) or <code class="language-plaintext highlighter-rouge">Cmd+Shift+X</code> (Mac).</li>
+  <li>Search for “Python” in the extensions marketplace.</li>
+  <li>Install the official Python extension by Microsoft.</li>
+</ol>
+
+<h3 id="useful-vscode-features">Useful VSCode Features</h3>
+
+<ul>
+  <li>
+    <p><img src="./vscode/explorer.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Explorer:</strong> Allows you to choose what folders and files to open. If no folder is open, clicking <strong>Open Folder</strong> will allow you to open a folder from your computer and show its files in this tab for easy access.</p>
+  </li>
+  <li>
+    <p><img src="./vscode/search.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Search:</strong> Allows you to quickly search over all files in the currently opened folder. You can also open search by pressing ⇧⌘F.</p>
+  </li>
+  <li>
+    <p><img src="./vscode/source_control.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Source Control:</strong> This tab lets you interact with Git. Knowing and using Git is completely optional for this course.</p>
+  </li>
+  <li>
+    <p><img src="./vscode/debug.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Run and Debug:</strong> Displays all options relevant to running and debugging the program you are writing. You can also open this tab using the keyboard shortcut ⇧⌘D.</p>
+  </li>
+  <li>
+    <p><img src="./vscode/extensions.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Extensions:</strong> Allows you to download extensions for different languages and tools. The only extension necessary for this course is the Python extension, which you should have already installed.</p>
+  </li>
+  <li>
+    <p><img src="./vscode/tests.png" style="width: 2em; height: 2em; vertical-align: middle" /> <strong>Testing:</strong> You can run tests using this tab if test files are in the locations that it expects. Using this is entirely optional; assignments will direct you to run tests by running <code class="language-plaintext highlighter-rouge">pytest</code> in the terminal.</p>
+  </li>
+</ul>
+
+<h2 id="part-2-python">Part 2: Python</h2>
+
+<p>You must have a Python version from 3.7.x+ for this course.</p>
+
+<p>If you think you already have Python installed, check which version you have installed by running <code class="language-plaintext highlighter-rouge">python3 --version</code> in your terminal or command prompt. (You can open a terminal in VSCode by clicking <strong>Terminal</strong> &gt; <strong>New Terminal</strong>.)</p>
+
+<p>Otherwise, follow the instructions <a href="https://www.python.org/downloads/">here</a> to download and install the correct version for your device. Please do not install versions outside the range specified previously as they will not work with the stencil code provided.</p>
+
+<h3 id="verifying-installation">Verifying Installation</h3>
+
+<ol>
+  <li>Open VSCode and access the integrated terminal.</li>
+  <li>Type <code class="language-plaintext highlighter-rouge">python3 --version</code> and press Enter.</li>
+  <li>You should see output like <code class="language-plaintext highlighter-rouge">Python 3.x.x</code>.</li>
+</ol>
+
+<p>If you don’t see this or encounter any errors, please reach out to a TA for assistance.</p>
+
+<h2 id="part-3-setting-up-pytest">Part 3: Setting Up PyTest</h2>
+
+<p>PyTest is a testing framework for Python that we’ll use in this course.</p>
+
+<ol>
+  <li>Open the VSCode terminal.</li>
+  <li>Run the following command:</li>
+</ol>
+<pre><code>pip3 install pytest</code></pre>
+<ol>
+  <li>Verify the installation by running:</li>
+</ol>
+<pre><code>pytest --version</code></pre>
+<p>You should see output indicating the installed version of PyTest.</p>
+
+<h2 id="using-pytest">Using PyTest</h2>
+
+<ul>
+  <li>When writing test files, always include <code class="language-plaintext highlighter-rouge">import pytest</code> at the top of your file.</li>
+  <li>Name your test functions ending with <code class="language-plaintext highlighter-rouge">*_test.py</code>.</li>
+  <li>To run tests, use the command <code class="language-plaintext highlighter-rouge">pytest [test_file_name.py]</code> in the terminal.</li>
+</ul>
+
+<h2 id="gradescope">Gradescope</h2>
+
+<p>You should be enrolled in the course on Gradescope. If you are not, please reach out to a TA. Once you are enrolled, you can log in to Gradescope using your school email. We grade anonymously, so you should not include your name in any of your submissions.</p>
+
+<h2 id="need-help">Need Help?</h2>
+
+<p>If you encounter any issues during setup or have questions, don’t hesitate to:</p>
+<ul>
+  <li>Post on EdStem (our course discussion forum)</li>
+  <li>Attend office hours</li>
+  <li>Email the course staff at <a href="mailto:cs112-staff@lists.brown.edu">cs112-staff@lists.brown.edu</a></li>
+</ul>
+
+  </div>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

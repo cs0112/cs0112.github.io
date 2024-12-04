@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Web APIs | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Web APIs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Labs/Lab%206/lab6.html" />
+<meta property="og:url" content="/Labs/Lab%206/lab6.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Web APIs" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Web APIs","url":"/Labs/Lab%206/lab6.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link active" href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Lab 6:
+    
+    Web APIs
+  </h2>
+</header>
+
+
+
+  
+  
+    
+  
+
+  
+      <p class="notice"><a href="/Labs/Lab 6/Lab 6.pptx">View presentation</a></p>
+  
+
+  <h2 id="section-1-background--ฅﻌฅ">Section 1: Background  ฅ^•ﻌ•^ฅ</h2>
+
+<p>Tim’s cat Nim is near and dear to his heart. In his pursuit to be the best owner there ever was, he will stop at nothing. Learning cat facts? Checking the weather to make sure the temperature is just right? Real time stock data? Searching French addresses? Anything. As his trusty student, you can help him be a purr-fect cat owner.</p>
+
+<h2 id="section-2-working-with-web-apis">Section 2: Working with Web APIs</h2>
+
+<div class="stencil" data-source="lab6.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview lab6.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>lab6.py</code>
+    </a>
+    <a href="lab6.py" download="" class="stencil-download" title="Download lab6.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy lab6.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<h3 id="part-1-make-a-simple-request">Part 1: Make a Simple Request</h3>
+
+<p>Now, let’s practice making some requests and retrieving information from urls. In Python, the requests library has all of the functionality you’ll need. Let’s start by installing the requests library - in your terminal run:</p>
+
+<pre><code>$ pip3 install requests</code></pre>
+
+<p>Now we’re going to try and make a request to a cat facts website and get a cat fact. The cat facts website returns a JSON with a fact in it. To see the format of the json, feel free to copy and paste the url into a web browser. The cat facts url we are using is https://catfact.ninja/fact, and it does not take in any parameters.</p>
+
+<p class="notice"><strong>Task 1:</strong> Make a get request to the <a href="https://catfact.ninja/fact">cat facts URL</a> and print out the fact!</p>
+
+<p><strong>Hint:</strong> We want only the fact to be printed out — don’t just print the JSON! Remember to access and print just the fact, refer to the slides for more information on accessing elements in a JSON.</p>
+
+<details>
+<summary>What is a JSON?</summary>
+
+JavaScript Object Notation (JSON) is a standard syntax for exchanging this sort of structured information. JSON syntax is very similar to Python dictionary syntax. Information is stored as key-value pairs of various types. Like in Python, a JSON object could have a string key whose value is a string, a list or a whole other dictionary.
+</details>
+
+<h3 id="part-2-national-weather-service">Part 2: National Weather Service</h3>
+
+<p>Now that Tim has a fact about cat, he wants to know the weather in Providence to know if it’s a good day to take Nim out for a walk. The National Weather Service (NWS) provides a free API that we can use to get weather information. Professional APIs tend to be <a href="https://www.weather.gov/documentation/services-web-api">well-documented</a>, which makes it a good example. We’ll also use the NWS because, while many professional APIs require registration and the use of an API key to use them, the NWS API is free and requires no registration.</p>
+
+<p class="notice"><strong>Task 2:</strong> Navigate to the <a href="https://www.weather.gov/documentation/services-web-api">NWS API documentation</a> and read through the documentation to understand how to use the API. Check the Examples tab to see how to make a request.</p>
+
+<p>Let’s get weather information for Providence. Our geocordinates here are:	<code class="language-plaintext highlighter-rouge">41.8268, -71.4029</code>. According to the docs, we can start by sending a points query with these coordinates <code class="language-plaintext highlighter-rouge">https://api.weather.gov/points/41.8268,-71.4029</code>.</p>
+
+<p>Extracting Meaning
+See the documentation to understand the meaning of specific fields in the response. At a high level, this query tells us which NWS grid location Providence is in, along with telling us URLs for common queries about that grid location. The NWS API needs you to work with it in stages.</p>
+
+<p class="notice"><strong>Task 3:</strong> Extract the forecast URL and make a request. Print out the temperature for this afternoon and tonight.</p>
+
+<h3 id="part-3-exploration-of-api">Part 3: Exploration of API</h3>
+
+<p>For this section, we want you to explore a different API. <a href="https://github.com/public-apis/public-apis">Here</a> is a link to some public APIs to choose from. The only requirements are that you use a different endpoint.</p>
+
+<p class="notice"><strong>Task 4:</strong> Print out something interesting about your selected endpoint.</p>
+
+<h2 id="section-3-youre-all-set--ᐠ-----マ-ᶻ-𝗓-𐰁">Section 3: You’re All Set!  /ᐠ˵- ˕ - ˵マ ᶻ 𝗓 𐰁</h2>
+
+<p>Success! Now you too can be an amazing cat owner (and also use APIs). If you have any lingering confusion, please be sure to ask a TA as you will be working with APIs in Project 3. That’s all for lab this week!</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

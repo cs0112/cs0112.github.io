@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Climate Simulator | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Climate Simulator" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Projects/Climate%20Simulator/climate_sim.html" />
+<meta property="og:url" content="/Projects/Climate%20Simulator/climate_sim.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Climate Simulator" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Climate Simulator","url":"/Projects/Climate%20Simulator/climate_sim.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Project 2:
+    
+    Climate Simulator
+  </h2>
+</header>
+
+
+
+  
+  
+
+  
+
+  <p class="notice"><strong>Design Checks:</strong> October 9th – October 16th<br />
+<strong>Design Check due:</strong> October 18th 9:00 PM ET<br />
+<strong>Implementation:</strong> October 22th 9:00 PM ET</p>
+
+<p><strong>Note:</strong> This project is to be completed with a partner. You are encouraged to work with different partners for each project. You will be assigned a partner by October 11th. Both partners must be present at the Design Check meeting.</p>
+
+<p>This project aims to build a simplified climate simulator for Earth to predict potential climate changes based on various factors. While our simulation is somewhat simplified compared to real models, it’s designed to balance realism with the programming skills you’ve learned so far in the course. We recommend you read through the entire project description before starting to get a sense of the scope and requirements!</p>
+
+<h2 id="background">Background</h2>
+
+<p>Environmental scientists have determined a near-linear relationship between tonnes of carbon dioxide (CO2) and global surface temperature increases. In other words, the more CO2 we produce, the hotter our globe will be. Based on the most recent work from the <a href="https://www.ipcc.ch">Intergovernmental Panel on Climate Change (IPCC)</a>, if global temperatures increase 3.0°C from pre-industrial levels, global catastrophes like droughts, peak biodiversity losses, and extreme temperature changes will continue to unravel and exacerbate all across the world. To read more about the adverse impacts of rising global temperature levels, see <a href="https://www.ipcc.ch/sr15/chapter/chapter-3/">the report</a>.</p>
+
+<p>By building a graphical simulator, we can see how much various countries contribute to global warming over time. We will also be implementing various policies that will impact how much CO2 a country emits.</p>
+
+<p>The simulator will primarly be based on these two figures from the IPCC:</p>
+
+<p><img src="/Projects/Climate%20Simulator/global_temp_emissions.png" alt="Global Temperature and Carbon Emissions" /></p>
+
+<p>This first image represents the linear relationship between carbon emitted over time and global surface temperature increases.</p>
+
+<p><img src="/Projects/Climate%20Simulator/impact_15_20.png" alt="Impact of 1.5 and 2.0 degree temperature increases" /></p>
+
+<p>This second image demonstrates that the climbing global temperatures will carry disproportionate impacts on local regions across the globe.</p>
+
+<h2 id="setup">Setup</h2>
+
+<div class="stencil" data-source="climate_simulator.zip">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview climate_simulator.zip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>climate_simulator.zip</code>
+    </a>
+    <a href="climate_simulator.zip" download="" class="stencil-download" title="Download climate_simulator.zip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy climate_simulator.zip to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>The project includes several components: the simulator (which you will write), the country policies (which you will write), and the display (which is provided to you).</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">display.py</code> is the graphical display that runs the simulator and presents a graphical portrayal of Earth. We’ve provided this for you; you shouldn’t need to do any work to use this.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">simulator.py</code> is the engine that simulates the process of time on Earth. It tracks the countries on Earth and their policies, the amount of CO2 in the atmosphere, the current year, and computes global temperatures. You will implement the simulator.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">policies.py</code> are the country policies that you will implement. Each of these classes will need to implement methods for the simulator to call in order to determine a country’s emissions.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">test_mocking.py</code>, <code class="language-plaintext highlighter-rouge">test_simulator.py</code> and <code class="language-plaintext highlighter-rouge">test_policies.py</code> are the test files for the simulator and policies, respectively. You should write tests for each of the methods you implement in these files.</p>
+  </li>
+</ul>
+
+<h2 id="project-roadmap">Project Roadmap</h2>
+
+<p>As you work through this project, you will need to complete the following tasks:</p>
+
+<ol>
+  <li>Read through this document in its entirety.</li>
+  <li>Setup: Download the project’s stencil code from the link above.</li>
+  <li>Design Check: Complete the Design Check questions due by October 18th at 10:00 PM ET.</li>
+  <li>Implement the country policies.</li>
+  <li>Implement the simulator.</li>
+  <li>Write tests for your simulator and policies.</li>
+</ol>
+
+<p><strong>Note:</strong> Refer to the course <a href="https://cs0112.github.io/Pages/design-recipe.html">design recipe</a> and apply it to your functions.</p>
+
+<h2 id="project-component-details">Project Component Details</h2>
+
+<h3 id="part-1-the-display">Part 1: The Display</h3>
+
+<p>The display is implemented for you in <code class="language-plaintext highlighter-rouge">display.py</code>. It has one button: the step button, which calls <code class="language-plaintext highlighter-rouge">advance_year</code> once. The rest of the interface displays the countries and temperatures reported by the simulator, as well as the current year.</p>
+
+<p>You can run the display by running <code class="language-plaintext highlighter-rouge">python3 main.py</code> in your VSCode terminal. If that doesn’t work, try using <code class="language-plaintext highlighter-rouge">python main.py</code> instead. This initializes the display, the simulator, and two policies that have been hardcoded (you will need to change this as part of the assignment!).</p>
+
+<p><img src="graphic_display.png" width="600" /></p>
+
+<p>As you’re working with all these different modules, keep in mind the way they depend on each other:</p>
+<ul>
+  <li>The main module creates the simulator and populates it with countries and strategies, then starts up the display on that simulator;</li>
+  <li>The display invokes the simulator to discover how the world is changing over time; and</li>
+  <li>The simulator invokes each country’s policy to discover how that country would react to the current global situation so that it can simulate the global situation appropriately.</li>
+</ul>
+
+<h3 id="part-2-the-simulator">Part 2: The Simulator</h3>
+
+<p>The simulator is implemented as a class Simulator in the simulator.py file. The simulator tracks the amount of cumulative carbon emissions (in gigatonnes, or, GtCO2) in the atmosphere and the average temperature of each country. The Display calls the Simulator’s advance_year function to simulate the passing of one year in time. The Display also calls the Simulator’s report function to generate a report of the countries on Earth and their current temperatures.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">Simulator</code> class has some attributes that you will need to use in your implementation:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">time</code>: The current year of the simulation. The simulation starts in 2010.</li>
+  <li><code class="language-plaintext highlighter-rouge">country_names</code>: A list of the names of countries in the simulation.</li>
+  <li><code class="language-plaintext highlighter-rouge">country_policies</code>: A dictionary mapping country names to their policy objects.</li>
+  <li><code class="language-plaintext highlighter-rouge">country_temperatures</code>: A dictionary mapping country names to their current temperature.</li>
+  <li><code class="language-plaintext highlighter-rouge">initial_country_temps</code>: A dictionary mapping country names to their initial temperature in year 0.</li>
+  <li><code class="language-plaintext highlighter-rouge">global_surface_temp_increase</code>: The global surface temperature increase from the baseline.</li>
+  <li><code class="language-plaintext highlighter-rouge">max_temperature_inc</code>: The maximum global temperature increase allowed.</li>
+  <li><code class="language-plaintext highlighter-rouge">cumulative_co2_emissions</code>: The total cumulative CO2 emissions in the atmosphere.</li>
+  <li><code class="language-plaintext highlighter-rouge">annual_co2_decrement</code>: The amount by which atmospheric CO2 levels decrease per year.</li>
+  <li><code class="language-plaintext highlighter-rouge">prior_emissions</code>: A dictionary mapping country names to their prior year’s emissions.</li>
+</ul>
+
+<p>The simulator has three methods:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">add_country</code>: This method is implemented for you in the stencil code. The <code class="language-plaintext highlighter-rouge">add_country</code> method is called by the Main class. It adds a country’s name to the simulator’s country_names list. It also adds to the <code class="language-plaintext highlighter-rouge">country_policies</code> dictionary, where the country’s name is the key and the relevant policy is the value. Finally, it adds to the <code class="language-plaintext highlighter-rouge">country_temperatures</code> dictionary, where the country’s name is the key and the average_temp of that country is the value.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">advance_year</code>: This method simulates the passing of one year in time. During the year, carbon is both emitted by countries and absorbed by natural processes. As a result of these emissions, the global and regional temperatures change. You will need to complete this method.</p>
+
+    <p>For updating the temperature of each country, you will need to use the following equations:</p>
+
+    <ul>
+      <li>US: <code class="language-plaintext highlighter-rouge">y = 2x</code></li>
+      <li>China: <code class="language-plaintext highlighter-rouge">y = x</code></li>
+      <li>Colombia: <code class="language-plaintext highlighter-rouge">y = x + 1</code></li>
+      <li>Libya: <code class="language-plaintext highlighter-rouge">y = 2x</code></li>
+      <li>United Kingdom/ EU: <code class="language-plaintext highlighter-rouge">y = 2x</code></li>
+    </ul>
+
+    <p>Where <code class="language-plaintext highlighter-rouge">y</code> indicates how much the temperature should increase from a given country’s baseline temperature (in year 0), and <code class="language-plaintext highlighter-rouge">x</code> denotes the global surface temperature increase. The global temperature increase is calculated as <code class="language-plaintext highlighter-rouge">0.0005</code> times the cumulative CO2 emissions in the atmosphere.</p>
+    <details class="space">
+  <summary>Sources for the equations</summary>
+
+      If you would like to better understand how these equations are informed or are interested in adding estimates for a different location, these resources should be helpful:<br />
+      <ul>
+          <li><a href="https://www.ipcc.ch/sr15/faq/faq-chapter-3/">Estimated rise in regional temperatures based on global temperatures</a></li>
+          <li><a href="https://www.ipcc.ch/report/ar6/wg1/figures/summary-for-policymakers/figure-spm-10/">Estimated rise in global temperatures based on cumulative carbon emissions</a></li>
+          <li><a href="https://data.worldbank.org/indicator/EN.ATM.CO2E.KT?end=2019&amp;start=2019&amp;view=bar">Database used for carbon emissions of each country (per The World Bank)</a></li>
+          <li><a href="https://climateknowledgeportal.worldbank.org/">Database used for average regional temperatures of each country (per The World Bank)</a></li>
+      </ul>
+      <br />
+  </details>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">report</code>: This method generates a report for the graphical display to use. It is formatted as a list of dictionaries representing data for each country. The list should be in the same order as the simulator’s country_names list. Each dictionary should have two keys: “name”, the country’s name; and “temperature”, the country’s current temperature (in degrees C). You will need to complete this method.</li>
+</ul>
+
+<p class="notice"><strong>Task 1:</strong> Navigate to the <code class="language-plaintext highlighter-rouge">simulator.py</code> file and understand the <code class="language-plaintext highlighter-rouge">Simulator</code> class and its methods. No need to make any changes yet, just familiarize yourself with the code.</p>
+
+<h3 id="part-3-the-policies">Part 3: The Policies</h3>
+
+<p>The policies we want you to create are defined as stencil classes in <code class="language-plaintext highlighter-rouge">policies.py</code>. An informal description of each policy is:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Baseline</code> emits the same amount of gigatonnes of carbon every year (i.e. the emissions remain constant).</li>
+  <li><code class="language-plaintext highlighter-rouge">Reducing</code> reduces emissions by a constant amount every year (1/2 a gigatonne), starting from year 1. Emissions cannot be reduced below 0.</li>
+  <li><code class="language-plaintext highlighter-rouge">TaxEmissions</code> represents a policy where the government decides to tax corporations for their emissions, such that emissions reduce by 5% every year by what they were the previous year, starting from year 1. In year 0, the emission amount is the <code class="language-plaintext highlighter-rouge">baseline</code> input into <code class="language-plaintext highlighter-rouge">_init_</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">Deforestation</code> represents a policy that decreases the amount of trees in a country. As a result, carbon emissions increase by 3% every year by what they were the previous year, for 50 consecutive years. After the 50th year, the carbon emissions for that country remain constant.</li>
+  <li><code class="language-plaintext highlighter-rouge">MatchLowest</code> matches the prior-year emissions of the lowest-emitting country in the simulation. Note that this requires access to elements of the simulation’s state. In year 0, the emission amount is the <code class="language-plaintext highlighter-rouge">baseline</code> input into <code class="language-plaintext highlighter-rouge">_init_</code> since there is no history available at the beginning of the simulation.</li>
+</ul>
+
+<p class="notice"><strong>Task 2:</strong> Navigate to the <code class="language-plaintext highlighter-rouge">policies.py</code> file and understand the policy classes. No need to make any changes yet, just familiarize yourself with the code.</p>
+
+<h2 id="section-5-design-check">Section 5: Design Check</h2>
+
+<div class="stencil" data-source="README.txt">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>README.txt</code>
+    </a>
+    <a href="README.txt" download="" class="stencil-download" title="Download README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy README.txt to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>For the design check, you should submit a <code class="language-plaintext highlighter-rouge">README.txt</code> file with blocked out comments answering the following questions:</p>
+
+<ol>
+  <li>Suppose United States has adopted the TaxEmissions policy (where emissions are reduced by 5% each year by what they were the previous year). The baseline (year0) CO2 emissions for the U.S. is 6.5Gt and the cumulative CO2 emissions for year0 is 2300Gt. The baseline (year0) temperature for the U.S. is 10.0 degrees Celsius. Round your answers to three decimal places.
+    <ul>
+      <li>A) Provide the year1 and year2 U.S. C02 emissions.</li>
+      <li>B) Provide the year1 and year2 cumulative CO2 emissions, provided that other countries in the world have emitted 54Gt in year1 and 62Gt in year2. Take into account the amount of carbon absorbed by the atmosphere, which is 6Gt each year.</li>
+      <li>C) Provide the year1 and year2 global surface temperature increases from baseline.</li>
+      <li>D) Provide the year1 and year2 United States temperatures (see equations for <code class="language-plaintext highlighter-rouge">advance_year</code>). Note that y in the equation will give you the temperature increase from baseline.</li>
+    </ul>
+  </li>
+  <li>What states will the simulator need to track? Be specific about the data structures you will use to track each piece of state. For example, how would you keep track of the temperatures for all countries?</li>
+  <li>What parameters should the emit methods take? Why does each policy’s emit method need to take in the same arguments?</li>
+  <li>What arguments should the <code class="language-plaintext highlighter-rouge">emit</code> methods take (there may be multiple correct answers)? Write at least one <code class="language-plaintext highlighter-rouge">emit</code> method/function.</li>
+  <li>Think about the implementation of the simulator’s <code class="language-plaintext highlighter-rouge">advance_year</code> method, and write some helper functions in pseudocode that can assist with the computations you are making.</li>
+</ol>
+
+<h2 id="section-6-implementation">Section 6: Implementation</h2>
+
+<h3 id="part-1-the-policies">Part 1: The Policies</h3>
+
+<p class="notice"><strong>Task 3:</strong> Implement the policies in the <code class="language-plaintext highlighter-rouge">policies.py</code> file.</p>
+
+<p>Each policy should have an <code class="language-plaintext highlighter-rouge">__init__</code> method that takes in the <code class="language-plaintext highlighter-rouge">baseline</code> parameter, which represents the initial emissions rate. Each policy should also have an <code class="language-plaintext highlighter-rouge">emit</code> method that returns the number of emitted gigatonnes of carbon. You will need to track past emissions as part of some policy objects’ state. Think about how you can use principles of polymorphism to make the emit function take in the same arguments, while making sure each policy instance has access to the information it needs to compute the country’s emissions.</p>
+
+<p>To understand how to implement the policies, you should refer to the informal descriptions of each policy in the Background section. You should also refer to the <code class="language-plaintext highlighter-rouge">Simulator</code> class in the <code class="language-plaintext highlighter-rouge">simulator.py</code> file to understand how the policies will be used.</p>
+
+<p class="notice"><strong>Task 4:</strong> Write tests for the policies in <code class="language-plaintext highlighter-rouge">test_policies.py</code>.</p>
+
+<h3 id="part-2-the-simulator-1">Part 2: The Simulator</h3>
+
+<p class="notice"><strong>Task 5:</strong> Fill in the constant attributes in the <code class="language-plaintext highlighter-rouge">Simulator</code> class in <code class="language-plaintext highlighter-rouge">simulator.py</code>.</p>
+
+<p>You will need to fill in the following attributes in the <code class="language-plaintext highlighter-rouge">Simulator</code> class:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">max_temperature_inc</code>: The global surface temperature increase should not go above this value.</li>
+  <li><code class="language-plaintext highlighter-rouge">cumulative_co2_emissions</code>: Tracks total CO2 emissions over time.</li>
+  <li><code class="language-plaintext highlighter-rouge">annual_co2_decrement</code>: Amount by which atmospheric CO2 levels decrease per year.</li>
+</ul>
+
+<p class="notice"><strong>Task 6:</strong> Implement <code class="language-plaintext highlighter-rouge">advance_year</code> in <code class="language-plaintext highlighter-rouge">simulator.py</code>. Try to break down the problem into smaller parts and write helper functions to assist with the computations you are making.</p>
+
+<p>In the <code class="language-plaintext highlighter-rouge">advance_year</code> method, you will need to:</p>
+<ul>
+  <li>Calculate each country’s CO2 emissions from that year. You will need to call the <code class="language-plaintext highlighter-rouge">emit</code> method from each country’s policy, passing in any necessary argument(s). Each country’s yearly emissions should be added to the cumulative CO2 of the atmosphere.</li>
+  <li>Reduce the amount of CO2 being absorbed by natural processes. The absorption of 6 GtCO2 represents a rough estimate and not an actual number, but we’ll use it for our simulation.</li>
+  <li>Calculate the global surface temperature increase for that year. The global surface temperature increase can be calculated by examining the total cumulative carbon emission output:
+    <ul>
+      <li>Global surface temperature increase starting value = 1 (from 1850 to 2010, see figure 1)</li>
+      <li>Updated Global surface temperature increase = 0.0005 * cumulative CO2 emissions</li>
+    </ul>
+  </li>
+  <li>Calculate the updated temperature for each country. See the equations in the Background section for how to calculate the updated temperature for each country.</li>
+</ul>
+
+<p class="notice"><strong>Task 7:</strong> Write tests for the <code class="language-plaintext highlighter-rouge">advance_year</code> method in <code class="language-plaintext highlighter-rouge">test_simulator.py</code>.</p>
+
+<p>Your tests should be unit tests that test the <code class="language-plaintext highlighter-rouge">advance_year</code> method in the <code class="language-plaintext highlighter-rouge">Simulator</code> class. You should test the following:</p>
+<ul>
+  <li>That the cumulative CO2 emissions are updated correctly.</li>
+  <li>That the global surface temperature increase is calculated correctly.</li>
+  <li>That the updated temperature for each country is calculated correctly.</li>
+</ul>
+
+<p>Can you think of any edge cases that you should test for?</p>
+
+<p class="notice"><strong>Task 8:</strong> Implement <code class="language-plaintext highlighter-rouge">report</code> in <code class="language-plaintext highlighter-rouge">simulator.py</code>. Write tests for this method in <code class="language-plaintext highlighter-rouge">test_simulator.py</code>.</p>
+
+<h2 id="section-7-testing">Section 7: Testing</h2>
+
+<p>Until now, and in CS0111, you have been doing one kind of testing: unit testing of functions. Unit tests are a type of software testing that checks individual components, or units, of a program in isolation. For example, calling a single, specific method, such as <code class="language-plaintext highlighter-rouge">advance_year</code>, and testing its results, such as checking that <code class="language-plaintext highlighter-rouge">simulator.time</code> has been updated, would be deemed a unit test.</p>
+
+<h3 id="part-1-integration-testing-and-ui-testing">Part 1: Integration Testing and UI Testing</h3>
+
+<p>But what about the user interface (UI), the interactive component of the code, in the form of the simulator’s display? UIs are front-facing; when using a website or app, you interact with its UI. Compared to testing a function, testing UIs can be time-consuming because rather than just passing in an input and then examining the output, the tester must perform some UI manipulation (like clicking a button or moving the mouse) and then check that the expected effect has happened in the UI. If this is all done manually, it can be an enormous investment of time since every time you want to “run your tests,” you need to spend time using the application yourself. Instead, to save time, you can use automated testing, rather like what you’ve already done for testing functions.</p>
+
+<p>A close connection to UI testing is integration testing. Integration testing focuses on combining multiple units of a program to validate that they work in collaboration–that their interactions are performed correctly.</p>
+
+<p>Consider a scenario where all your unit tests for the policies, <code class="language-plaintext highlighter-rouge">advance_year</code>, <code class="language-plaintext highlighter-rouge">report</code>, etc., pass, but nothing happens when you run <code class="language-plaintext highlighter-rouge">main</code> and click on the step button. This indicates an integration problem - the components work individually but not together. Is the step button not triggering an <code class="language-plaintext highlighter-rouge">advance_year</code> call, or is the implementation of the display not responding even if <code class="language-plaintext highlighter-rouge">advance_year</code> is called, or something else entirely? Automated UI testing could discover this predicament.</p>
+
+<h3 id="part-2-mocking">Part 2: Mocking</h3>
+
+<p>When all you’re testing is functions in combination, this is often straightforward because you can just call the functions in succession and look at the final output. But in the UI testing scenario, we need a way to automate the interaction. To do that, we’ll use a technique called “mocking.”  Mocking is a controlled way to emulate either data or the behavior of objects.</p>
+
+<p>Check the <code class="language-plaintext highlighter-rouge">test_mocking.py</code> file to understand the mocking implementation.</p>
+
+<p class="notice"><strong>Task 9:</strong> Correct the <code class="language-plaintext highlighter-rouge">mock_event</code> function in <code class="language-plaintext highlighter-rouge">test_display.py</code> to correctly change the environment. What should be the trigger for the step button?
+Use this list of possible interactions: <code class="language-plaintext highlighter-rouge">[KEYDOWN, KEYUP, MOUSEBUTTONUP, MOUSEBUTTONDOWN, MOUSEMOTION, QUIT]</code></p>
+
+<p>Now, we have a way to interact with the display in a controlled way. What this funtion does is basically “press” the step button, which should trigger the <code class="language-plaintext highlighter-rouge">advance_year</code> method in the simulator.</p>
+
+<p class="notice"><strong>Task 10:</strong> Write at least three tests to check that the <code class="language-plaintext highlighter-rouge">mock_event</code> correctly changes the environment. What should change when the step button is pressed? Write a comment above each test explaining how your tests check aspects of the UI and the program’s integration.</p>
+
+<h3 id="part-3-reflection-on-testing-approaches">Part 3: Reflection on Testing Approaches</h3>
+
+<p>The simulator display was programmed using the Python library Pygame. In the mocked tests, we are simulating Pygame events or interactions. For instance, when you mock the Pygame event KEYDOWN, it only affects the Pygame window.</p>
+
+<p>You don’t need Pygame to do this sort of scripted interaction, however. There are many testing libraries that let you take control of an application (later on in the semester, you’ll use software that effectively lets you automate actions in a web browser!)  And you could even go further. For example, you could write a program that automatically controls your mouse and keyboard, allowing it to interact with any clickable buttons, applications, and more on your entire desktop—not just within Pygame!</p>
+
+<p>In your README, address the following:</p>
+
+<ul>
+  <li>What are your thoughts on the differences between these two different levels of mocking power: one that’s mocking inputs to Pygame only and another that can mock inputs to the computer itself?</li>
+  <li>What potential dangers could arise from using automation that has the ability to “take control” of your desktop? Consider both malicious and accidental scenarios; be as concrete as you can!</li>
+  <li>Contrast that to the potential dangers that could come from automating interactions with a specific application using Pygame.</li>
+</ul>
+
+<p>Remember, when building software that other people will use, it’s crucial to consider potential unintended consequences and how to mitigate risks.</p>
+
+<h2 id="section-8-readme">Section 8: Readme</h2>
+
+<p>Imagine augmenting your simulator to be a higher-accuracy, more realistic simulation for the actual climate and atmosphere on Earth. Detail the full process you’d take to create a more accurate model and the advantages/disadvantages of your design choices. Feel free to draw inspiration from similar simulations that exist. Address the following points in your README:</p>
+
+<ul>
+  <li>Collecting data: what kind of data, where you’d source it from, assumptions/allowances you’d make, etc.</li>
+  <li>Constructing the simulation: variables to include, testing methods, consultations with experts to check its accuracy, etc.</li>
+  <li>Publicizing your work: how you will frame its purpose, the reactions of parties who may be affected, how it could be used in a positive or negative way, etc.</li>
+</ul>
+
+<p>Emphasize the differences between a realistic simulation for Earth and the basic one that you implemented for this project. What ethical considerations must you take into account given the real impact that a widely-used simulation might have?</p>
+
+<h2 id="section-9-submission">Section 9: Submission</h2>
+
+<p>Please follow the <a href="https://cs0112.github.io/Pages/syntax_testing.html">design and clarity guide</a>–part of your grade will be for code style and clarity. Additionally, you should be adhering to the course <a href="https://cs0112.github.io/Pages/design-recipe.html">design recipe</a>.  After completing the homework, you will submit:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">simulator.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">test_simulator.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">policies.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">test_policies.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">test_mocking.py</code></li>
+</ul>
+
+<p>Only one of your partners should submit the project on Gradescope. Make sure to add your partner as a Group Member on your Gradescope submission so that you both can see the submission. Please DO NOT write your partner’s name in the README when listing other collaborators’ cslogins.</p>
+
+<p>If you are using late days, make sure to make a note of that in your README. Remember, you may only use a maximum of 3 late days per assignment, and both you and your partner must have late days to use them. If the assignment is late (and you do NOT have anymore late days) no credit will be given.</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Objects In Memory and Exceptions | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Objects In Memory and Exceptions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture16.html" />
+<meta property="og:url" content="/Lectures/lecture16.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-09T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Objects In Memory and Exceptions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-09T00:00:00+00:00","datePublished":"2024-10-09T00:00:00+00:00","description":"CSCI 0112","headline":"Objects In Memory and Exceptions","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture16.html"},"url":"/Lectures/lecture16.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <p><a href="/Lectures/live/lecture16.py">Livecode link</a></p>
+
+<p><a href="/Lectures/live/lecture13.py">Livecode link for recursion</a></p>
+
+<p><a href="/Lectures/live/2022/lecture16.py">2022 Livecode link for Tim’s prep</a></p>
+
+<p>We finished last class with this <code class="language-plaintext highlighter-rouge">DJData</code> class.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DJData</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Here's how to provide the length of the object, as if it were a list...
+</span>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">song</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Congrats, "</span> <span class="o">+</span> <span class="n">caller</span> <span class="o">+</span> <span class="s">"! You get a prize!"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Cool, "</span> <span class="o">+</span> <span class="n">caller</span> 
+</code></pre></div></div>
+
+<p>The big difference compared to what we’ve done before is, the <code class="language-plaintext highlighter-rouge">request</code> function is bundled into the <code class="language-plaintext highlighter-rouge">DJData</code> class, instead of being some external thing that operates on a <code class="language-plaintext highlighter-rouge">DJData</code> object.</p>
+
+<p>One thing that changes when we use non-<code class="language-plaintext highlighter-rouge">dataclass</code> classes is that we can (or even have to) implement our own versions of things like <code class="language-plaintext highlighter-rouge">__init__</code>. These methods need to take a <code class="language-plaintext highlighter-rouge">self</code> argument, but otherwise, they can do whatever we want them to do.</p>
+
+<p>Requesting songs alone isn’t so interesting. We should also be able to play the songs that have been requested! Let’s extend our <code class="language-plaintext highlighter-rouge">DJData</code> class.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DJData</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">song</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Congrats, "</span> <span class="o">+</span> <span class="n">caller</span> <span class="o">+</span> <span class="s">"! You get a prize!"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Cool, "</span> <span class="o">+</span> <span class="n">caller</span>
+
+    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">song</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">song</span>
+</code></pre></div></div>
+
+<p>But this isn’t good enough.  What if you try to play a song when the queue is empty? Here we face a design decision, with a number of possible solutions. One possibility – a vague approximation to what a radio station might do – is to have a default song to play when nothing is on the queue. Another is to produce an error that the caller (which, in reality, is another Python program) can work with.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DJData</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">=</span> <span class="mi">0</span>        
+
+    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caller</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">song</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">song</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_callers</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Congrats, "</span> <span class="o">+</span> <span class="n">caller</span> <span class="o">+</span> <span class="s">"! You get a prize!"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Cool, "</span> <span class="o">+</span> <span class="n">caller</span> 
+
+    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">''</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">song</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">song</span>
+</code></pre></div></div>
+
+<p>If there’s no song in the queue, the empty string is produced. How do you feel about this choice?</p>
+
+<details>
+  <summary>Think, then click!</summary>
+
+  <p>How would we tell the difference between an actual song with no lyrics, and this special no-songs-queued situation?</p>
+
+</details>
+
+<p>In the “bad old days” when Tim was learning to program, this is what we’d have to do in many languages. We’d define some sort of sentinel value that encoded an error, and return it if that error happened. But if the return type of the function is always a string, can we ever safely encode the error as a string? (What would happen if a musician deliberately wrote a song with lyrics echoing our error?)</p>
+
+<p>There are two <strong>much better alternatives</strong>. Here’s the first.</p>
+
+<h3 id="widen-the-return-type">Widen The Return Type</h3>
+
+<p>If the error is of a type that <em>isn’t a string at all</em>, there’s no room for ambiguity. Python has a value, <code class="language-plaintext highlighter-rouge">None</code>, that’s often used for this sort of thing.</p>
+
+<p>If we’re not using type-checking in Python, that’s all we have to do. If we’re using type checking in Python, this will cause an error in VSCode: <code class="language-plaintext highlighter-rouge">None</code> isn’t a <code class="language-plaintext highlighter-rouge">str</code>, and we’ve just promised to return one:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">song</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">song</span>
+</code></pre></div></div>
+
+<p>How can we fix this? By <em>widening the type</em>: we need to tell Python that we promise to return either a string <em>or</em> <code class="language-plaintext highlighter-rouge">None</code>. There are two ways to do this. The first, which only works in later versions of Python (3.10 and higher?) is to change <code class="language-plaintext highlighter-rouge">str</code> to <code class="language-plaintext highlighter-rouge">str | None</code> (the bar is for union). The second, which works in earlier versions like 3.9, is to add <code class="language-plaintext highlighter-rouge">from typing import Union</code> at the top of our file, and change <code class="language-plaintext highlighter-rouge">str</code> to <code class="language-plaintext highlighter-rouge">Union[str, None]</code>. And that’s it.</p>
+
+<h3 id="raise-an-exception">Raise An Exception</h3>
+
+<p>The second alternative is to raise an exception. The caller (again, recall this is another Python function or program) has asked to play a song that doesn’t exist! That’s an <em>exceptional circumstance</em>.</p>
+
+<p>The key about exceptions is that they don’t get <em>returned</em>; they get <em>raised</em>. What’s the difference? It goes beyond this syntactic difference:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">'no song in queue'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">song</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">song</span>
+</code></pre></div></div>
+
+<p>Suppose we had the following code calling <code class="language-plaintext highlighter-rouge">play</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dj</span> <span class="o">=</span> <span class="n">DJData</span><span class="p">()</span>
+<span class="n">dj</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">'tim'</span><span class="p">,</span> <span class="s">'The Night'</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'getting song...'</span><span class="p">)</span>
+<span class="n">song1</span> <span class="o">=</span> <span class="n">dj</span><span class="p">.</span><span class="n">play</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">song1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'getting song...'</span><span class="p">)</span>
+<span class="n">song2</span> <span class="o">=</span> <span class="n">dj</span><span class="p">.</span><span class="n">play</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">song2</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'moving on...'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>When we run this, we get:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>getting song...
+The Night
+getting song...
+Traceback (most recent call last):
+  File "/Users/tim/repos/cs0112/materials/Lectures/live/lecture16.py", line 31, in &lt;module&gt;
+    song2 = dj.play()
+  File "/Users/tim/repos/cs0112/materials/Lectures/live/lecture16.py", line 17, in play
+    raise Exception('no song in queue')
+Exception: no song in queue
+</code></pre></div></div>
+
+<p>Exceptions pre-empt the usual flow of control in a Python program. They demand to be handled. If we’d returned a <code class="language-plaintext highlighter-rouge">None</code>, we’d have seen the follow-up print statements execute. But with an exception, unless there’s something around to <em>catch</em> it, …</p>
+
+<p>This is easier to show than to talk about.</p>
+
+<h2 id="the-debugger">The Debugger</h2>
+
+<p>Let’s return to the debugger. We saw it very briefly in class a week or so ago, but we’ll use it more today.</p>
+
+<p>You can run the Python debugger via the Run menu in VSCode:</p>
+
+<p><img src="/Lectures/images/lecture16_debugging.png" alt="Running the debugger" /></p>
+
+<p>This will run the program, but in a special <em>debugging mode</em>. Instead of just printing the exception and exiting, debugging mode will <em>pause the program</em> when an exception is raised and isn’t handled.</p>
+
+<p><img src="/Lectures/images/lecture16_exception.png" alt="An exception being shown in the debugger" /></p>
+
+<p>Notice also that we’ve got a bunch of new controls in debugging mode. They sort of look like the controls for playing a video.</p>
+
+<p><img src="/Lectures/images/lecture16_controls.png" alt="Debugger controls in VSCode" /></p>
+
+<p>We can move the execution of the program forward by clicking these buttons. The play button will just run, but the “step over” and “step into” buttons will move forward just one step (either passing over function calls or stepping into them, respectively). Let’s use “step into” by default.</p>
+
+<p>Taking one step forward stopped the program! The unhandled exception has somehow made our program terminate right away.</p>
+
+<h3 id="catching-exceptions">Catching Exceptions</h3>
+
+<p>The code that calls <code class="language-plaintext highlighter-rouge">play</code> can explicitly handle exceptions this way:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span> 
+    <span class="n">song2</span> <span class="o">=</span> <span class="n">dj</span><span class="p">.</span><span class="n">play</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">song2</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">Exception</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'no such song!'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now if we re-run, we won’t see the exception, even though it’s happening. To see this, we’ll add a <em>breakpoint</em> in the debugger. Let’s tell VSCode to pause execution just before the <code class="language-plaintext highlighter-rouge">DJData</code> object is created. We can do this by clicking just to the left of the line numbers in VSCode, on the red circle that appears:</p>
+
+<p><img src="/Lectures/images/lecture16_breakpoint.png" alt="A breakpoint" /></p>
+
+<p>Now when we run the debugger, the program pauses at that point:</p>
+
+<p><img src="/Lectures/images/lecture16_breakpoint_pause.png" alt="Pausing at the breakpoint" /></p>
+
+<p>If we hit the step-over button, the pointer moves down one line. Pay special attention to the “Variables” window on the left, now. From there, we can see everything in the program dictionary at this point. That is, we can <em>look at the value</em> of <code class="language-plaintext highlighter-rouge">dj</code> without printing anything. If we click the <code class="language-plaintext highlighter-rouge">&gt;</code> next to it, the tree expands to show us the current value of its fields. E.g., we see that the <code class="language-plaintext highlighter-rouge">queue</code> of this object is the empty list.</p>
+
+<p>Keep clicking to move on. Eventually you’ll see the exception be thrown, but rather than crashing the program, it will fall into the <code class="language-plaintext highlighter-rouge">except</code> clause we wrote, and be handled gracefully:</p>
+
+<p><img src="/Lectures/images/lecture16_handle_exception.png" alt="An exception being handled" /></p>
+
+<p><strong>(We’ll talk more about exceptions soon.)</strong></p>
+
+<h3 id="objects-in-memory">Objects In Memory</h3>
+
+<p>You can use the “Variables” tab to explore how objects are arranged in memory.</p>
+
+<p>Python has four “primitive” types: integers, floats, strings, and booleans. These don’t have any fields—they aren’t “objects”. But lists, dictionaries, <code class="language-plaintext highlighter-rouge">DJData</code> object, etc. are objects.</p>
+
+<p><strong>(More on this in the near future.)</strong></p>
+
+<h3 id="revisiting-recursion">Revisiting Recursion</h3>
+
+<p>Let’s use the debugger to reinforce what’s happening when we process an <code class="language-plaintext highlighter-rouge">HTMLTree</code> (or, really, any recursive datatype). Recall the <code class="language-plaintext highlighter-rouge">count_tree</code> function we wrote last week (<a href="/Lectures/live/lecture13.py">livecode link</a>):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">htmltree</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">count_tag</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="n">HTMLTree</span><span class="p">,</span> <span class="n">goal</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>    
+    <span class="s">'''
+    Counts the number of times the "goal" tag is present
+    in the "doc" HTMLTree
+    '''</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'********** processing: </span><span class="si">{</span><span class="n">doc</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>    
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">children</span><span class="p">:</span> 
+        <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="n">count_tag</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">goal</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">goal</span> <span class="o">==</span> <span class="n">doc</span><span class="p">.</span><span class="n">tag</span><span class="p">:</span>        
+        <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>    
+    <span class="k">return</span> <span class="n">count</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s">'&lt;html&gt;&lt;p&gt;hello&lt;/p&gt;&lt;strong&gt;&lt;p&gt;world&lt;/p&gt;&lt;/strong&gt;&lt;/html&gt;'</span><span class="p">)</span>
+<span class="n">count_tag</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="s">'p'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Create a breakpoint on the <code class="language-plaintext highlighter-rouge">count_tag</code> call, and step into it. (I’ve separated out the <code class="language-plaintext highlighter-rouge">parse</code> and <code class="language-plaintext highlighter-rouge">count_tag</code> calls into separate lines.)</p>
+
+<p>Once you’ve stepped into one of the recursive <code class="language-plaintext highlighter-rouge">count_tag</code> calls, you might notice something in the “Call Stack” panel:</p>
+
+<p><img src="/Lectures/images/lecture16_callstack.png" alt="The call stack" /></p>
+
+<p>That’s showing us the context of function calls. We were in <code class="language-plaintext highlighter-rouge">count_tag</code>, line 11 (where the recursive call is). But then we moved to a <em>new call</em> of <code class="language-plaintext highlighter-rouge">count_tag</code>, and are currently on line 8.</p>
+
+<p>You can also see the value of various variables change between calls. If you click on a row in the stack, the values of the variables panel will change. So you can (e.g.) see that in the prior call, the value of <code class="language-plaintext highlighter-rouge">child</code> is the same as the value of <code class="language-plaintext highlighter-rouge">doc</code> in the recursive subcall.</p>
+
+<p>If you’re ever confused about how exactly Python is executing, or how recursion is working for you, <em>try out the debugger with breakpoints</em>.</p>
+
+<p>Likewise, if you’re unclear about the difference between returning and raising an exception, <em>try out the debugger</em>. In fact, if time permits, let’s try it out right now on the new exception we added to <code class="language-plaintext highlighter-rouge">DJData</code>.</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

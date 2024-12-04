@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Data Structures | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Data Structures" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Homeworks/hw2/hw2.html" />
+<meta property="og:url" content="/Homeworks/hw2/hw2.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Data Structures" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Data Structures","url":"/Homeworks/hw2/hw2.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      HW 2:
+    
+    The Social Setwork
+  </h2>
+</header>
+
+
+
+  
+  
+    
+      <div class="notice">
+        
+          <p><strong>Due:</strong> Tue, Sep 17 2024 at  9:00 PM EST</p>
+        
+        
+        
+          <p><strong>Released:</strong> Wed, Sep 11 2024</p>
+        
+      </div>
+    
+  
+
+  
+
+  <p>The goal of this assignment is to get some practice using the <code class="language-plaintext highlighter-rouge">set</code> data structure.</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>Download the following stencil files:</p>
+<div class="stencil" data-source="setwork.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview setwork.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>setwork.py</code>
+    </a>
+    <a href="setwork.py" download="" class="stencil-download" title="Download setwork.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy setwork.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="setwork_test.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview setwork_test.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>setwork_test.py</code>
+    </a>
+    <a href="setwork_test.py" download="" class="stencil-download" title="Download setwork_test.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy setwork_test.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="README.txt">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>README.txt</code>
+    </a>
+    <a href="README.txt" download="" class="stencil-download" title="Download README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy README.txt to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>Items labelled as <strong>Question</strong> should be answered in the README file.</p>
+
+<h2 id="the-assignment">The Assignment</h2>
+
+<h3 id="part-1-social-media-privacy-and-tracking">Part 1: Social Media Privacy and Tracking</h3>
+
+<p><img src="images/social-media.png" alt="Image of social media as cameras." title="social media as cameras" /></p>
+
+<p>In 2017, an article in <a href="https://drive.google.com/file/d/1RXywJSxDwOVi6mW1xIW7jVZzlEqVtmVb/view?usp=sharing">The Economist</a> reported that the world’s most valuable resource was no longer oil but data. In order to attain massive amounts of data, one of the most efficient ways for technology and marketing companies is to utilize social media. Social media sites such as Instagram, Facebook, Reddit, Youtube, Twitter, and more track your likes, comments, infer your interests and even store your messages to provide optimized marketing campaigns and custom ads.</p>
+
+<p>2017 was before some of you were in high school. This is not a new situation.</p>
+
+<p>In this assignment, you’re going to reflect on the power that you, as programmers, have in these privacy situations, as well as your thoughts on social media monitoring.</p>
+
+<p><strong>Note:</strong> You should not need to have a subscription to access these articles. You should be able to access these articles by logging in with your Brown Google Account.</p>
+
+<p class="notice"><strong>Task 1:</strong> Read these two articles:<br /> <a href="https://www.nytimes.com/2018/04/11/technology/facebook-privacy-hearings.html">What You Don’t Know About How Facebook Uses Your Data</a><br />
+    <a href="https://www.nytimes.com/2018/03/19/technology/facebook-cambridge-analytica-explained.html#:~:text=all%20that%20data%3F-,Cambridge%20Analytica%2C%20a%20political%20data%20firm%20hired%20by%20President%20Trump%27s,voters%20and%20influence%20their%20behavior">Facebook and Cambridge Analytica: What You Need to Know as Fallout Widens</a></p>
+
+<h3 id="part-2-download-your-data">Part 2: Download Your Data</h3>
+
+<p class="notice"><strong>Task 2:</strong> Download your Instagram data by following the instructions below. If you do not have Instagram, we will provide a file that you can work with for this homework. Make sure you start this early, as getting the link to your data may take up to a couple of hours.</p>
+
+<details>
+  <summary>How to Download Your Instagram Data On Mobile (Recommended, Reduces the time it takes)</summary>
+  <ol>
+    <li>Tap profile or your profile picture in the bottom right to go to your profile.</li>
+    <li>Tap <img src="https://static.xx.fbcdn.net/assets/?revision=3005429326268636&amp;name=instagram-menu-hamburger&amp;density=1" alt="Hamburger" /> in the top right, then tap <img src="https://static.xx.fbcdn.net/assets/?revision=3005429326268636&amp;name=instagram-youractivity-shared&amp;density=1" alt="Activity" /> <strong>Your activity</strong>.</li>
+    <li>Below <strong>Information you shared with Instagram</strong>, tap <img src="https://static.xx.fbcdn.net/assets/?revision=3005429326268636&amp;name=instagram-downloadinformation-shared&amp;density=1" alt="Download" /><strong>Download your information</strong>.</li>
+    <li>Tap <strong>Request Download</strong>.</li>
+    <li>Tap <strong>Select Types of information</strong></li>
+    <li>Choose the following:
+      <ul>
+        <li>Your topics</li>
+        <li>Information About You</li>
+        <li>Ads and Topics</li>
+        <li>Advertising</li>
+        <li>Comments</li>
+        <li>Likes</li>
+      </ul>
+    </li>
+    <li>Tap <strong>Next</strong></li>
+    <li>Change the format to <strong>JSON</strong></li>
+    <li>Submit request</li>
+    <li>You'll soon receive an email titled Your Instagram Data with a link to your data. Click Download data and follow the instructions to finish downloading your information.</li>
+  </ol>
+</details>
+<p class="space"><a href="https://help.instagram.com/181231772500920/?cms_platform=iphone-app&amp;helpref=platform_switcher">Official Instagram Mobile Download Instructions</a></p>
+
+<details>
+  <summary>How to Download Your Instagram Data On Desktop</summary>
+  <ol>
+    <li>Click <img src="https://static.xx.fbcdn.net/assets/?revision=3005429326268636&amp;name=instagram-menu-hamburger&amp;density=1" alt="Hamburger" /> menu in the bottom left, then click Your Activity.</li>
+    <li>Click <strong>Download your information</strong>.</li>
+    <li>Enter the email address where you'd like to receive a link to your data.</li>
+    <li>Click <strong>JSON</strong> as the format you'd like to receive your data in, then click Next.</li>
+    <li>Enter your Instagram account password and click Request download.</li>
+    <li>You'll soon receive an email titled Your Instagram Data with a link to your data. Click Download data and follow the instructions to finish downloading your information.</li>
+  </ol>
+</details>
+<p class="space"><a href="https://help.instagram.com/181231772500920">Official Instagram Desktop Download Instructions</a></p>
+
+<details>
+  <summary>See your Google Ad Assumptions</summary>
+  <p><em>Make sure you use an <strong>.edu</strong> email</em></p>
+  <ol>
+    <li>Click the "Your Google Account" button in the top right corner and login</li>
+    <li>On the left-hand sidebar, click "Data and Privacy"</li>
+    <li>Scroll down, and in the "Things you've done and places you've been" section, under "Personalized ads" click "My Ad Center"</li>
+  </ol>
+</details>
+<p class="space"><a href="https://safety.google/privacy/ads-and-data/">Google Ad Assumptions Page</a></p>
+
+<h3 id="part-3-implementing-a-social-network">Part 3: Implementing a Social Network</h3>
+
+<p>Tim’s recent talk on courses at Brown has been on the Top 10 talks list for weeks! With Tim’s Talks gaining fame, you’re assigned to create a fan networking site called TimNet. Due to its popularity, companies want to advertise their products on it!</p>
+
+<p>The website’s data is organized as a dictionary of users, where the keys are usernames 
+(strings) and the values are sets of interests (also strings). For example, the data might look like this:</p>
+
+<pre><code>{
+    "tim": {"reading", "cooking", "logic"},
+    "ashley": {"books", "piano", "animation"},
+    "ben": {"chocolate", "pretzels", "chocolate-covered pretzels"}
+}
+</code></pre>
+
+<p>As a programmer for this website, you’ve been asked to implement and test several 
+functions that either query or modify the user data in this format in preparation for advertising.
+Each function you’re implementing takes a <code class="language-plaintext highlighter-rouge">users</code> dictionary (formatted as above)
+as its first argument.</p>
+
+<h3 id="part-4-using-your-data">Part 4: Using Your Data</h3>
+
+<p>When implementing these functions, you are going to be using them on your very own Instagram data! 
+If you don’t have Instagram, we will provide you with a file to work with.</p>
+
+<details class="space">
+<summary>For those with Instagram:</summary>
+
+Go to the <strong>your_topics</strong> folder and find the <code>your_topics.json</code> file. Drag the file into the directory in which you will work in. Do NOT edit any of the json package code or the name of the file. Next, write your favourite artists name here: <pre><code>users = load_json_to_dict(data, "Your Favorite Artists Name Here")</code></pre>
+Run the <code>setwork.py</code> file and verify that a dictionary with your favorite artists name and your interests are being outputted in the terminal. 
+</details>
+
+<details class="space">
+<summary>For those who are using the provided file:</summary>
+
+<div class="stencil" data-source="your_topics.json">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview your_topics.json">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>your_topics.json</code>
+    </a>
+    <a href="your_topics.json" download="" class="stencil-download" title="Download your_topics.json">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy your_topics.json to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+If you don’t have Instagram, use the attached <code>your_topics.json</code> file. Drag the file into the directory in which you will work in. We <strong>strongly recommend</strong> using your own data should you have Instagram.
+</details>
+
+<p class="notice"><strong>Task 3:</strong> After making the changes, run the <code>setwork.py</code> file and verify that a dictionary with your favorite artists name and your interests are being outputted in the terminal.</p>
+
+<p>Look at the dictionary with your interests being outputted in your terminal. Based on your activity, these sites have inferred that you are interested in these topics.</p>
+
+<p class="notice"><strong>Question:</strong> Do your topics inferred accurately reflect your real interests?<br />
+If you don’t have Instagram, go to your Google “My Ad Center” linked at the top of this handout. Under “Manage Privacy” and look at the guesses Google made about you in “Your Google Account info” and “Categories used to show you ads”.</p>
+
+<p class="notice"><strong>Question(only if you don’t have Instagram):</strong> Were Google’s guesses about you correct?</p>
+
+<p class="notice"><strong>Question:</strong> Who do you think benefits most from interest monitoring–users, companies, both, neither?</p>
+
+<h3 id="part-5-functions-that-modify-the-dictionary">Part 5: Functions that Modify the Dictionary</h3>
+
+<p>A new user wants to join you on TimNet, and you need to add them to your dictionary.</p>
+
+<p class="notice"><strong>Task 4:</strong> Implement the <code class="language-plaintext highlighter-rouge">add_user</code> function in <code class="language-plaintext highlighter-rouge">setwork.py</code>. This function should add a user with the given name to the dictionary with no interests. If there is already a user with that name, it should not modify the dictionary. Note that in Python, <code class="language-plaintext highlighter-rouge">set()</code> is the empty set (whereas <code class="language-plaintext highlighter-rouge">{}</code> is the empty dictionary).</p>
+
+<p>Now, in order to advertise on TimNet effectively, we need to track what users are interested in.</p>
+
+<p class="notice"><strong>Task 5:</strong> Implement the <code class="language-plaintext highlighter-rouge">add_interest</code> function in <code class="language-plaintext highlighter-rouge">setwork.py</code>. This function should add the provided interest for the given user. If the user does not exist, the function should add a user with that <code class="language-plaintext highlighter-rouge">name</code> and then add the provided <code class="language-plaintext highlighter-rouge">interest</code>.</p>
+
+<p>A friend of yours liked a couple of the same posts as you. Now third-party advertisers on TimNet want to add all your interests to your friends in hopes of spreading their reach.</p>
+
+<p class="notice"><strong>Task 6:</strong> Implement the <code class="language-plaintext highlighter-rouge">copy_interests</code> function in <code class="language-plaintext highlighter-rouge">setwork.py</code>. This function should add all of <code class="language-plaintext highlighter-rouge">name_from’s</code> interests to the interests of <code class="language-plaintext highlighter-rouge">name_to</code>. If a user named <code class="language-plaintext highlighter-rouge">name_to</code> does not exist, it should be created. If a user named <code class="language-plaintext highlighter-rouge">name_from</code> does not exist, pretend it’s a user with no interests (i.e., don’t modify <code class="language-plaintext highlighter-rouge">name_to</code>’s interests).</p>
+
+<p class="notice"><strong>Question:</strong> What are some issues that could arise from copying all the interests from one user to another user? Should users have explicit consent when interests are added to their account, or are the implications minimal?</p>
+
+<h3 id="part-6-functions-that-query-the-dictionary">Part 6: Functions that Query the Dictionary</h3>
+
+<p>Before choosing to advertise on TimNet, third-party companies want to see if any users are interested in any given topic. Implement a function that will check if any user is interested in each interest.</p>
+
+<p class="notice"><strong>Task 7:</strong> Implement the <code class="language-plaintext highlighter-rouge">interest_exists</code> function in <code class="language-plaintext highlighter-rouge">setwork.py</code>. This function should return <code class="language-plaintext highlighter-rouge">True</code> if <em>any</em> user is interested in <code class="language-plaintext highlighter-rouge">interest</code>, and <code class="language-plaintext highlighter-rouge">False</code> otherwise.</p>
+
+<p>When seeing that an interest does in fact exist within TimNet’s users, third-party companies now want to see which users share common interests; implement a function to achieve this goal.</p>
+
+<p class="notice"><strong>Task 8:</strong> Implement the <code class="language-plaintext highlighter-rouge">interests_match</code> function in <code class="language-plaintext highlighter-rouge">setwork.py</code>. This function should return a <code class="language-plaintext highlighter-rouge">set</code> of users (names) who <em>share</em> at least <code class="language-plaintext highlighter-rouge">n</code> interests with the user named <code class="language-plaintext highlighter-rouge">name</code>. If user <code class="language-plaintext highlighter-rouge">name</code> is not present, it should return the empty set. If <code class="language-plaintext highlighter-rouge">n</code> is greater than the number of interests for a specified name, an empty <code class="language-plaintext highlighter-rouge">set</code> should be returned.</p>
+
+<p>Note that every user will share all their interests with themselves.</p>
+
+<p class="notice"><strong>Question:</strong> What are some positive and negative effects that could arise from third party companies having access to user interest data and the <code class="language-plaintext highlighter-rouge">interests_exist</code> and <code class="language-plaintext highlighter-rouge">interests_match</code> functions? Think about the Facebook Cambridge Analytica article you read at the beginning of this assignment.</p>
+
+<p>Oh no! You now have a user who wants all their tracked data removed from TimNet completely, and now you need to implement a remove user function.</p>
+
+<p class="notice"><strong>Task 9:</strong> Implement the <code class="language-plaintext highlighter-rouge">remove_user</code> function in <code class="language-plaintext highlighter-rouge">setwork.py</code>. This function should remove the given <code class="language-plaintext highlighter-rouge">name</code> from the <code class="language-plaintext highlighter-rouge">user</code> dictionary. If said <code class="language-plaintext highlighter-rouge">name</code> does not exist, make no modifications to the data structure.</p>
+
+<p class="notice"><strong>Question:</strong> What is another function you could implement or edit to protect user privacy and rights on social media? There is no need to write code for this question.</p>
+
+<h3 id="part-7-further-exploration">Part 7: Further Exploration</h3>
+
+<p class="notice"><strong>Question:</strong> In this assignment, you were programming functions that would theoretically collect user data for targeted media. Given this context, to what extent do you believe programmers have a moral obligation to safeguard user rights? Conversely, should their primary allegiance lie with protecting their company’s interests?</p>
+
+<p>Look more into your data folders — there are lots of interesting folders to look into! We recommend you look into the following folders: ads_information, ads_and_topics, comments, likes, login_and_account_creation, messages, personal_information, and recent_searches.</p>
+
+<p>For Google Ads, you can go to your “Data and Privacy” center in your Google account settings and scroll down to “Third-party apps and services.”</p>
+
+<p class="notice"><strong>Question:</strong> Reflect upon your findings below! What were you and were you not surprised about when exploring this vast data collection? To what extent do you believe companies should have the right to track user data on social media platforms, and what are your thoughts on users’ rights to full and complete privacy on these sites?</p>
+
+<p>Extra content:</p>
+
+<ul>
+  <li><a href="https://www.nytimes.com/wirecutter/blog/state-of-privacy-laws-in-us/">The State of Consumer Data Privacy Laws in the US (And Why It Matters)</a></li>
+  <li><a href="https://www.nytimes.com/guides/privacy-project/how-to-protect-your-digital-privacy">How to Protect Your Digital Privacy - The Privacy Project Guides - The New York Times</a></li>
+</ul>
+
+<h3 id="part-8-testing">Part 8: Testing</h3>
+
+<p class="notice"><strong>Task 10:</strong> Write tests for each of the functions you implemented in <code class="language-plaintext highlighter-rouge">setwork.py</code>. You can find the test file in <code class="language-plaintext highlighter-rouge">setwork_test.py</code>. We encourage you to test using the data from <code class="language-plaintext highlighter-rouge">your_topics.json</code>, but not required.</p>
+
+<h3 id="part-9-readme">Part 9: README</h3>
+
+<p>In your README file, answer the questions marked throughout the assignment.</p>
+
+<h2 id="submission">Submission</h2>
+
+<p>Please follow the <a href="https://cs0112.github.io/Pages/syntax_testing.html">design and clarity guide</a>–part of your grade will be for code style and clarity. Additionally, you should be adhering to the course <a href="https://cs0112.github.io/Pages/design-recipe.html">design recipe</a>.  After completing the homework, you will submit:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">setwork.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">setwork_test.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">your_topics.json</code></li>
+</ul>
+
+<p>Please don’t put your name in your code files, as we grade anonymously. If you have any questions about the assignment, please post on Ed.</p>
+
+<p>You can only use a maximum of 3 late days per assignment. If the assignment is late (and you do NOT have anymore late days) no credit will be given.</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

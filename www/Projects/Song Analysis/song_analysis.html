@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Song Analysis | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Song Analysis" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Projects/Song%20Analysis/song_analysis.html" />
+<meta property="og:url" content="/Projects/Song%20Analysis/song_analysis.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Song Analysis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Song Analysis","url":"/Projects/Song%20Analysis/song_analysis.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Project 1:
+    
+    Song Analysis
+  </h2>
+</header>
+
+
+
+  
+  
+
+  
+
+  <p class="notice"><strong>Design Checks:</strong> September 24th – September 26th <br />
+<strong>Design Check due:</strong> September 24 at 9:00 PM EST (no late days allowed) <br />
+<strong>Implementation:</strong> due October 1 at 9:00 PM EST (up to 3 late days allowed ONLY if both you and your partner have late days remaining)</p>
+
+<p>In this project, students will work with data sets of varying sizes, get an introduction to machine learning, and practice implementing written algorithms.</p>
+
+<h2 id="section-1-background">Section 1: Background</h2>
+
+<p>Tim has decided to unleash a special episode of Tim Talk called Tim Sings! Tim is running out of time, and he needs your help. Tim has a list of songs whose genres are unknown.  It is up to you to build a program that takes in the lyrics of a song with an unknown genre and finds the most similar song with a known genre.</p>
+
+<h3 id="part-1-methodology">Part 1: Methodology</h3>
+
+<p>You will build a program that takes in lyrics for a song and determines its genre. Rather than hard-coding a set of rules, you’ll use <em>machine learning</em> to classify songs.</p>
+
+<p>We’ll provide you with a set of <em>training data</em>: song lyrics with known genres. When you want to classify a new song into its genre, you will find the most similar song in the training data and return its genre.</p>
+
+<p>In order to find the most similar song in the training data, you will implement the <em>nearest neighbor algorithm</em>. This will require calculating <em>term-frequency-inverse document frequency (tf-idf)</em> weights for every song. These weights are essentially word counts, modified by how common various words are. You’ll calculate the same weights for the input song. Then, you’ll compare the input song’s weights to each song in the training data using <em>cosine similarity</em>, a measure of the similarity of two sets of weights.</p>
+
+<h3 id="part-2-tf-idf">Part 2: tf-idf</h3>
+
+<p>tf-idf, or Term Frequency-Inverse Document Frequency, is a metric that represents a given term’s importance within a <em>corpus</em> (i.e., a set of documents, such as the training data). tf-idf is often used in text search algorithms (like Google!), keyword extraction, information retrieval, and natural language processing.</p>
+
+<h3 id="part-21-term-frequency-tf">Part 2.1: Term Frequency (tf)</h3>
+
+<p>The Term Frequency of a word <em>i</em> is the number of times the word appears in a certain document <em>d</em>. Given the document: “Tik Tok on the clock, the party don’t stop”. The term frequencies would be as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tik</th>
+      <th>Tok</th>
+      <th>on</th>
+      <th>the</th>
+      <th>clock</th>
+      <th>party</th>
+      <th>don’t</th>
+      <th>stop</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="part-22-inverse-document-frequency-idf">Part 2.2: Inverse Document Frequency (idf)</h3>
+
+<p>Inverse Document Frequency is used to scale up the importance of words that occur with less frequency in the data (and to scale down less important words). To compute Inverse Document Frequency, we first need to get the fraction of the total number of documents in the corpus <em>n</em> over the <strong>number of documents</strong> in which a particular term <em>i</em> appears in the training data <em>n</em>~<em>i</em>~. Once this fraction is found, idf can be computed by taking the natural logarithm of the fraction. In computer science, the natural log is often represented as log(x) and not necessarily ln(x).</p>
+
+<p><img src="/Projects/Song%20Analysis/idf.png" alt="" /></p>
+
+<p>Consider this corpus:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Doc 1</th>
+      <th>Doc 2</th>
+      <th>Doc 3</th>
+      <th>Doc 4</th>
+      <th>Doc 5</th>
+      <th>Doc 6</th>
+      <th>Doc 7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Apple</td>
+      <td>Banana</td>
+      <td>Watermelon</td>
+      <td>Mango</td>
+      <td>Strawberry Strawberry</td>
+      <td>Kiwi Kiwi Strawberry</td>
+      <td>Strawberry Banana</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To calculate the <em>idf</em> score of “strawberry,” we would first identify <em>n</em>, the total number of documents (in this case 7). Then, we would divide by the number of documents “strawberry” appears in, <em>n</em>~<em>i</em>~. To find <em>idf</em>, we take the natural logarithm of <em>n</em>/<em>n</em>~<em>i</em>~, so <em>ln</em> (7/3) = .85. In order to get the natural log, make sure you use Python’s <code class="language-plaintext highlighter-rouge">math.log</code> function.</p>
+
+<h3 id="part-23-term-frequency-inverse-document-frequency-tf-idf">Part 2.3: Term Frequency-Inverse Document Frequency (tf-idf)</h3>
+
+<p>For our purposes, we want to use both term frequency and inverse document frequency in order to understand how important a single term is to a document in the context of the corpus. The tf-idf value is the product of the term frequency and inverse document frequency:</p>
+
+<p><img src="/Projects/Song%20Analysis/tfidf.png" alt="" /></p>
+
+<p>Where tf~ij~ represents the frequency of the term <em>i</em> in the document <em>j</em> and <em>idf</em>~<em>i</em>~ represents the inverse document frequency of the term <em>i</em> in the corpus as a whole.</p>
+
+<p>For the above corpus, the tf-idf weights for Doc 6 would be:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kiwi</th>
+      <th>Strawberry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2 * ln(7/1)</td>
+      <td>1 * ln(7/3)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="part-3-cosine-similarity">Part 3: Cosine Similarity</h3>
+
+<p>In order to compare the tf-idf weights of two songs, you’ll use <em>cosine similarity</em> (for which we have provided an implementation). The cosine similarity of two identical documents is 1, and the cosine similarity of documents that share <em>no</em> words in common is 0. Beyond that, it will be higher when documents share <em>higher-weighted</em> words in common.</p>
+
+<h3 id="part-4-nearest-neighbor">Part 4: Nearest Neighbor</h3>
+
+<p>Finally, you will implement the nearest neighbor algorithm, which outputs the song in our training data that is most similar to the input song using cosine similarity. This will allow us to classify the input song to have the same genre as the song most similar to it.</p>
+
+<h2 id="section-2-project-roadmap">Section 2: Project Roadmap</h2>
+
+<ol>
+  <li>
+    <p><strong>Fill out the Partner Form</strong>. In this class, all projects will be in a group format, where you will have one or more partners to collaborate with, depending on the project. For this project, you will have one group partner to work through this project with.</p>
+
+    <p>The partner form will be posted on EdStem. Both you and your partner MUST attend the design check. If you do not attend the design check, you will not receive credit for the project.</p>
+  </li>
+  <li><strong>Design Check</strong>: Answer the design check questions and begin thinking about the return types of the functions that you will create and how they may work with your intended program organization.</li>
+  <li><strong>Implementation</strong>: In a later section, you will be asked to implement a series of functions that will allow you to classify songs based on their lyrics. You will be given a skeleton code that will help you get started.</li>
+  <li><strong>Testing</strong>: You will also be evaluated based on the testing of your implementation. Make sure that your code works for a variety of cases and consider where your implementation may fail.</li>
+  <li><strong>Style and Design</strong>: Be sure to follow all of the style and design guidelines outlined in the <a href="https://cs0112.github.io/Pages/syntax_testing.html">cs0112 python style guide</a>.</li>
+</ol>
+
+<h2 id="section-3-design-check">Section 3: Design Check</h2>
+
+<div class="stencil" data-source="README.txt">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>README.txt</code>
+    </a>
+    <a href="README.txt" download="" class="stencil-download" title="Download README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy README.txt to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>For the design check, only one of you and your partner will be expected to hand in <code class="language-plaintext highlighter-rouge">README.txt</code> with block comments answering the questions asked below.</p>
+
+<ol>
+  <li>After reading through the handout, demonstrate your understanding of tf-idf by answering the following questions:
+    <ul>
+      <li>The Term Frequency of a word <code class="language-plaintext highlighter-rouge">i</code> is the number of times the word appears in a certain document <code class="language-plaintext highlighter-rouge">d</code>. Given the document: “the dog bit the man” — what are the term frequencies?</li>
+      <li>What do <code>tf<sub>ij</sub></code> and <code>idf<sub>i</sub></code> represent?</li>
+      <li>What is the cosine similarity of two identical documents?</li>
+      <li>Consider the following corpus.
+        <ul>
+          <li>What is the idf score of “mango”?</li>
+          <li>What are the tf-idf weights for Doc 3?</li>
+        </ul>
+      </li>
+    </ul>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Doc 1</th>
+          <th>Doc 2</th>
+          <th>Doc 3</th>
+          <th>Doc 4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mango</td>
+          <td>Strawberry Mango</td>
+          <td>Starfruit Watermelon Watermelon Strawberry</td>
+          <td>Banana Mango</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>Being able to test your program is an important step in deciding how accurate your genre classifier is. After reading the handout, consider ways that you could test the program and its accuracy.</li>
+</ol>
+
+<p class="notice"><strong>Note:</strong> Submit the <code class="language-plaintext highlighter-rouge">README.txt</code> file on EdStem.</p>
+
+<h2 id="section-4-setup">Section 4: Setup</h2>
+
+<div class="stencil" data-source="song_analysis.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview song_analysis.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>song_analysis.py</code>
+    </a>
+    <a href="song_analysis.py" download="" class="stencil-download" title="Download song_analysis.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy song_analysis.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="song_analysis_test.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview song_analysis_test.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>song_analysis_test.py</code>
+    </a>
+    <a href="song_analysis_test.py" download="" class="stencil-download" title="Download song_analysis_test.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy song_analysis_test.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="small.csv">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview small.csv">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>small.csv</code>
+    </a>
+    <a href="small.csv" download="" class="stencil-download" title="Download small.csv">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy small.csv to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p>In working through this assignment, there are several components the algorithms can be broken into: TF, IDF, TF-IDF, and Nearest-Neighbor. These components are used in sequential order and build on each other. We recommend that you complete the project in the following order:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">compute_tf</code></li>
+  <li><code class="language-plaintext highlighter-rouge">compute_idf</code></li>
+  <li><code class="language-plaintext highlighter-rouge">compute_tf_idf</code></li>
+  <li><code class="language-plaintext highlighter-rouge">compute_corpus_tf_idf</code></li>
+  <li><code class="language-plaintext highlighter-rouge">nearest_neighbor</code></li>
+</ul>
+
+<p>Three additional functions have been provided to you: <code class="language-plaintext highlighter-rouge">create_corpus</code>, <code class="language-plaintext highlighter-rouge">cosine_similarity</code>, and <code class="language-plaintext highlighter-rouge">main</code>.</p>
+
+<h2 id="section-5-implementation">Section 5: Implementation</h2>
+
+<p>In this project, you will be implementing a series of functions that will allow you to classify songs based on their lyrics. You will be given a skeleton code that will help you get started.</p>
+
+<p>Notice the implementation of the <code class="language-plaintext highlighter-rouge">create_corpus</code> function. This function reads a CSV file and sets up a data set (i.e., a corpus) of songs. The corpus is a dictionary where the keys are song ids and the values are the lyrics of the song. The lyrics are stored as a list of strings, where each string is a word in the song. The corpus is used to calculate the tf-idf values for each song.</p>
+
+<p class="notice"><strong>Task 1:</strong> Check the dataclass <code class="language-plaintext highlighter-rouge">Song</code> in the stencil code. Get comfortable with the dataclass and understand how it is used in the <code class="language-plaintext highlighter-rouge">create_corpus</code> function!</p>
+
+<p>First, you will need to implement the <code class="language-plaintext highlighter-rouge">compute_tf</code> function. This function calculates the term frequency of a word in a song. The term frequency of a word is the number of times the word appears in a song. The function takes in a list of strings representing the lyrics for a song and produces a dictionary containing the term frequency where the key is the term and the value is the frequency for that term.</p>
+
+<p class="notice"><strong>Task 2:</strong> Implement <code class="language-plaintext highlighter-rouge">compute_tf</code>. Write tests for this function in the test file.</p>
+
+<p>Next, you will need to implement the <code class="language-plaintext highlighter-rouge">compute_idf</code> function. This function calculates the Inverse Document Frequency for each song in your corpus. The Inverse Document Frequency is used to scale up the importance of words that occur with less frequency in the data. The function takes in a corpus of songs and produces a dictionary from words to idf values (floats).</p>
+
+<p class="notice"><strong>Task 3:</strong> Implement <code class="language-plaintext highlighter-rouge">compute_idf</code>. Write tests for this function in the test file.</p>
+
+<p>Next, you will need to implement the <code class="language-plaintext highlighter-rouge">compute_tf_idf</code> function. This function calculates the Term Frequency - Inverse Document Frequency. This function takes in a list of strings representing song lyrics <em>and</em> a dictionary of idf values and outputs a dictionary where the keys are words from the song and the values are tf-idf weights. Try using the functions you have already implemented!</p>
+
+<p class="notice"><strong>Task 4:</strong> Implement <code class="language-plaintext highlighter-rouge">compute_tf_idf</code>. Write tests for this function in the test file.</p>
+
+<p>Then, you will need to implement the <code class="language-plaintext highlighter-rouge">compute_corpus_tf_idf</code> function. This function calculates the tf-idf values for every song in your corpus. This function takes in a corpus and a dictionary of idf values and produces a dictionary where the keys are song ids and the values are tf-idf dictionaries. This function should call <code class="language-plaintext highlighter-rouge">compute_tf_idf</code>.</p>
+
+<p class="notice"><strong>Task 5:</strong> Implement <code class="language-plaintext highlighter-rouge">compute_corpus_tf_idf</code>. Write tests for this function in the test file.</p>
+
+<p>We have provided you with a function called <code class="language-plaintext highlighter-rouge">cosine_similarity</code>. This function calculates the cosine similarity of two dictionaries that are the result of tf-idf calculations. The cosine similarity of two vectors is the dot product of the two vectors divided by the product of the magnitude of the two vectors.</p>
+
+<p class="notice"><strong>Task 6:</strong> Read through the <code class="language-plaintext highlighter-rouge">cosine_similarity</code> function. Check how we calculate the dot product and the magnitude of the vectors.</p>
+
+<p>Now, using the functions you have implemented, you will implement the <code class="language-plaintext highlighter-rouge">nearest_neighbor</code> function. This function calculates the nearest neighbor of a novel song. This function takes in a string representing song lyrics, a corpus of songs, a dictionary of tf-idf dictionaries (as produced by <code class="language-plaintext highlighter-rouge">compute_corpus_tf_idf</code>) and a dictionary of <code class="language-plaintext highlighter-rouge">idf</code> weights and outputs the Song that is most similar to the lyrics (as measured by cosine similarity). This function should call <code class="language-plaintext highlighter-rouge">compute_tf_idf</code> and <code class="language-plaintext highlighter-rouge">cosine_similarity</code>.</p>
+
+<p class="notice"><strong>Task 7:</strong> Implement <code class="language-plaintext highlighter-rouge">nearest_neighbor</code>. Write tests for this function in the test file.</p>
+
+<p>Finally, we have provided you with a function called <code class="language-plaintext highlighter-rouge">main</code>. This function reads in a CSV file of song lyrics and uses the functions you have implemented to classify the genre of a song.</p>
+
+<p class="notice"><strong>Task 8:</strong> Run the <code class="language-plaintext highlighter-rouge">main</code> function and check if your implementation is working as expected.</p>
+
+<h2 id="section-6-testing">Section 6: Testing</h2>
+
+<p>For this project, we would like you to put all of your tests in <code class="language-plaintext highlighter-rouge">song_analysis_test.py</code>. You should test all of the functions you write; you don’t need to write tests for <code class="language-plaintext highlighter-rouge">create_corpus</code> or <code class="language-plaintext highlighter-rouge">cosine_similarity</code>. Please follow the testing section of the <a href="https://cs0112.github.io/Pages/syntax_testing.html">design and clarity guide.</a></p>
+
+<p>You can also run your code on a real data set, which you can find <a href="https://drive.google.com/drive/folders/1ppiO4WDvuql6lnltsE_vlSx4GDiuLHws?usp=sharing">here</a>.</p>
+
+<h2 id="section-7-submission">Section 7: Submission</h2>
+
+<p>Only one of you and your partner needs to submit your code on Gradescope. You may submit as many times as you want – only your latest submission will be graded. This means that if you submit after the deadline, you will be using a late day – so do NOT submit after the deadline unless you plan on using late days. Again, BOTH you and your partner must have late days to use them.</p>
+
+<p>Please follow the <a href="https://cs0112.github.io/Pages/syntax_testing.html">design and clarity guide</a>–part of your grade will be for code style and clarity. After completing the project, you will submit:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">song_analysis.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">song_analysis_test.py</code></li>
+</ul>
+
+<p>Because all we need are the files, you do not need to submit the whole project folder. As long as the file you create has the same name as what needs to be submitted, you’re good to go!
+If you are using late days, make sure to make a note of that in your README. Remember, you may only use a maximum of 3 late days per assignment. If the assignment is late (and you do NOT have anymore late days) no credit will be given.</p>
+
+<p>Submit your work on Gradescope. Please don’t put your name anywhere in any of the handin files–we grade assigments anonymously!</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

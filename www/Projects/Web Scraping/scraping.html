@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Data on the Web | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Data on the Web" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Projects/Web%20Scraping/scraping.html" />
+<meta property="og:url" content="/Projects/Web%20Scraping/scraping.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Data on the Web" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Data on the Web","url":"/Projects/Web%20Scraping/scraping.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Project 3:
+    
+    Data on the Web
+  </h2>
+</header>
+
+
+
+  
+  
+
+  
+
+  <p class="notice"><strong>Checkin:</strong> October 23 - October 29  <br />
+<strong>Design Check due:</strong> October 29 at 9:00 PM EST (no late days allowed) <br />
+<strong>Implementation:</strong> due November 5 at 9:00 PM EST</p>
+
+<p><strong>Note:</strong> This project is longer than the previous ones. We recommend starting early and working on it in chunks.</p>
+
+<p>This project will be a continuation  of the work you did in Lab 5. Please work with the same partners. You will be working with the Brown Digital Repository (BDR) to scrape data from the web and use the BDR API to get data.</p>
+
+<h2 id="section-1-design-check">Section 1: Design Check</h2>
+
+<p>Design check will be slightly different this time. It will be more so like a soft deadline for this project to get you on track. You will be submitting whatever code you have written so far. This will help us understand where you are in the project and provide feedback to help you move forward. It will also be a place where you can get help for any issues you are facing.</p>
+
+<p class="notice"><strong>Note:</strong> Attempt to finish the web scraping and query part of the project before the design check.</p>
+
+<h2 id="section-2-background">Section 2: Background</h2>
+
+<p>Tim’s taste for theses and dissertations has not been sated! He needs more. Using what you’ve learned, he wants to get the data from multiple collections. He also wants to know more about the collections themselves. There’s also the issue of the BDR API. Tim has heard that the BDR API can be used to get data about collections and items. He wants you to use the API to get data about the collections and items and see if it’s any different from the data you get from scraping.</p>
+
+<div class="stencil" data-source="bdrscrape.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview bdrscrape.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>bdrscrape.py</code>
+    </a>
+    <a href="bdrscrape.py" download="" class="stencil-download" title="Download bdrscrape.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy bdrscrape.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="bdrapi.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview bdrapi.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>bdrapi.py</code>
+    </a>
+    <a href="bdrapi.py" download="" class="stencil-download" title="Download bdrapi.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy bdrapi.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="common.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview common.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>common.py</code>
+    </a>
+    <a href="common.py" download="" class="stencil-download" title="Download common.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy common.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="demo.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview demo.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>demo.py</code>
+    </a>
+    <a href="demo.py" download="" class="stencil-download" title="Download demo.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy demo.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="test_query.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview test_query.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>test_query.py</code>
+    </a>
+    <a href="test_query.py" download="" class="stencil-download" title="Download test_query.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy test_query.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+<div class="stencil" data-source="README.txt">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>README.txt</code>
+    </a>
+    <a href="README.txt" download="" class="stencil-download" title="Download README.txt">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy README.txt to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p><strong>Note:</strong> Working with data on the web inherently involves printing out data to see if it is correct. You should use print statements periodically as you implement functions to check the data you are getting from the BDR scraper, BDR API and the BDR website. This will help you understand the data you are working with and how to use it. Remember print statements are your friend!</p>
+
+<h2 id="section-2-web-scraping">Section 2: Web Scraping</h2>
+
+<p>We will be continuing and expanding upon the scraping we completed in Lab 5. The following parts of the project will be completed in bdrscrape.py</p>
+
+<p class="notice"><strong>Task 1:</strong> Check the lab 5 implementation we’ve provided. You are free to use your own implementation if you prefer.</p>
+
+<p>By this point, we assume that you are familiar with the BDR website and the structure of the pages. So we will skip the explanation of the BDR website structure. If you need more support please check the lab 5 instructions.</p>
+
+<h3 id="part-1-scraping">Part 1: Scraping</h3>
+
+<p class="notice"><strong>Task 2:</strong> Define the function <code class="language-plaintext highlighter-rouge">get_collection_dictionary</code>. This function should call functions from your scraper implementation to return a dictionary where the keys are collection names from the input <code class="language-plaintext highlighter-rouge">collection</code> dictionary and the values are lists of <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> objects of all the item pages for the given collection. If a collection has 30 publicly accessible items, get_collection_dictionary should have a key:value pair of the collection name and a list of 30 BeautifulSoups, one for each item page.</p>
+
+<p>For example, a possible key:value pair in <code class="language-plaintext highlighter-rouge">collection_pages</code> would be</p>
+<pre><code>{
+    “Africana Studies”: [BeautifulSoup(item page 1), 
+    BeautifulSoup(item page 2), 
+    BeautifulSoup(item page 3)....]
+}</code></pre>
+
+<p>Think carefully about what combination of your three functions you should use and which return data that would be appropriate for the task.</p>
+
+<p class="notice"><strong>Task 3:</strong> Define the function <code class="language-plaintext highlighter-rouge">scrape_data</code>. This function takes in a dictionary <code class="language-plaintext highlighter-rouge">collection_pages</code>, which is a dictionary such as one returned by <code class="language-plaintext highlighter-rouge">get_collection_dictionary</code>. With this dictionary, use a function from your scraper implementation to create a <code class="language-plaintext highlighter-rouge">BDRItem</code> for every item’s <code class="language-plaintext highlighter-rouge">BeautifulSoup</code> for every collection, and store this in a new dictionary.</p>
+
+<p>For example, a possible key:value pair in <code class="language-plaintext highlighter-rouge">data</code> would be</p>
+<pre><code>{
+    “Africana Studies”: [BDRItem(item 1), 
+    BDRItem(item 2), 
+    BDRItem(item 3)....]
+}</code></pre>
+
+<h3 id="part-2-testing">Part 2: Testing</h3>
+
+<p>Web scraping is inherently difficult to test because the data is constantly changing. You can’t write a test that will always pass because the data you are testing on will change.</p>
+
+<p class="notice"><strong>Task 4:</strong> Write in <code class="language-plaintext highlighter-rouge">README.txt</code> how the pages you are web scraping could change, whether through actions by BDR users or the Brown University Library staff who maintain the BDR. How would this affect any tests?</p>
+
+<p>Besides this, you don’t need to write automated tests for your scraping function. You should convince yourself that it works on BDR data by calling <code class="language-plaintext highlighter-rouge">scrape_data</code>. You can call <code class="language-plaintext highlighter-rouge">scrape_data</code> on the given <code class="language-plaintext highlighter-rouge">COLLECTIONS</code> dictionary by using the function <code class="language-plaintext highlighter-rouge">run_scrape</code>, which we have provided you. You can also call <code class="language-plaintext highlighter-rouge">scrape_data</code> on your own collections dictionary by using the structure we used in <code class="language-plaintext highlighter-rouge">run_scrape</code>.</p>
+
+<h2 id="section-3-query-functions">Section 3: Query functions</h2>
+
+<p>Now that you have your data, Tim wants you to write some queries to get information about the collections and items. These will be functions that take in the data returned by <code class="language-plaintext highlighter-rouge">scrape_data</code> and utilize the <code class="language-plaintext highlighter-rouge">BDRItem</code>’s information to return information about the collection data.</p>
+
+<p>Notice how these functions are independent of the method used to get the data. This is a good example of how you can separate the data collection from the data analysis.</p>
+
+<p class="notice"><strong>Task 1:</strong> Define the function <code class="language-plaintext highlighter-rouge">most_common_subject</code> to find the most common subject(s) of a collection. The function should take in the data and a collection name and return a list of <code class="language-plaintext highlighter-rouge">str</code> representing the most common subject(s) of the collection. The function should not be case sensitive (i.e. “chemistry” == “Chemistry”).</p>
+
+<p class="notice"><strong>Task 2:</strong> Define the function <code class="language-plaintext highlighter-rouge">year_after</code> to find all items with a year after the input year. The function should take in the data, a collection name, and a year and return a list of <code class="language-plaintext highlighter-rouge">BDRItem</code>s that meet the criterion.</p>
+
+<p class="notice"><strong>Task 3:</strong> Define the function <code class="language-plaintext highlighter-rouge">top_contributor</code> to find the top contributor(s) of a given role. The top contributor is the person who has contributed to the most items, i.e. is the most common contributor. The function should take in the data, a collection name, and a position and return a list of <code class="language-plaintext highlighter-rouge">str</code> representing the top contributor(s) of that role. The function should not be case sensitive (i.e. Tim Nelson (reader) == Tim Nelson (Reader) == tim nelson (ReAdER)).</p>
+
+<p>Notice how even though web scraping is inherently difficult to test, you can still write tests for your query functions. These tests should work on data for the data generated by both of your implementations: Web Scraping and API Use.</p>
+
+<p class="notice"><strong>Task 4:</strong> Write tests for all of your query functions in <code class="language-plaintext highlighter-rouge">test_query.py</code>. These tests should work on data for the data generated by both of your implementations: Web Scraping and API Use (which you will implement later).</p>
+
+<h2 id="section-4-running-the-code">Section 4: Running the Code</h2>
+
+<p>Check <code class="language-plaintext highlighter-rouge">demo.py</code>. You will find two functions that you can use to run your code. You can use these functions to run your code and include print statements to see the results of your queries.</p>
+
+<h2 id="section-5-bdr-api">Section 5: BDR API</h2>
+
+<p>Remember how we mentioned that the query functions are independent of the method used to get the data? Now we will be using the BDR API to get the data instead of scraping it. You will still use the query functions you wrote in the previous section to analyze the data, but you will need to write new functions to get the data from the API.</p>
+
+<h3 id="part-1-bdr-api">Part 1: BDR API</h3>
+
+<p class="notice"><strong>Task 1:</strong> You will be accessing the BDR API in order to get information about collections and items. Read through the <a href="https://repository.library.brown.edu/studio/api-docs/">BDR API documentation</a> and preview some of the JSON data returned by the examples.</p>
+
+<p>The BDR maintains different types of ids for collections. While web scraping you interacted with ids that followed the format <code class="language-plaintext highlighter-rouge">bdr:xxxxxx</code>, collections also have database ids. These ids are integer values and are used to make collection requests.</p>
+
+<h3 id="part-2-api-use">Part 2: API Use</h3>
+
+<p class="notice"><strong>Task 2:</strong> Define the function <code class="language-plaintext highlighter-rouge">get_collectionids</code>. This function should make a request and return a dictionary where the keys are the names of collections and the values are the database ids of collections.</p>
+
+<p>Think about whether the Item API, Collection API, or Search API is the proper API to use in this task. Additionally, think about the level at which you should make a request. Recall that JSON syntax is very similar to <a href="https://docs.python.org/3/library/stdtypes.html\#typesmapping">Python dictionary syntax</a>.</p>
+
+<p class="notice"><strong>Task 3:</strong> Define the function <code class="language-plaintext highlighter-rouge">collection_request</code>. This function takes in a collection database id and makes a request for that collection, then returns the JSON response.</p>
+
+<p>What url would you need to use to make a collection request? How do these urls change depending on the collection you are requesting? You can use a <a href="https://docs.python.org/3/tutorial/inputoutput.html">formatted string</a> to format a url string.</p>
+
+<p>While <code class="language-plaintext highlighter-rouge">get_collectionids</code> returns a dictionary of every single collection, we are only interested in the Theses and Dissertations collections. You are given the function <code class="language-plaintext highlighter-rouge">get_thesis_collections</code> in <code class="language-plaintext highlighter-rouge">bdrapi.py</code>. You should call this function to get the Theses and Dissertations collection. Notice that it calls <code class="language-plaintext highlighter-rouge">get_collectionids</code> and <code class="language-plaintext highlighter-rouge">collection_request</code> and returns a list of all the theses collections in the BDR that have less than 50 items.</p>
+
+<p class="notice"><strong>Task 5:</strong> Define the function <code class="language-plaintext highlighter-rouge">item_request</code>. This function takes in an item id and makes a request for that item, then returns the JSON response.</p>
+
+<p class="notice"><strong>Task 6:</strong> Define the function <code class="language-plaintext highlighter-rouge">scrape_item</code>. This function interacts with an item’s JSON data and returns a <code class="language-plaintext highlighter-rouge">BDRItem</code> where the data reflects the information of the item. If an item does not have a piece of information, it should set the <code class="language-plaintext highlighter-rouge">BDRItem</code> variables to empty strings, lists, or <code class="language-plaintext highlighter-rouge">None</code> for int values.</p>
+
+<p>Hint: Look at an example item JSON! Make sure the JSON you look at is for a thesis/dissertation, such as <a href="https://repository.library.brown.edu/api/items/bdr:11195/">this JSON</a> for an <a href="https://repository.library.brown.edu/studio/item/bdr:11195/">American Studies thesis</a>. Is there any one field in the JSON that stores all of the information you want (full title, year, subjects, contributors, abstract, and notes) as subfields you can access?</p>
+
+<p class="notice"><strong>Task 6:</strong> Define the function <code class="language-plaintext highlighter-rouge">get_items_from_collection</code>. This function interacts with a collection’s JSON data to return a list of <code class="language-plaintext highlighter-rouge">BDRItem</code>s for all the items in the collection. When writing this function, consider how you can find the items in the collection’s JSON data and use functions you have written to make requests and scrape item information to create your returned list.</p>
+
+<p class="notice"><strong>Task 7:</strong> Define the function <code class="language-plaintext highlighter-rouge">api_data</code>. It takes in a dictionary where the keys are collection names, and the values are collection ids. This function should make requests for the given collections and get the items for each collection.</p>
+
+<h3 id="part-3-testing">Part 3: Testing</h3>
+
+<p>We don’t expect you to write automated tests for your API functions. You should convince yourself that it works on BDR data by calling <code class="language-plaintext highlighter-rouge">api_data</code>, <code class="language-plaintext highlighter-rouge">search_data</code>, and <code class="language-plaintext highlighter-rouge">get_collectionids</code>.</p>
+
+<p>But, we will introduce a new type of testing: model based testing. Model based testing is a type of testing where you test your functions against a model of the data. In this case, you can test your API functions against the data you scraped. This will help you ensure that your API functions are working as expected. We will be doing this in a later project, but you can start thinking about how you would do this now.</p>
+
+<h2 id="section-5-web-scraping--api-use">Section 5: Web Scraping + API Use</h2>
+
+<p>Now that you have both the web scraping and API use implementations, you can compare the two. You can use the query functions you wrote in the previous section to analyze the data from both implementations.</p>
+
+<p>In bdrscrape.py, we provided you with the COLLECTIONS dictionary, which stores collection name and the BDR id for some select collections. You can manually obtain the BDR id for a collection by looking at the URL:</p>
+
+<p>https://repository.library.brown.edu/studio/collections/bdr:<strong>tkz6xrdc</strong></p>
+
+<p>However, as you did in Part 2, you can also access the BDR ids of collections by making a collection request and finding the ids in the JSON response. Answer the following in <code class="language-plaintext highlighter-rouge">README.txt</code>.</p>
+<ul>
+  <li>How could you use your <code class="language-plaintext highlighter-rouge">bdrapi.py</code> implementation in order to get a dictionary like COLLECTIONS? What functions could you use/modify?</li>
+</ul>
+
+<h2 id="section-6-readme">Section 6: README</h2>
+
+<p>In addition to late day information, your final <code class="language-plaintext highlighter-rouge">README.txt</code> should answer the following prompts.</p>
+
+<ul>
+  <li>The BDR allows any member of the Brown community to upload items and set the items as either private, public only to Brown, or public to anyone. In your previous implementations, we simply ignored any items that were not publicly accessible. However, the public still has access to some of the information via the item thumbnails on collection pages, even if we can’t access the item pages themselves. Explore a collection page using Web Inspector and make a collection request in order to glean as much information as possible. Compare and contrast this process and describe the information available to you.</li>
+  <li>BDR items are varying levels of public. <a href="https://github.com/public-apis/public-apis">Public APIs</a>, such as the BDR’s API, allows developers to interact with applications, although also in varying levels of publicity. For example, some APIs require authentication of an API key, which is a unique identifier that is generated to authenticate a user to access the API. Do we have a moral obligation to share and make public information? To what extent? Why might someone want to keep something private? Of the public APIs, did any surprise you? Note that not every program makes a public API.</li>
+  <li>In cases where an API is not public, why is web scraping still a viable option? How does web scraping differ in “required permissions” from API use? Read <a href="https://www.defense.gov/News/News-Stories/Article/Article/1041509/darpa-program-helps-to-fight-human-trafficking/">this article about Memex</a>, a program that collects data from the Internet to identify human trafficking. What are some moral/ethical concerns about web scraping? Note that we informed the Brown University Library that we would be web scraping the BDR. What do you think would happen if a web scraper was operating on a larger scale? (Hint: what happens when you overwhelm a server with traffic/requests?)</li>
+  <li>Web scraping and APIs have different circumstances in which each method of gathering data can be used. What are some advantages and disadvantages of using each? In which cases would web scraping be more applicable, and in which cases would APIs be more applicable?</li>
+</ul>
+
+<h2 id="section-7-submission">Section 7: Submission</h2>
+
+<p>Only one of you and your partner needs to submit your code on Gradescope. You may submit as many times as you want – only your latest submission will be graded. This means that if you submit after the deadline, you will be using a late day – so do NOT submit after the deadline unless you plan on using late days. Again, BOTH you and your partner must have late days to use them.</p>
+
+<p>Please follow the <a href="https://cs0112.github.io/Pages/syntax_testing.html">design and clarity guide</a>–part of your grade will be for code style and clarity. After completing the project, you will submit:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.txt</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bdrscrape.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">bdrapi.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">common.py</code></li>
+  <li><code class="language-plaintext highlighter-rouge">test_query.py</code></li>
+  <li>Any additional files you create.</li>
+</ul>
+
+<p>Because all we need are the files, you do not need to submit the whole project folder. As long as the file you create has the same name as what needs to be submitted, you’re good to go!
+If you are using late days, make sure to make a note of that in your README. Remember, you may only use a maximum of 3 late days per assignment. If the assignment is late (and you do NOT have anymore late days) no credit will be given.</p>
+
+<p>Submit your work on Gradescope. Please don’t put your name anywhere in any of the handin files–we grade assigments anonymously!</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

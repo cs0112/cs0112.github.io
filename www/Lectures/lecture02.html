@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Working With Files | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Working With Files" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture02.html" />
+<meta property="og:url" content="/Lectures/lecture02.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-06T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Working With Files" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-06T00:00:00+00:00","datePublished":"2024-09-06T00:00:00+00:00","description":"CSCI 0112","headline":"Working With Files","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture02.html"},"url":"/Lectures/lecture02.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <p>Today we’ll spend some time on setup as we learn to work with files. Then we’ll start writing a function that uses those files. If we don’t finish the function today, we’ll finish it next time.</p>
+
+<h1 id="working-with-files">Working with Files</h1>
+
+<p>I will always try to upload the livecode from class so you can read it. Once class is over, you’ll be able to find the livecode linked on the lectures page. E.g., <a href="/Lectures/live/lecture02_starter.py">this file</a> should be visible on the lecture index as well.</p>
+
+<p class="notice">If you find a link to such a file before class, it may be from last year, and not match what we’ll actually do in class. I leave these in the course materials as I’m preparing because it can be useful to remind myself what happened a year ago.</p>
+
+<h2 id="logistical-comments">Logistical Comments</h2>
+
+<ul>
+  <li>Please join the course edstem, and turn on notifications. This is where most of our class communication will happen.</li>
+  <li>Required labs start next week. Make sure you attend; the first lab is about working with VSCode and Python. Since the lab isn’t until then, you will need to set up VSCode yourself according to the set up section on the website. If you have issues, go to hours or post on EdStem.</li>
+</ul>
+
+<h2 id="working-with-files-1">Working with files</h2>
+
+<p>In CSCI 0111, you learned how to work with data organized in several structures: tables, lists, trees, and dictionaries (which are sometimes called hashtables, for reasons we’ll talk about later in the semester). You also might have seen data loaded from Google sheets, or CSV (comma-separated value) files. In this class, we’ll see how to load data from a couple of other sources like text files and web pages. These sources are incredibly common, but not as convenient to work with right away as what you saw in 0111. Sometimes you’ll need to process the data structure you’re given so that it better fits the things you want to do with it.</p>
+
+<p>Today we’ll cover text files. Web pages come later in the course, once we’ve learned a bit about how they are structured.</p>
+
+<p>Let’s say we want to write a program that works with the complete text of Frankenstein, by Mary Wollstonecraft Shelley. The text is available <a href="http://www.gutenberg.org/files/84/84-0.txt">here</a> via <a href="http://www.gutenberg.org/">Project Gutenberg</a>, an online collection of public-domain books. First, we’ll download the file and save it to disk somewhere. By default, it should be named <code class="language-plaintext highlighter-rouge">84-0.txt</code>. This isn’t very descriptive, so I renamed mine to <code class="language-plaintext highlighter-rouge">frankenstein.txt</code>.</p>
+
+<p>If I open up VSCode, I can start working with the file in Python. The first thing I might want to do is <em>open</em> the file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>frankenstein_file = open('frankenstein.txt', 'r', encoding='utf8')
+</code></pre></div></div>
+
+<p>Notice that there are 3 different parameters given to <code class="language-plaintext highlighter-rouge">open</code>:</p>
+<ul>
+  <li>The first parameter is the name of the file. We could also give a file <em>path</em>, like <code class="language-plaintext highlighter-rouge">books/frankenstein.txt</code>, which would mean to look inside a folder called <code class="language-plaintext highlighter-rouge">books</code> for the file. There are two kinds of path:
+    <ul>
+      <li><em>Relative</em> paths, like the above, are always rooted in some <em>current folder</em>. Usually this will be the folder you open in VSCode. If you’re working in the terminal, you can change the current folder with the <code class="language-plaintext highlighter-rouge">cd</code> command; we’ll say more about this in the first lab.</li>
+      <li><em>Absolute</em> paths are rooted in the top-level folder of your computer’s filesystem. At time of writing, an absolute path on <em>my</em> laptop for the same file would be: <code class="language-plaintext highlighter-rouge">/Users/tbn/repos/cs112/materials/Lectures/live/frankenstein.txt</code>. But, unless somebody else has organized things exactly the same way (including having the user name <code class="language-plaintext highlighter-rouge">tbn</code> on a MacBook!) the path wouldn’t work for them.</li>
+    </ul>
+  </li>
+  <li>The second parameter says what <em>mode</em> to open the file in. The <code class="language-plaintext highlighter-rouge">r</code> means we want to open the file for <em>reading</em>. Other options include <code class="language-plaintext highlighter-rouge">w</code> for writing, <code class="language-plaintext highlighter-rouge">a</code> for appending, and so on.</li>
+  <li>Finally, the third parameter (which is named <code class="language-plaintext highlighter-rouge">encoding</code>) tells Python how the text is encoded. It turns out that there are multiple ways to store text in a computer, and different systems throughout history have used different encodings. Fortunately, <a href="https://en.wikipedia.org/wiki/UTF-8"><code class="language-plaintext highlighter-rouge">utf-8</code></a> is now extremely common and widely supported, so you’re unlikely to need to worry about this in 112.</li>
+</ul>
+
+<p>Opening a file gives us a sort of token that we can use to work with it. Crucially, this isn’t the same thing as the text itself. The text is still stored in the file; the value in <code class="language-plaintext highlighter-rouge">frankenstein_file</code> is only the token for accessing the data! To get the text itself, we need to read the (now opened) file’s contents into a string:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; frankenstein = frankenstein_file.read()
+</code></pre></div></div>
+
+<p>Now we have the whole text as a really long string. You could see the text by asking Python to print <code class="language-plaintext highlighter-rouge">frankenstein</code>, but I won’t do that here because it would take up a lot of space in the notes! Something you might try is comparing what Python prints out for <code class="language-plaintext highlighter-rouge">frankenstein</code> against what it prints out for <code class="language-plaintext highlighter-rouge">frankenstein_file</code>. Remember:</p>
+
+<ul>
+  <li>The <em>text of the book</em> is represented as a string (<code class="language-plaintext highlighter-rouge">frankenstein</code>); and</li>
+  <li>The <em>file</em>, which provides access to the book’s data, is represented as a file object (<code class="language-plaintext highlighter-rouge">frankenstein_file</code>)</li>
+</ul>
+
+<p>Now that we have the text, what are some things we might do with it?</p>
+
+<h3 id="replacing-words-and-writing-files">Replacing words and writing files</h3>
+
+<p>Maybe we want to rewrite Frankenstein to instead be about Bruno the bear (Brown’s sports mascot). The easiest way to do this is probably just to take the text of Frankenstein and replace “Frankenstein” with “Bruno” everywhere:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; bruno = frankenstein.replace("Frankenstein", "Bruno")
+</code></pre></div></div>
+<p>Now that we’ve done that, we could save the results in a new file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; bruno_file = open('bruno.txt', 'w', encoding='utf-8')
+&gt; bruno_file.write(bruno)
+&gt; bruno_file.close()
+</code></pre></div></div>
+
+<p>If we look at that file, we can see that the text has been rewritten. Everything will be identical to the original, except that any occurrences of “Frankenstein” will have been replaced with “Bruno”. And since it’s saved into a file, you could share it easily: put it on your website, send it as an email attachment, or just archive it for future generations.</p>
+
+<h2 id="word-counts">Word counts</h2>
+
+<p>Let’s say we wanted to create a count of the number of times every word appears in Frankenstein. <strong>How should we get started?</strong></p>
+
+<p>This sort of <em>design problem</em> is quite common in computing. No matter how experienced someone is, figuring out how to get from a general problem statement to a solution can be tough. But it helps to have some standard tools. I like to follow a process like this…</p>
+
+<ul>
+  <li>Write down the shape of the data you’ve already got (here, it’s a string containing the entire book).</li>
+  <li>Write down what you need to do with the data (here, it’s counting the number of times each word appears).</li>
+  <li>Decide what intermediate data structures we should use to help get from the data to the answer. (Here, a dictionary would probably make sense, since that way we can store a count for every word. Recall that a dictionary is like a lookup table: it stores values corresponding to keys.)</li>
+</ul>
+
+<p>You’ll sometimes hear me say that <strong>“queries influence structure”</strong>, which is the idea that your choice of how to store and represent data should be governed by what you need to do with that data. Hence this strategy.</p>
+
+<p>Let’s try writing a helper function to do that. To get started here, we’ll write the function <em>header</em> (name it, say what inputs it takes, etc.) and add some documentation about what it needs to do.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s">"""
+    Accepts a string and returns a dictionary that maps words to the number of times 
+    each word appears in the string. 
+    """</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+<p>Notice that I’ve included <em>type hints</em> here, to help me remember what the input is and what kind of value the function should return. The <code class="language-plaintext highlighter-rouge">pass</code> keyword is a way to tell Python to do nothing—we haven’t yet written any code!</p>
+
+<p>Now that we’ve got the shape of our function, it would make sense to write some examples. Here is one, taken from a song I like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: "Why do I feel bitter when I should be feeling sweet?"
+Output: {"Why": 1, "do": 1, "I": 2, "feel": 1, "bitter": 1, "when": 1, "should": 1, "be": 1, "feeling": 1, "sweet": 1}
+</code></pre></div></div>
+
+<p>We can write this as a <em>test</em> in Python by writing:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">assert</span> <span class="n">count_words</span><span class="p">(</span><span class="s">"Why do I feel bitter when I should be feeling sweet?"</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span>
+    <span class="s">"Why"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"do"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"I"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">"feel"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"bitter"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"when"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
+    <span class="s">"should"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"be"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"feeling"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"sweet"</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre></div></div>
+<p>but of course the test will fail until we’ve actually written the <code class="language-plaintext highlighter-rouge">count_words</code> function.</p>
+
+<p>Now we’re ready to start filling in the code. We know we’re going to have to return a dictionary, so let’s make one and return it. It can be empty for now.</p>
+
+<p class="notice">Python has “significant” blank spaces, so when we write Python code, we need to watch out for things like indentation and line breaks. A generally helpful rule is that, if you end a line with an open brace, parenthesis, etc. Python will usually understand that you mean to continue on the next line.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s">"""
+    Accepts a string and returns a dictionary that maps words to the number of times 
+    each word appears in the string. 
+    """</span>    
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Code goes here, I don't know what yet
+</span>    <span class="k">return</span> <span class="n">counts</span>
+</code></pre></div></div>
+
+<p>Now we just have to figure out how to convert the input string into the dictionary. To do that, we need to break the goal down into subtasks. We don’t need to immediately figure out how to do each of these, but we need to know what they are. We’ll fill in the details after. Here’s an example. We need to:</p>
+<ul>
+  <li>count each word, but to do that we need to first;</li>
+  <li>break up the single big string into words.
+So we might write something like this:</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s">"""
+    Accepts a string and returns a dictionary that maps words to the number of times 
+    each word appears in the string. 
+    """</span>    
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="bp">None</span> <span class="c1"># ??? I don't know how to get this yet.
+</span>    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">pass</span> <span class="c1"># ??? We need to count this word in our dictionary.
+</span>    <span class="k">return</span> <span class="n">counts</span>
+</code></pre></div></div>
+
+<p>We can easily break up the string into words by using the <code class="language-plaintext highlighter-rouge">split()</code> method, which breaks the string up into pieces and returns them in a list. It takes an optional argument that says what to split the string on, but the default (blank space) will serve our purposes.</p>
+
+<p>Now, how do we count each word? If we <em>don’t</em> have a recorded number for a given word yet, we should add a fresh entry to the dictionary. Otherwise, we can increment that entry by 1.</p>
+
+<p>Here’s an example of where we might end up:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">count_words</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s">"""
+    Accepts a string and returns a dictionary that maps words to the number of times 
+    each word appears in the string. 
+    """</span>    
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">s</span><span class="p">.</span><span class="n">split</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span>
+</code></pre></div></div>
+
+<p class="notice">You might not have seen <code class="language-plaintext highlighter-rouge">+=</code> before. When we write <code class="language-plaintext highlighter-rouge">counts[word] += 1</code>, it’s just shorthand for <code class="language-plaintext highlighter-rouge">counts[word] = counts[word] + 1</code>.</p>
+
+<p>What can we do with this dictionary? Well, lots of things! But let’s reflect on how we got here. We didn’t try to write the entire function at once. Instead, we first figured out the shape we wanted it to be and wrote an example to use as a guide. Then we started sketching, without filling in the low-level details. Then we finally filled in the details.</p>
+
+<p>This exercise continues in the <a href="/Lectures/lecture03.html">next set of notes</a>.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

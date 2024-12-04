@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Web APIs | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Web APIs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture26.html" />
+<meta property="og:url" content="/Lectures/lecture26.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-10-30T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Web APIs" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-30T00:00:00+00:00","datePublished":"2024-10-30T00:00:00+00:00","description":"CSCI 0112","headline":"Web APIs","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture26.html"},"url":"/Lectures/lecture26.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <!-- File names are out of order; this was run before BSTs in 2023, to have it done before the APIs lab. -->
+
+<h1 id="web-apis">Web APIs</h1>
+
+<p>Today we’ll learn about another way to get data from the web besides scraping. The lab will be reinforcing the conceptual material that we cover today.</p>
+
+<p>First, let’s motivate why we want another method of access.</p>
+
+<h2 id="motivating-apis">Motivating APIs</h2>
+
+<p>What are some weaknesses of web scraping, from the perspective of both the person doing the scraping, and the person who is running the website?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>A few issues might be:</p>
+  <ul>
+    <li>The owner of the data might want to charge for access in a fine-grained way, or limit access differently from the way it works on a webpage.</li>
+    <li>Web scraping is unstable. If a site’s format changes, web-scraper scripts can break. APIs can have breaking changes too, but when they do, the changes usually come with instructions for the user!</li>
+    <li>Web scraping is mostly a one-sided effort. While a site designer might work to ease the job of web scrapers, details can still require some guesswork on the part of the script author.</li>
+  </ul>
+
+</details>
+<p><br /></p>
+
+<p>APIs work like this: the user sends a structured request to the API, which replies in a documented, structured way. API is short for <em>Application Programming Interface</em>, and often you’ll hear the set of functions it provides to users called the “interface”.</p>
+
+<p>APIs are everywhere. Whenever you log in via Google (even on a non-Google site) you’re using <a href="https://developers.google.com/identity">Google’s Authentication API</a>.</p>
+
+<!-- ## Too Close To Home
+
+You may have noticed that one of the above issues with web-scraping happened to us this semester. Craigslist has switched how it handles serving some locations. E.g., if we ask for the data for Phoenix via the URL [http://phoenix.craigslist.org/search/apa](http://phoenix.craigslist.org/search/apa), we'll get redirected to a strange-looking URL that doesn't actually contain the source we need. If we view source, we'll see something like this in the HTML:
+
+```html
+<script src="https://www.craigslist.org/static/www/bbe8a523a089547e594fa2f101021699a377645c.js" ></script>
+     <script>
+         window.cl.init(
+             'https://www.craigslist.org/static/www/',
+             '',
+             'www',
+             'search',
+             {
+areaAbbrev: "phx",
+areaCoords: ["33.448299","-112.072998"],
+areaId: "18",
+...
+```
+
+Rather than sending us the raw HTML that the project says to handle via web-scraping, Craigslist for Phoenix is sending _JavaScript_ code that the browser will run to render the site. This is _possible_ to process, but harder. 
+
+We tested the project before the semester began, but (unintentionally) this became an object lesson in why web scraping can be troublesome to do.
+
+(By the way, this doesn't happen on _all_ the sites! Given the short notice, focus on the sites you can actually scrape, that reply with usable data in the HTML.) -->
+
+<h3 id="example-national-weather-service">Example: National Weather Service</h3>
+
+<p>Your lab contains two API examples: one small, “toy” example to get you started, and one more serious example. To maximize variety, I’ll show you a third today: the U.S. National Weather Service! Professional APIs tend to be <a href="https://www.weather.gov/documentation/services-web-api">well-documented</a>, which makes it a good example. We’ll also use the NWS because, while many professional APIs require registration and the use of an API key to use them, the NWS API is free and requires no registration.</p>
+
+<p>Let’s get weather information for Providence. Our geocordinates here are: <code class="language-plaintext highlighter-rouge">41.8268</code>, <code class="language-plaintext highlighter-rouge">-71.4029</code>. According to the docs, we can start by sending a <code class="language-plaintext highlighter-rouge">points</code> query with these coordinates: <a href="https://api.weather.gov/points/41.8268,-71.4029">https://api.weather.gov/points/41.8268,-71.4029</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "s": "https://schema.org/",
+            "geo": "http://www.opengis.net/ont/geosparql#",
+            "unit": "http://codes.wmo.int/common/unit/",
+            "@vocab": "https://api.weather.gov/ontology#",
+            "geometry": {
+                "@id": "s:GeoCoordinates",
+                "@type": "geo:wktLiteral"
+            },
+            "city": "s:addressLocality",
+            "state": "s:addressRegion",
+            "distance": {
+                "@id": "s:Distance",
+                "@type": "s:QuantitativeValue"
+            },
+            "bearing": {
+                "@type": "s:QuantitativeValue"
+            },
+            "value": {
+                "@id": "s:value"
+            },
+            "unitCode": {
+                "@id": "s:unitCode",
+                "@type": "@id"
+            },
+            "forecastOffice": {
+                "@type": "@id"
+            },
+            "forecastGridData": {
+                "@type": "@id"
+            },
+            "publicZone": {
+                "@type": "@id"
+            },
+            "county": {
+                "@type": "@id"
+            }
+        }
+    ],
+    "id": "https://api.weather.gov/points/41.8268,-71.4029",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -71.402900000000002,
+            41.826799999999999
+        ]
+    },
+    "properties": {
+        "@id": "https://api.weather.gov/points/41.8268,-71.4029",
+        "@type": "wx:Point",
+        "cwa": "BOX",
+        "forecastOffice": "https://api.weather.gov/offices/BOX",
+        "gridId": "BOX",
+        "gridX": 64,
+        "gridY": 64,
+        "forecast": "https://api.weather.gov/gridpoints/BOX/64,64/forecast",
+        "forecastHourly": "https://api.weather.gov/gridpoints/BOX/64,64/forecast/hourly",
+        "forecastGridData": "https://api.weather.gov/gridpoints/BOX/64,64",
+        "observationStations": "https://api.weather.gov/gridpoints/BOX/64,64/stations",
+        "relativeLocation": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -71.418784000000002,
+                    41.823056000000001
+                ]
+            },
+            "properties": {
+                "city": "Providence",
+                "state": "RI",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1380.4369590568999
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 72
+                }
+            }
+        },
+        "forecastZone": "https://api.weather.gov/zones/forecast/RIZ002",
+        "county": "https://api.weather.gov/zones/county/RIC007",
+        "fireWeatherZone": "https://api.weather.gov/zones/fire/RIZ002",
+        "timeZone": "America/New_York",
+        "radarStation": "KBOX"
+    }
+}
+</code></pre></div></div>
+
+<p>Wow, that’s a lot! What do you notice about this data?</p>
+
+<details>
+  <summary>Think, then click!</summary>
+
+  <p>Some things are:</p>
+  <ul>
+    <li>what in the world is this format?</li>
+    <li>you can ignore a lot of it. This first query gives us useful information for <em>further</em> uses of the API.</li>
+    <li>another is that there’s no actual weather information here…</li>
+  </ul>
+</details>
+<p><br /></p>
+
+<h3 id="javascript-object-notation-json">JavaScript Object Notation (JSON)</h3>
+
+<p><em>JavaScript Object Notation</em> (JSON) is a standard syntax for exchanging this sort of structured information.
+JSON syntax is very similar to Python dictionary syntax.
+Information is stored as key-value pairs of various types. Like in Python, a JSON object could have a string key whose value is a string, a list or a whole other dictionary.</p>
+
+<h3 id="extracting-meaning">Extracting Meaning</h3>
+
+<p>See the documentation to understand the meaning of specific fields in the response. At a high level, this query tells us <em>which NWS grid location</em> Providence is in, along with telling us URLs for common queries about that grid location. The NWS API needs you to work with it in stages.</p>
+
+<p>If we extracted the <code class="language-plaintext highlighter-rouge">forecast</code> URL – <a href="https://api.weather.gov/gridpoints/BOX/64,64/forecast">https://api.weather.gov/gridpoints/BOX/64,64/forecast</a> – and sent <em>that</em>, we’d get back a JSON object containing a weather forecast for Providence.</p>
+
+<h3 id="working-in-python">Working in Python</h3>
+
+<p>You’ll be using Python in your lab. API requests are web requests, and so quite similar to what you did for web scraping. The difference is in the format of the response; APIs are usually easier to process and better documented. (I like to do a first introduction to APIs just in the browser, so you can see how they are similar to, but different from, web scraping.)</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

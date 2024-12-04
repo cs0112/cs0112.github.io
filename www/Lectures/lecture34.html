@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Expression Trees | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Expression Trees" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture34.html" />
+<meta property="og:url" content="/Lectures/lecture34.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-12-02T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Expression Trees" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-12-02T00:00:00+00:00","datePublished":"2024-12-02T00:00:00+00:00","description":"CSCI 0112","headline":"Expression Trees","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture34.html"},"url":"/Lectures/lecture34.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="expression-trees">Expression Trees</h1>
+
+<p>The <a href="/Lectures/live/expressions.py">livecode</a> diverges a bit from these notes. Chiefly, we implemented the “if nonzero” operator, which wasn’t present in the notes.</p>
+
+<h2 id="motivating-expression-trees">Motivating Expression Trees</h2>
+
+<p>We talked briefly before about how tree-like data pops up all over the place in computing and in life. Today we’ll look at one more type of tree. Here’s an example:</p>
+
+<p><img src="https://i.imgur.com/1rFM3mt.png" alt="" /></p>
+
+<p>What do you notice about this tree?</p>
+<ul>
+  <li>All the leaf nodes (nodes without children) are numbers;</li>
+  <li>non-leaf nodes are operations like addition.</li>
+</ul>
+
+<p>What might this tree represent? Arithmetic! The arithmetic expression <code class="language-plaintext highlighter-rouge">((9*4) + 5)</code> to be precise. The children of an operation node correspond to that operation’s inputs. We’ll read these inputs from left to right (although <code class="language-plaintext highlighter-rouge">+</code> and <code class="language-plaintext highlighter-rouge">*</code> are commutative, so for the moment I’ll disregard ordering).</p>
+
+<p>Both of these representations, the tree and the expression, are equally valid. For computation, though, the tree (we’ll call it an <em>expression tree</em>) has advantages.</p>
+
+<p>Here are two more perfectly good trees, representing <code class="language-plaintext highlighter-rouge">4</code> and <code class="language-plaintext highlighter-rouge">(5 + ((4 * 2) - 7 ))</code> respectively:</p>
+
+<p><img src="https://i.imgur.com/SENG7f2.png" alt="" /></p>
+
+<p>Notice how the parentheses in the expressions echo the “levels” of the corresponding expression tree.</p>
+
+<p>What would an <em>invalid tree</em> look like? Maybe something like:</p>
+
+<p><img src="https://i.imgur.com/nW6AHzo.png" alt="" /></p>
+
+<p>What about</p>
+
+<p><img src="https://i.imgur.com/MY9bdLz.png" alt="" /></p>
+
+<p>which represents a division by zero: <code class="language-plaintext highlighter-rouge">(10 / 0)</code>? Here something is wrong, but is it the same kind of problem? We can explore the difference in Python.</p>
+
+<p>If I write <code class="language-plaintext highlighter-rouge">10 / 0</code> in Python, the program runs and I get a <code class="language-plaintext highlighter-rouge">ZeroDivisionError</code>. But if I write <code class="language-plaintext highlighter-rouge">1 2 3</code> in Python I get a <code class="language-plaintext highlighter-rouge">SyntaxError</code>: the program doesn’t run, because Python <em>can’t infer its meaning</em>.</p>
+
+<h2 id="implementing-expression-trees">Implementing Expression Trees</h2>
+
+<p>There are a lot of things we might want to do with an expression tree. Three of the most common are:</p>
+<ul>
+  <li>converting a string expression into a corresponding tree (<em>parsing</em>; this is a big part of what the <code class="language-plaintext highlighter-rouge">HTMLTree</code> class and the beautiful soup package do);</li>
+  <li>converting a tree into its corresponding string expression (this is just writing <code class="language-plaintext highlighter-rouge">__repr__</code>); and</li>
+  <li><em>running</em> the tree as a program. This is sometimes called “evaluating” the tree.</li>
+</ul>
+
+<h3 id="string-to-tree-parsing">String to tree: parsing</h3>
+
+<p>Parsing is out of scope for 112, and is usually far harder than writing <code class="language-plaintext highlighter-rouge">__repr__</code>. (This is why we gave you a parser for HTML trees.)</p>
+
+<p>Why is parsing hard? Lots of reasons, but consider producing a tree for the expression string <code class="language-plaintext highlighter-rouge">1 + 2 * 3</code>. Without knowing the rules of precedence for arithmetic, this expression is <em>ambiguous</em>: there are multiple potential trees it could correspond to (<code class="language-plaintext highlighter-rouge">(1+2)*3</code> and <code class="language-plaintext highlighter-rouge">1+(2*3)</code>), and those trees even produce different values!</p>
+
+<p>If you’re curious about how parsing works, check out CSCI 1260. For now, we’ll always start with an expression tree directly.</p>
+
+<h3 id="tree-to-string-__repr__-part-1">Tree to string: <code class="language-plaintext highlighter-rouge">__repr__</code> (Part 1)</h3>
+
+<p>Before we can convert trees into strings, we need to implement trees themselves.</p>
+
+<p>What do these arithmetic expressions look like as Python classes? There are multiple ways to represent them. Let’s be guided by a convenient design principle: invalid trees should, ideally, be impossible to create. For instance, we’d like to make it impossible to create a tree with <code class="language-plaintext highlighter-rouge">12</code> as an internal node, or <code class="language-plaintext highlighter-rouge">+</code> as a leaf. This is analogous to Python’s syntax error when given <code class="language-plaintext highlighter-rouge">1 2 3</code>: there’s no expression tree to represent this because it’s not valid Python.</p>
+
+<p>We’ll have different classes for different kinds of node. Here, we have two very different notions: <em>operations</em>, which can only be internal nodes of the tree, and <em>values</em>, which can only be leaf nodes.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Value</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+    
+<span class="k">class</span> <span class="nc">Operation</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">op</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>
+</code></pre></div></div>
+
+<p>We could improve on this (e.g., by raising an error if an <code class="language-plaintext highlighter-rouge">Operation</code> gets created with an invalid operator) but let’s move forward for now.</p>
+
+<h3 id="tree-to-string-__repr__-part-1-1">Tree to string: <code class="language-plaintext highlighter-rouge">__repr__</code> (Part 1)</h3>
+
+<p>Now let’s write <code class="language-plaintext highlighter-rouge">__repr__</code> methods for each class. Actually, let’s do a bit more. In the past, we’ve seen that there are two different “convert to string” methods in Python, <code class="language-plaintext highlighter-rouge">__repr__</code> (for the use of programmers) and <code class="language-plaintext highlighter-rouge">__str__</code> (for the use of regular users). Let’s use this opportunity to demonstrate the different uses of <code class="language-plaintext highlighter-rouge">__repr__</code> and <code class="language-plaintext highlighter-rouge">__str__</code>.</p>
+
+<h4 id="values">Values</h4>
+
+<p>A value is just a single value. If we’re representing it for <em>our own debugging use</em>, we should probably tag it as a <code class="language-plaintext highlighter-rouge">Value</code> class, and say what it contains. But if we’re representing it for a user, we should probably just give the value itself. We’ll do that like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s">'Value(</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">value</span><span class="si">}</span><span class="s">)'</span>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="operations">Operations</h4>
+
+<p>Operations are a bit more complex. Not only do we need to account for their left and right children, but we need to make sure that the recursive structure of the whole tree gets explored.</p>
+
+<p>Fortunately, this isn’t tough to do; we’ll just use format strings and make sure to call either <code class="language-plaintext highlighter-rouge">str</code> or <code class="language-plaintext highlighter-rouge">repr</code> appropriately:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s">'Operation("</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">op</span><span class="si">}</span><span class="s">", left=</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">left</span><span class="p">)</span><span class="si">}</span><span class="s">, right=</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">right</span><span class="si">}</span><span class="s">)'</span>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s">'(</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">left</span><span class="p">)</span><span class="si">}</span><span class="s"> </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">op</span><span class="si">}</span><span class="s"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">right</span><span class="p">)</span><span class="si">}</span><span class="s">)'</span>
+</code></pre></div></div>
+
+<p>We’re calling <code class="language-plaintext highlighter-rouge">repr</code> and <code class="language-plaintext highlighter-rouge">str</code> explicitly to make sure the proper string-representation gets created for each child object. If we didn’t do this, Python would default to one of them; we need to disambiguate.</p>
+
+<h4 id="testing">Testing</h4>
+
+<p>Let’s try some expressions and make sure these methods work like we expect:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Operation</span><span class="p">(</span><span class="s">'+'</span><span class="p">,</span> <span class="n">Value</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Value</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">Operation</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">Operation</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">Value</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Value</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">Value</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>As we do so, it’s worth asking: what value would we expect to be produced if we ran these expressions through a calculator program? (Probably we’d get <code class="language-plaintext highlighter-rouge">3</code> and <code class="language-plaintext highlighter-rouge">0.2</code>, respectively.)</p>
+
+<h2 id="running-the-program">Running the program</h2>
+
+<p>One type of computation we might want to do with expression trees is <em>run</em> them. For instance, if our expressions are arithmetic, we might write a method that runs the arithmetic and returns the result, just like a calculator program. We call such a function an <em>evaluator</em> or <em>interpreter</em>.</p>
+
+<p>The interpreter for <code class="language-plaintext highlighter-rouge">Value</code> turns out to be pretty straightforward: we just return the value that’s already there. But what about <code class="language-plaintext highlighter-rouge">Operation</code>? The key lies in realizing that we need to turn an operation node containing the string <code class="language-plaintext highlighter-rouge">+</code> into an actual addition operation (and likewise for the other operators):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">interp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">op</span> <span class="o">==</span> <span class="s">'+'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">op</span> <span class="o">==</span> <span class="s">'*'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">op</span> <span class="o">==</span> <span class="s">'-'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">op</span> <span class="o">==</span> <span class="s">'/'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">op</span><span class="p">)</span> <span class="c1"># built-in error type
+</span></code></pre></div></div>
+
+<p>If you’ve ever heard someone say that the Python prompt “interprets” Python or “evaluates” Python, now you know why.</p>
+
+<h4 id="isnt-there-a-lot-more-to-python-than-just-arithmetic">Isn’t there a lot more to Python than just arithmetic?</h4>
+
+<p>Yes! You’ll learn to write more sophisticated interpreters if you take Programming Languages (CSCI 1730). Here’s an exercise: if you needed to add <em>variables</em> to our language, how would you do it? There are two challenges:</p>
+<ul>
+  <li>a variable isn’t the same as a value; and</li>
+  <li>how can we evaluate the expression if we don’t know what values all the leaf nodes have?</li>
+</ul>
+
+<p>To solve the first challenge, we’ll add a new class:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Variable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="sa">f</span><span class="s">'</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">'</span>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s">'Variable(</span><span class="si">{</span><span class="s">"self.name"</span><span class="si">}</span><span class="s">)'</span>
+    <span class="k">def</span> <span class="nf">interp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="err">???</span>
+</code></pre></div></div>
+
+<p>What’s the result of interpreting a variable? We don’t know unless we’re told its value! So let’s make that explicit by adding a new parameter to <code class="language-plaintext highlighter-rouge">interp</code>. It will be a dictionary that maps variable names to values:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">interp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">variable_values</span><span class="p">[</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Now what? We need to expand the <code class="language-plaintext highlighter-rouge">interp</code> method for the other classes, and make sure the dictionary is passed whenever we call any of the <code class="language-plaintext highlighter-rouge">interp</code> methods. But then everything should work nicely.</p>
+
+<p>Notice what’s happened here. We’ve just made the language more general: the caller now gets to use variables, and pass in specific values. This is one way we can increase the expressive power of a language.</p>
+
+<h3 id="testing-1">Testing</h3>
+
+<p>Suppose I write:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">expr1</span> <span class="o">=</span> <span class="n">Operation</span><span class="p">(</span><span class="s">'+'</span><span class="p">,</span> <span class="n">Value</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Value</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">expr2</span> <span class="o">=</span> <span class="n">Operation</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">Operation</span><span class="p">(</span><span class="s">'/'</span><span class="p">,</span> <span class="n">Value</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Value</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">Value</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="k">assert</span> <span class="n">expr1</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="k">assert</span> <span class="n">expr2</span><span class="p">.</span><span class="n">interp</span><span class="p">()</span> <span class="o">==</span> <span class="mf">0.2</span>
+</code></pre></div></div>
+
+<p><strong>Exercise:</strong> What tests am I missing?</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

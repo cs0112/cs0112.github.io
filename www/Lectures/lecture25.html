@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Binary Search Trees (Parts 2 and 3) | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Binary Search Trees (Parts 2 and 3)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture25.html" />
+<meta property="og:url" content="/Lectures/lecture25.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-11-03T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Binary Search Trees (Parts 2 and 3)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-11-03T00:00:00+00:00","datePublished":"2024-11-03T00:00:00+00:00","description":"CSCI 0112","headline":"Binary Search Trees (Parts 2 and 3)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture25.html"},"url":"/Lectures/lecture25.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="binary-search-trees-parts-2-and-3">Binary Search Trees (Parts 2 and 3)</h1>
+
+<p>These notes cover implementing and traversing binary search trees. While we won’t implement every possible operation, this should give you a good starting point.</p>
+
+<p><a href="/Lectures/live/binarytree.py">livecode</a></p>
+
+<h2 id="implementing-bsts">Implementing BSTs</h2>
+
+<p>Our implementation will have a recursive structure quite similar to <code class="language-plaintext highlighter-rouge">ListNode</code> from when we built linked lists.</p>
+
+<h3 id="a-starting-point">A starting point</h3>
+
+<p>Let’s just start with the same structure we had before, renamed.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BSTNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p>But what’s <code class="language-plaintext highlighter-rouge">next</code>? Is there only one? No! We need two “next”s: the left and right children:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BSTNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<h3 id="providing-the-right-interface">Providing the right interface</h3>
+
+<p>Like with linked lists, we’ll create an outer wrapper class to interface with the user or programmer who wants to use our data structure. We’ll make a skeletal <code class="language-plaintext highlighter-rouge">add</code> method, and split it across 2 cases, again like we did for linked lists:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># User-facing class (well, programmer-facing :-))         
+</span><span class="k">class</span> <span class="nc">BST</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">None</span>
+        
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># ???
+</span>        <span class="k">else</span>    
+            <span class="k">pass</span> <span class="c1"># ???
+</span></code></pre></div></div>
+
+<h3 id="case-1-theres-nothing-in-the-tree-yet">Case 1: there’s nothing in the tree yet</h3>
+
+<p>Recall how we handled the same idea in linked lists. What can we do if there’s no root (i.e., the tree is empty?) We can create a new node, and make it the root:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">BSTNode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">pass</span> <span class="c1"># ???
+</span></code></pre></div></div>
+
+<h3 id="case-2-the-tree-isnt-empty">Case 2: the tree isn’t empty</h3>
+
+<p>If there’s already a root, we’ll need to do a descent through the tree. Like in linked lists, we’ll split this out into a recursive function, <code class="language-plaintext highlighter-rouge">add_to</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">BSTNode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span>    
+            <span class="bp">self</span><span class="p">.</span><span class="n">add_to</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">add_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">BSTNode</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">pass</span> <span class="c1"># ???
+</span></code></pre></div></div>
+
+<h3 id="descending-through-the-tree-more-reasoning-by-cases">Descending through the tree: more reasoning by cases</h3>
+
+<p>Now it’s tricky; we don’t want to explore <em>both</em> the left and right children. Let’s reason by cases:</p>
+<ul>
+  <li>what happens if the current node’s value is equal to <code class="language-plaintext highlighter-rouge">data</code>?</li>
+  <li>what happens if the current node’s value is greater than <code class="language-plaintext highlighter-rouge">data</code>?</li>
+  <li>what happens if the current node’s value is less than <code class="language-plaintext highlighter-rouge">data</code>?</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">BSTNode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span>    
+            <span class="bp">self</span><span class="p">.</span><span class="n">add_to</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">add_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">BSTNode</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="p">:</span>
+            <span class="c1"># ???
+</span>        <span class="k">if</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="c1"># ???
+</span>        <span class="k">if</span> <span class="n">data</span> <span class="o">&gt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="c1"># ???   
+</span></code></pre></div></div>
+
+<h3 id="what-if-the-values-are-equal">What if the values are equal?</h3>
+
+<p>If the values are equal, the tree already contains <code class="language-plaintext highlighter-rouge">data</code>. Since we aren’t thinking about duplicates right now, we’ll just stop here.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="c1"># disallow duplicates FOR NOW
+</span></code></pre></div></div>
+
+<h3 id="what-if-the-values-are-different">What if the values are different?</h3>
+
+<p>We have reason to suspect that the <code class="language-plaintext highlighter-rouge">&lt;</code> and <code class="language-plaintext highlighter-rouge">&gt;</code> cases will look quite similar, so let’s just tackle one in isolation. What do we do if <code class="language-plaintext highlighter-rouge">data</code> is <em>less than</em> <code class="language-plaintext highlighter-rouge">node.data</code>?</p>
+
+<p>We should be guided by what it means to be a BST. Would we <em>ever</em> want to place <code class="language-plaintext highlighter-rouge">data</code> to the right of the current node? No! If we did that, we’d produce a tree that <em>wasn’t</em> a BST anymore.</p>
+
+<p>So we’ll move left. If there’s no left child, this is the place to add our new node. If there is a left child, we’ve got to recur:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="k">if</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">BSTNode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">&gt;</code> case is symmetric:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">BSTNode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="bp">self</span><span class="p">.</span><span class="n">add_to</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">add_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">BSTNode</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="c1"># disallow duplicates FOR NOW
+</span>        <span class="k">if</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">BSTNode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">&gt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">BSTNode</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>                    
+</code></pre></div></div>
+
+<h4 id="notice">Notice…</h4>
+
+<p>As usual, we proceeded top-down, filling in more detail as we went. For BSTs, we needed to break down sub-problems by cases more than we did for linked lists. That may be unsurprising, since BSTs themselves branch.</p>
+
+<p>Observe that this process of building a program step by step is itself tree-like. We figure out:</p>
+<ul>
+  <li>what the sub-problems are (even if we don’t know how to solve them yet); and</li>
+  <li>what the different cases of each subproblem are often guide us to a solution.</li>
+</ul>
+
+<p>This means that, when we’re dealing with a data-structure,  the definition of the data itself strongly hints at how the code should look.</p>
+
+<p>Suppose we were going to write <code class="language-plaintext highlighter-rouge">__repr__</code> for our class. What structure would survive from <code class="language-plaintext highlighter-rouge">add</code>, and what would need to change?</p>
+
+<h3 id="writing-some-tests">Writing some tests</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">t</span> <span class="o">=</span> <span class="n">BST</span><span class="p">()</span>
+<span class="n">t</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">t</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">t</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="i-wonder">I wonder…</h4>
+
+<p>What do we get out of these tests, given that we can’t actually find anything in the tree yet?</p>
+
+<h2 id="more-methods">More Methods!</h2>
+
+<h3 id="len"><strong>len</strong></h3>
+
+<p>What should this even mean? “Length” is a strange term to apply to a <em>tree</em>, but here it’s a bit of a standard Python thing. We can ask what the “length” of a set is: <code class="language-plaintext highlighter-rouge">len({1,2,3})</code> or the “length” of a dictionary: len({1:1,2:2,3:3}). So really, it means “size of”.</p>
+
+<p>Because of this, implementing <code class="language-plaintext highlighter-rouge">__len__</code> means that someone can use our data structure, and have a standard means of discovering how many elements it is storing, without knowing what kind of data structure it is. Polymorphism!</p>
+
+<p>There are two ways to attack this problem:</p>
+<ul>
+  <li>do a traversal of the tree that passes a counter around, incrementing the counter for every node visited; or</li>
+  <li>add a field that stores the number of items that have been <code class="language-plaintext highlighter-rouge">add</code>ed to the tree.</li>
+</ul>
+
+<p>The first approach will always take linear time: we have to visit every node in the tree to count it. But the second approach will take constant time: we just return the counter! There’s a cost to increment the counter every time a node gets added, but it’s a constant cost.</p>
+
+<p>We’ll implement the second approach. But it’s not as straightforward as you might think. Sure, <code class="language-plaintext highlighter-rouge">__len__</code> is easy to write:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># How many elements are there stored in this tree right now?
+</span>    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">count</span>
+</code></pre></div></div>
+
+<p>but <em>where do we add the code to increment the counter</em>? Let’s try adding it right at the top of the <code class="language-plaintext highlighter-rouge">add</code> method:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>        
+    <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>But this isn’t safe. First, the code might produce an error. If there’s an exception, and no node gets added, the caller might catch the exception and continue running. In that case, <code class="language-plaintext highlighter-rouge">self.count</code> would be off the true count: one higher, to be exact. Moreover, since our tree isn’t supporting duplicate elements, we might successfully finish running <code class="language-plaintext highlighter-rouge">add</code> but still not have added a new element.</p>
+
+<p>We’ll have to position that line carefully. We’ll increment the counter whenever <code class="language-plaintext highlighter-rouge">add</code> returns a <code class="language-plaintext highlighter-rouge">False</code>.</p>
+
+<pre><code class="language-python=">    def add(self, data):        
+        if not self.root:
+            self.root = BSTNode(data)
+            self.count = self.count + 1
+            return False
+        else:  
+            result = self.add_to(self.root, data)      
+            if result == False:
+                self.count = self.count + 1
+            return result
+</code></pre>
+
+<h3 id="contains"><strong>contains</strong></h3>
+
+<p>Implementing <code class="language-plaintext highlighter-rouge">__contains__</code> will let programmers use the <code class="language-plaintext highlighter-rouge">in</code> syntax on our data structure. Again, this is polymorphism in action: a programmer can write code that works for both our BSTs and Python sets, lists, or dictionaries without modification.</p>
+
+<p>To build this, we need to implement the recursive descent that searches the tree. This seems like a lot of work, except we’ve done nearly everything already in <code class="language-plaintext highlighter-rouge">add</code>.</p>
+
+<p>Why do I say that? Because we wrote <code class="language-plaintext highlighter-rouge">add</code> to mimic the search process we had worked out on the board. The structure will be almost exactly the same. In fact, we’ll pretty much just be <em>removing</em> extra stuff from <code class="language-plaintext highlighter-rouge">add</code> to get <code class="language-plaintext highlighter-rouge">find</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>            
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>  
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">find_in</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>   
+
+    <span class="k">def</span> <span class="nf">find_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span> 
+        <span class="k">if</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">find_in</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>                
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">&gt;</span> <span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">find_in</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>                
+                <span class="k">return</span> <span class="bp">False</span> 
+            
+      <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>                      
+</code></pre></div></div>
+
+<p>And once we’ve got <code class="language-plaintext highlighter-rouge">find</code>, <code class="language-plaintext highlighter-rouge">__contains__</code> is just a wrapper for it.</p>
+
+<h4 id="why-implement-__len__-and-__contains__-at-all-couldnt-someone-just-call-find-and-read-count">Why implement <code class="language-plaintext highlighter-rouge">__len__</code> and <code class="language-plaintext highlighter-rouge">__contains__</code> at all? Couldn’t someone just call <code class="language-plaintext highlighter-rouge">find</code> and read <code class="language-plaintext highlighter-rouge">count</code>?</h4>
+
+<p>There are two reasons.</p>
+
+<p>First, <code class="language-plaintext highlighter-rouge">__len__</code> and <code class="language-plaintext highlighter-rouge">__contains__</code> are standard polymorphic methods, meaning that Python programmers can just use <code class="language-plaintext highlighter-rouge">len</code> and <code class="language-plaintext highlighter-rouge">in</code> to test for size and membership respectively. They don’t need to know what we named our search method or our counter field.</p>
+
+<p>Second, having these be special methods makes it easy if we want to go in later and add new functionality. Maybe we want to record the membership queries people ask! If we already have a <code class="language-plaintext highlighter-rouge">__contains__</code> method that everyone is already using, it’s very easy to add the new functionality.</p>
+
+<p>Relatedly, if our class had a field that was itself an object, like a list or a set, we might want to defensively <em>copy</em> that object and return the copy, not the original. Remember that if we send back a reference to the original, the caller can change its contents! But if we copy the data into a new container, our internal field is somewhat better protected.</p>
+
+<h2 id="tree-traversal">Tree Traversal</h2>
+
+<p>So far we’ve mostly focused on functions that do a single descent through the tree (<code class="language-plaintext highlighter-rouge">find</code> and <code class="language-plaintext highlighter-rouge">add</code>). But there are definitely times when that won’t suffice and we need to traverse the <em>entire</em> BST.</p>
+
+<h3 id="lets-implement-__repr__">Let’s implement <code class="language-plaintext highlighter-rouge">__repr__</code></h3>
+
+<p>Building <code class="language-plaintext highlighter-rouge">__repr__</code> means producing a string that encodes the full contents of a BST. Since we probably want to actually display the elements in the tree, we can’t get away with following only a single path, like we could for <code class="language-plaintext highlighter-rouge">find</code> and <code class="language-plaintext highlighter-rouge">add</code>.</p>
+
+<p>But now things get a little bit more complicated. There are multiple strategies for exploring the tree. First, let’s set up some common infrastructure. We can, again, re-use much of what’s already written in <code class="language-plaintext highlighter-rouge">find</code>. This time, we don’t want to <em>only</em> visit the left or right subtrees, but both.</p>
+
+<p>Why don’t we avoid the whole producing a “string” issue here and just <code class="language-plaintext highlighter-rouge">collect</code> a list of data in the tree. Then we can print out the tree as if it were a list, with a <code class="language-plaintext highlighter-rouge">BST</code> tag to go with it.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>            
+            <span class="k">return</span> <span class="s">'BST([])'</span>
+        <span class="k">else</span><span class="p">:</span>  
+            <span class="k">return</span> <span class="s">'BST('</span><span class="o">+</span><span class="bp">self</span><span class="p">.</span><span class="n">collect</span><span class="p">()</span><span class="o">+</span><span class="s">')'</span>
+
+    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">partial_result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">partial_result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">data</span><span class="p">)</span> <span class="c1"># record this node            
+</span>        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">left</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="c1"># if left exists, visit it
+</span>            <span class="n">partial_result</span> <span class="o">+=</span> <span class="bp">self</span><span class="p">.</span><span class="n">collect</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>   
+        <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">right</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="c1"># if right exists, visit it
+</span>            <span class="n">partial_result</span> <span class="o">+=</span> <span class="bp">self</span><span class="p">.</span><span class="n">collect</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">partial_result</span>
+            
+</code></pre></div></div>
+
+<p>Here’s a picture of the balanced BST we saw on Monday. I’ve labeled the path the <code class="language-plaintext highlighter-rouge">collect</code> function takes after it’s first called on the tree’s root.</p>
+
+<p><img src="https://i.imgur.com/gphKq2Y.png" alt="" /></p>
+
+<p>Notice that I really do mean “path”: there’s a pattern here that you can see if you follow the path through the tree. The pattern is called <em>depth-first search</em>, because it gets to a leaf as soon as possible (“depth first”) but doesn’t prioritize exploring nodes <em>near</em> the starting point. It just zig-zags up and down the tree.</p>
+
+<p>Notice also that my labels correspond concretely to <em>calls and returns</em> in the program’s execution, and not on nodes. That’s because while (in this program, anyway!) there is only ever one recursive call of <code class="language-plaintext highlighter-rouge">collect</code> for any given node, that node comes into focus at multiple points:</p>
+<ul>
+  <li>when <code class="language-plaintext highlighter-rouge">collect</code> is first called with that node as its argument;</li>
+  <li>when its left child returns; and</li>
+  <li>when its right child returns.</li>
+</ul>
+
+<p>We can see this in the debugger, and even if I don’t do so in lecture, it’s quite informative to “step into” all the calls on this tree.</p>
+
+<h4 id="pre-order-traversal">Pre-order traversal</h4>
+
+<p>If I <code class="language-plaintext highlighter-rouge">print</code> this tree, I’ll get the following string:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BST</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>What do you notice about the pattern of numbers? Every node is added to the list <em>as soon as it is visited</em>. We call this a <em>pre-order traversal</em> of the tree: a depth-first exploration where each node’s data is collected before any of its childrens’ data is.</p>
+
+<p>(The opposite of this approach, when the current node is collected after all its children are, is called <em>post-order traversal</em>.)</p>
+
+<p>Pre-order and post-order traversals can sometimes be useful. No child will appear before its parent in the enumeration. This makes pre-order traversals useful if you’re trying to plan tasks with dependencies. Think: <a href="">A Day in the Life</a>https://en.wikipedia.org/wiki/A_Day_in_the_Life by the Beatles! We’d sure like to put on our coat before we catch the bus (whether or not it’s in seconds flat).</p>
+
+<p>The pre-order traversal also lets us know something about the <em>structure</em> of the tree. It’s useful for debugging, as well as more advanced tree-representation techniques we don’t cover in 112.</p>
+
+<h4 id="in-order-traversal">In-order traversal</h4>
+
+<p>There’s another option though. When we first started exploring BSTs, you noticed that if you read them from left to right, the numbers were <em>in order</em>. A traversal echoing that intuition is called an <em>in-order traversal</em>. Here, we’d want to get:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BST</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>How would we get this ordering? With only one small change to the above code: instead of adding the current node’s data field to the list right away, we <em>wait until the left child has been fully traversed</em>. That way, we’re guaranteed to get all the values, well, <em>in order</em>!</p>
+
+<p>Spoiler for next week: we’re shortly going to be learning various algorithms for <em>sorting</em> data. It turns out that one such algorithm, called “tree sort”, just puts all the values into a BST and then performs an in-order traversal. It’s not much of an algorithm, but it demonstrates that a well-designed data structure will sometimes give you new operations for free.</p>
+
+<p>What’s the downside? Well, sadly, we’ve given up on the Day-in-the-Life property that pre-order gave us: (left) children are processed before their parents.</p>
+
+<p>Which should you use? That depends on what you want!</p>
+
+<h4 id="breadth-first-traversal">Breadth-first traversal</h4>
+
+<p>Another kind of traversal is one that visits nodes in order according to how far they are from the root. So we might then visit 7 first, then 5 and 12, followed by 3, 6, 10, and 17.</p>
+
+<p>This sort of traversal is good for finding <em>shortest paths</em>, and is the basis of a famous algorithm you’ll learn about if you take 0200. I’ll pass over it here, though, for now: its most appealing applications are still ahead.</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

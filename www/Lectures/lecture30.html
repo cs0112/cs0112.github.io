@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Merge Sort (Part 2) and Random Inputs | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Merge Sort (Part 2) and Random Inputs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture30.html" />
+<meta property="og:url" content="/Lectures/lecture30.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-11-15T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Merge Sort (Part 2) and Random Inputs" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-11-15T00:00:00+00:00","datePublished":"2024-11-15T00:00:00+00:00","description":"CSCI 0112","headline":"Merge Sort (Part 2) and Random Inputs","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture30.html"},"url":"/Lectures/lecture30.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <p>Today we’ll actually implement a sorting function that uses the <code class="language-plaintext highlighter-rouge">merge</code> function we wrote last time. We’ll also learn a new way to <em>test</em> our sort.
+The livecode for merge sort is <a href="/Lectures/live/mergesort_2024.py">here</a>, and the expanded testing code is <a href="/Lectures/live/test_merge_2024.py">here</a>.</p>
+
+<p>We’re unlikely to have time to talk about the analysis or recurrence relations in class; please read these notes!</p>
+
+<h2 id="from-merging-to-sorting">From merging to sorting</h2>
+
+<p>It turns out that we can use <code class="language-plaintext highlighter-rouge">merge</code> to implement a more efficient kind of sorting program.</p>
+
+<p>Suppose we have a list of length $N$ that we want to sort. For simplicity, let’s suppose it takes exactly $N^2$ steps to sort via our existing algorithms. But let’s try playing a computer science trick: divide the data and recur. How about we cut the list in half? (We’ll ignore odd length lists for now.)</p>
+
+<p>Note that this is roughly the same idea as we saw in Binary Search Trees. But we don’t have any guarantees about the smaller lists; they aren’t sorted. At least, not <em>yet</em>.</p>
+
+<p><img src="https://i.imgur.com/esl3XtS.png" alt="" /></p>
+
+<p>Now let’s use the same algorithm as before to sort these two sublists. Since the algorithm takes $N^2$ steps to sort a list of length $N$ (remember, we’re simplifying out constants and so on), each sublist takes $(\dfrac{N}{2})^2 = \dfrac{N^2}{4}$ to sort.  If we add both times together, we get $\dfrac{N^2}{2}$.</p>
+
+<p>Somehow, we cut the work <em>in half</em>. The “lost” work isn’t recovered in merging: that’s just $N$ steps, and so we spend $\dfrac{N^2}{2} + N$ time to sort the big list. We’ve made a tradeoff here. Paid $N$ work to cut the $N^2$ in half. Here’s a <a href="https://www.wolframalpha.com/input/?i=plot+N%5E2+and+%28%28N%5E2%29%2F2+%2B+N%29+from+0+to+10">Wolfram Alpha plot</a> illustrating the difference.</p>
+
+<p><img src="https://i.imgur.com/IAUgR56.png" alt="" /></p>
+
+<h3 id="lets-try-again">Let’s try again</h3>
+
+<p>If it worked once, it’s worth trying again. let’s divide the list into quarters.</p>
+
+<p><img src="https://i.imgur.com/lUMtE9J.png" alt="" /></p>
+
+<p>Now, to sort these 4 sublists we pay $4(\dfrac{N}{4})^2 = 4(\dfrac{N^2}{16})=\dfrac{N^2}{4}$ operations. We have to merge the quarters into halves, and halves into the whole, and so the total cost after merging is: $\dfrac{N^2}{4} + 2(\dfrac{N}{2}) + N$.</p>
+
+<p>Here’s <a href="https://www.wolframalpha.com/input/?i=plot+N%5E2+and+%28%28N%5E2%29%2F2+%2B+N%29+and+%28%28N%5E2%29%2F4+%2B+2N%29+from+0+to+10">Wolfram Alpha</a> again:</p>
+
+<p><img src="https://i.imgur.com/arwAqa5.png" alt="" /></p>
+
+<p>Dividing the list seems to have paid off again. What if we keep doing this division and merging, until we can’t divide the list anymore (i.e., we’ve got a bunch of 1-element lists)?</p>
+
+<p>If we keep doing the division, the quadratic term ends up going away! We get a long chain of $O(N)$ terms instead. Now the key is _how many $O(N)$ terms are there? If there are $O(N)$ of them, we’re back where we started. But if there are fewer…</p>
+
+<p>The key question is: how many times must we divide the list in half?</p>
+
+<p><img src="https://i.imgur.com/m3OYRqC.png" alt="" /></p>
+
+<p>How many levels are there in this tree? $log_2(N)$. We have no worries here about whether the tree is balanced, because we’re splitting the list evenly every time; the tree can’t help but be balanced.</p>
+
+<p><img src="https://i.imgur.com/rfCj4se.png" alt="" /></p>
+
+<p>Every row does $N$ work, and there are $log_2(N)$ rows. So the total work done is $N log_2(N)$. Even if we drop the simplification, the big-O notation works out to be $O(N log_2(N))$. Which is pretty great, compared to insertion sort. Here
+s one final <a href="https://www.wolframalpha.com/input/?i=plot+N%5E2+and+%28%28N%5E2%29%2F2+%2B+N%29+and+%28%28N%5E2%29%2F4+%2B+2N%29+and+N*log_2%28N%29+from+0+to+10">Wolfram Alpha</a> plot:</p>
+
+<p><img src="https://i.imgur.com/dKefYOD.png" alt="" /></p>
+
+<h4 id="a-correction-but-it-works-out-ok">A correction (but it works out OK)</h4>
+
+<p>I cheated and didn’t count splitting the list. Fortunately, we’ll be able to do that in $O(N)$, so the time spent per merge doubles: once to split, once to merge back together. And that constant factor drops out, leaving us with $O(N*log_2(N))$ still.</p>
+
+<h4 id="aside-pythons-sorting-algorithm">Aside: Python’s Sorting Algorithm</h4>
+
+<p><em>Timsort</em> is a hybrid of merge and insertion sort that’s built to take advantage of small sorted sublists in real-world data. Merge sort turns out to be best case $O(N log_2(N))$; combining the 2 ideas leads to best case $O(N)$. We won’t talk about the details in 0112, but notice the power of combining multiple ideas.</p>
+
+<h2 id="implementing-merge-sort">Implementing Merge Sort</h2>
+
+<p>Let’s write this sort. We’ll have an easier time if we learn a new trick in Python.</p>
+
+<h3 id="slicing-lists">Slicing Lists</h3>
+
+<p>If we have a list <code class="language-plaintext highlighter-rouge">l</code> in Python:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Suppose we want to obtain a new list containing a 2-element sub-list of <code class="language-plaintext highlighter-rouge">l</code>, starting at element <code class="language-plaintext highlighter-rouge">1</code>. We can do this in Python by <em>slicing</em> list:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">l2</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>The new list <code class="language-plaintext highlighter-rouge">l2</code> will contain <code class="language-plaintext highlighter-rouge">[2,3]</code>. Here’s how it works: <code class="language-plaintext highlighter-rouge">a_list[A:B]</code> creates a copy of <code class="language-plaintext highlighter-rouge">a_list</code> starting at (and including) element <code class="language-plaintext highlighter-rouge">A</code> and ending just before (i.e., not including) element <code class="language-plaintext highlighter-rouge">B</code>. If <code class="language-plaintext highlighter-rouge">A</code> is omitted, the new list starts at the beginning of <code class="language-plaintext highlighter-rouge">a_list</code>. If <code class="language-plaintext highlighter-rouge">B</code> is omitted, the new list ends at the end of <code class="language-plaintext highlighter-rouge">a_list</code>. This means that you can very conveniently do things like:</p>
+<ul>
+  <li>copy the entire list via <code class="language-plaintext highlighter-rouge">a_list[:]</code>;</li>
+  <li>get everything but the first element via <code class="language-plaintext highlighter-rouge">a_list[1:]</code>;</li>
+  <li>etc.</li>
+</ul>
+
+<h4 id="beware">Beware</h4>
+
+<p>List slicing creates a <em>new list</em>; modifying the new list won’t affect the old list!</p>
+
+<p>There is also a cost associated with copying data from the old list into the new list, although this won’t be much of an issue here.</p>
+
+<h3 id="code">Code</h3>
+
+<p>We’ll re-use the tests we’ve written for other sorts. Let’s start coding. We know that we want to split the input list in half, recur, and then merge the results:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="c1"># ???
+</span>    <span class="n">right</span> <span class="o">=</span> <span class="c1"># ???
+</span>    <span class="n">sorted_left</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+    <span class="n">sorted_right</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">merge</span><span class="p">(</span><span class="n">sorted_left</span><span class="p">,</span> <span class="n">sorted_right</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Can we use list slicing to get <code class="language-plaintext highlighter-rouge">left</code> and <code class="language-plaintext highlighter-rouge">right</code>? Yes:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="n">mid</span> <span class="o">=</span> <span class="c1"># ???
+</span>    <span class="n">left</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[:</span><span class="n">mid</span><span class="p">]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">mid</span><span class="p">:]</span>
+    <span class="n">sorted_left</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+    <span class="n">sorted_right</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">merge</span><span class="p">(</span><span class="n">sorted_left</span><span class="p">,</span> <span class="n">sorted_right</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Notice how the initially-strange decision to make slicing be <em>exclusive</em> of the value to the right of <code class="language-plaintext highlighter-rouge">:</code> makes for very clean code here.</p>
+
+<p>Now we just need to compute <code class="language-plaintext highlighter-rouge">mid</code>, the index to divide the list at. We might start with <code class="language-plaintext highlighter-rouge">len(lst)/2</code>, but if the list length is odd this will not be an integer. Instead, we could either convert to an integer (<code class="language-plaintext highlighter-rouge">int(len(lst)/2)</code>) or tell Python we want integer division (<code class="language-plaintext highlighter-rouge">len(lst)//2</code>).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="n">mid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>  <span class="c1"># integer division
+</span>    <span class="n">left</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[:</span><span class="n">mid</span><span class="p">]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">mid</span><span class="p">:]</span>
+    <span class="n">sorted_left</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+    <span class="n">sorted_right</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">merge</span><span class="p">(</span><span class="n">sorted_left</span><span class="p">,</span> <span class="n">sorted_right</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This is starting to look right, or nearly. We’ve written <code class="language-plaintext highlighter-rouge">merge_sort</code> to be recursive, but haven’t given a base case. That is, there’s no place that Python can <em>stop</em>!</p>
+
+<p>We might initially write:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="k">return</span> <span class="n">lst</span> 
+</code></pre></div></div>
+
+<p>But there’s something wrong here. What is it?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>We said that we wanted merge sort to return a <em>different list</em>. If we just <code class="language-plaintext highlighter-rouge">return lst</code>, we’re breaking that contract and future trouble might occur. Imagine if the programmer calling our <code class="language-plaintext highlighter-rouge">merge_sort</code> function expects us to have returned a copy! Then they might feel free to change the returned list, expecting the original to be unmodified.</p>
+</details>
+
+<p>Instead, we’ll finish the function like thus:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="k">return</span> <span class="n">lst</span><span class="p">[:]</span> <span class="c1"># copy the very small list
+</span>    <span class="n">mid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>  <span class="c1"># integer division
+</span>    <span class="n">left</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[:</span><span class="n">mid</span><span class="p">]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">mid</span><span class="p">:]</span>
+    <span class="n">sorted_left</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+    <span class="n">sorted_right</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">merge</span><span class="p">(</span><span class="n">sorted_left</span><span class="p">,</span> <span class="n">sorted_right</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>For more on this subtlety, see future discussion of what “equal” means in programming.</p>
+
+<h3 id="where-are-we-actually-sorting-anything">Where are we actually sorting anything?</h3>
+
+<p>The work is done in <code class="language-plaintext highlighter-rouge">merge</code>. To see this on a small example, consider a list of length 2.</p>
+
+<p><strong>We’ve written a recursive function whose recursive structure isn’t echoed in the data.</strong> Here are two examples to contrast against <code class="language-plaintext highlighter-rouge">merge_sort</code>:</p>
+<ul>
+  <li>traversing a tree exactly follows the shape of the data structure: do something for the left branch, and for the right branch.</li>
+  <li>searching for an element in a linked list exactly follows the shape of the data structure: process the current node’s value, and then recur for the next node.
+We call these two examples <em>structurally recursive</em>, because the shape of the code echoes the shape of the data.</li>
+</ul>
+
+<p>In contrast, <code class="language-plaintext highlighter-rouge">merge_sort</code> is recurring on slices of a list. 
+We aren’t following any recursive structure in the data itself. We’ll say that merge sort is a <em>divide and conquer</em> algorithm, but without the division being explicit in the shape of the data.</p>
+
+<h2 id="performance-of-merge-sort">Performance of Merge sort</h2>
+
+<p>How long does this sorting algorithm take to run? Do we expect the worst and best cases to be different (like in insertion sort) or the same (like in selection sort)?</p>
+
+<p>Let’s label each line of the code with a comment, like we’ve done before.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="k">return</span> <span class="n">lst</span><span class="p">[:]</span>   <span class="c1"># 1 operation
+</span>    <span class="n">mid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>              <span class="c1"># 1 operation
+</span>    <span class="n">left</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[:</span><span class="n">mid</span><span class="p">]</span>                 <span class="c1"># around N/2 operations
+</span>    <span class="n">right</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">mid</span><span class="p">:]</span>                <span class="c1"># around N/2 operations
+</span>    <span class="n">sorted_left</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>   <span class="c1"># ???
+</span>    <span class="n">sorted_right</span> <span class="o">=</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">right</span><span class="p">)</span> <span class="c1"># ???
+</span>    <span class="k">return</span> <span class="n">merge</span><span class="p">(</span><span class="n">sorted_left</span><span class="p">,</span> <span class="n">sorted_right</span><span class="p">)</span> <span class="c1"># N operations
+</span></code></pre></div></div>
+
+<p>The question is: <em>what do we do for the recursive calls?</em></p>
+
+<p>To handle this, we’ll use another classic computer-science trick: introducing a new name, and using it for the quantity we’re unsure about. Suppose that we call “the number of operations that <code class="language-plaintext highlighter-rouge">merge_sort</code> uses on a list of length <code class="language-plaintext highlighter-rouge">N</code>” by the name $T(N)$. Then, we can plug in $T(N/2)$ for those two <code class="language-plaintext highlighter-rouge">???</code> comments. (I am being somewhat imprecise here; if you take future CS classes that cover the material, you will see the full development.)</p>
+
+<p>Then, $T(N) = 1 + 1 + \dfrac{N}{2} + \dfrac{N}{2} + T(\dfrac{N}{2}) + T(\dfrac{N}{2}) + N = 2T(\dfrac{N}{2})+N+2$.</p>
+
+<p>This sort of equation is called a <em>recurrence relation</em>, and there are standard techniques for solving them. The end result is a more formal justification for what we drew out in pictures before: merge sort runs in $O(N*log_2(N))$ time—in both the worst and best cases.</p>
+
+<h2 id="an-experiment-random-testing">An Experiment: Random Testing</h2>
+
+<p>To close today, I want to show you an idea to try out on homework 5. We’ll come back next time and discuss this idea and its implications, along with why it might be useful (or not).</p>
+
+<h3 id="fact-we-can-build-random-lists">Fact: we can build random lists</h3>
+
+<p>We can write a function that produces random lists (in this case, of integers)using Python’s <code class="language-plaintext highlighter-rouge">randint</code> function (which we can import via <code class="language-plaintext highlighter-rouge">from random import randint</code>):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">random_list</span><span class="p">(</span><span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">min_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">max_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+  <span class="n">length</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_length</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h3 id="fact-we-can-run-our-program-on-a-random-list">Fact: we can run our program on a random list</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MAX_LENGTH</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">MIN_VALUE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100000</span>
+<span class="n">MAX_VALUE</span> <span class="o">=</span>  <span class="mi">100000</span>
+<span class="n">NUM_TRIALS</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="k">def</span> <span class="nf">test_mergesort_random</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NUM_TRIALS</span><span class="p">):</span>
+        <span class="n">test_list</span> <span class="o">=</span> <span class="n">random_list</span><span class="p">(</span><span class="n">MAX_LENGTH</span><span class="p">,</span> <span class="n">MIN_VALUE</span><span class="p">,</span> <span class="n">MAX_VALUE</span><span class="p">)</span>
+        <span class="n">merge_sort</span><span class="p">(</span><span class="n">test_list</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This may look like it’s not doing anything. While it’s true that there’s no <code class="language-plaintext highlighter-rouge">assert</code> statement yet, we <em>are</em> testing something: that the <code class="language-plaintext highlighter-rouge">merge_sort</code> function doesn’t crash!</p>
+
+<p>This sort of output-agnostic testing is called <code class="language-plaintext highlighter-rouge">fuzzing</code> or <code class="language-plaintext highlighter-rouge">fuzz testing</code> and it’s used a lot in industry. After all, there’s nothing that says we need to stop at <code class="language-plaintext highlighter-rouge">100</code> trials! I could run this millions of times overnight, and gain some confidence that my program doesn’t crash (even if it might not produce a correct result overall).</p>
+
+<h4 id="fact-we-can-check-the-output">Fact: we can check the output</h4>
+
+<p>Of course, we’d still like to actually <em>test the outputs</em> on these randomly generated inputs. It wouldn’t really be feasible to produce a million inputs automatically, and then manually go and figure out the corresponding outputs. Instead, we should ask: do we have another source of the correct answer? Indeed we do: Python’s built in sorting function.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MAX_LENGTH</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">MIN_VALUE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100000</span>
+<span class="n">MAX_VALUE</span> <span class="o">=</span>  <span class="mi">100000</span>
+<span class="n">NUM_TRIALS</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="k">def</span> <span class="nf">test_mergesort_random</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NUM_TRIALS</span><span class="p">):</span>
+        <span class="n">test_list</span> <span class="o">=</span> <span class="n">random_list</span><span class="p">(</span><span class="n">MAX_LENGTH</span><span class="p">,</span> <span class="n">MIN_VALUE</span><span class="p">,</span> <span class="n">MAX_VALUE</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">merge_sort</span><span class="p">(</span><span class="n">test_list</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">test_list</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>What do you think is going on here?</p>
+
+<h3 id="note-on-the-homework">Note on the homework</h3>
+
+<p>Homework 5 includes wording like this:</p>
+
+<blockquote>
+  <p>Inspired by the code from lecture, create a random testing function for your tree sort implementation.</p>
+</blockquote>
+
+<p>We’ll return to this idea of random testing soon. For now, do what we just did in class on the homework—and expect to discuss it when we return!</p>
+<ul>
+  <li>Did testing on random inputs and comparing outputs versus Python’s sort work?</li>
+  <li>What does it even mean for this technique to “work”?</li>
+</ul>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Implementing Dictionaries | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Implementing Dictionaries" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture10.html" />
+<meta property="og:url" content="/Lectures/lecture10.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-25T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Implementing Dictionaries" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-25T00:00:00+00:00","datePublished":"2024-09-25T00:00:00+00:00","description":"CSCI 0112","headline":"Implementing Dictionaries","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture10.html"},"url":"/Lectures/lecture10.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="implementing-dictionaries">Implementing Dictionaries</h1>
+
+<p><strong>These notes are being released in draft form; they may be modified up until the date of class.</strong></p>
+
+<h2 id="making-a-reasonable-tradeoff-hash-functions">Making a Reasonable Tradeoff: Hash Functions</h2>
+
+<p>Can we find a happy medium between these solutions? Maybe by spending a <em>little</em> bit of extra space, we can somehow end up with constant-time lookup? And even if we don’t always manage that, maybe we can still improve on both the extremes above.</p>
+
+<p>Let’s start with another design question. Suppose we want to map the IDs of CSCI 0112 staff to their corresponding name. Further, let’s say that IDs are non-negative numbers ranging between <code class="language-plaintext highlighter-rouge">0</code> and <code class="language-plaintext highlighter-rouge">999999</code>, but that there are far fewer than a million staff members: there are fewer than 10, and so you’ll never have more than 10 datapoints to store in a given semester.</p>
+
+<p>So I’m going to give you a Python list with just 10 elements to work with. Strictly speaking, that ought to be enough space, but nowhere near enough to make a list cell for every <em>possible</em> ID. Here’s what it looks like:</p>
+
+<p><img src="/Lectures/images/lecture10_justenough.png" alt="" /></p>
+
+<p>How can we convert a 6-digit student ID to a <em>unique index between 0 and 9</em>?</p>
+
+<p>We can’t.</p>
+
+<p>But what if we were willing to give up the “unique” part of that question? Do we know a way to convert an ID to a number between 0 and 9 (while still making a reasonable <em>effort</em> at uniqueness?)</p>
+
+<p>Every ID has a remainder when divided by 10. For instance, <code class="language-plaintext highlighter-rouge">1234</code> has remainder <code class="language-plaintext highlighter-rouge">4</code> when divided by 10. Let’s try using this as our index function. We’ll insert two datapoints: <code class="language-plaintext highlighter-rouge">{1234 : 'Tim'}</code> and <code class="language-plaintext highlighter-rouge">{5678: 'Ashley'}</code>.</p>
+
+<p><img src="/Lectures/images/lecture10_justenough_2.png" alt="" /></p>
+
+<p>Now if we want to look up the key <code class="language-plaintext highlighter-rouge">5678</code> we can do so in constant time! Just divide by 10 to get <code class="language-plaintext highlighter-rouge">8</code>, and do a lookup in this Python list.</p>
+
+<p>This sounds great, but do we yet have a usable data structure? What’s the problem?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>We gave up uniqueness! For every index in the list, there are ten thousand potential keys with the same remainder when divided by 10.</p>
+
+  <p>Just look up the key <code class="language-plaintext highlighter-rouge">0004</code> in the above list to see it. This isn’t Tim’s ID, but it still gets mapped to the string <code class="language-plaintext highlighter-rouge">'Tim'</code>. This is often called a <em>collision</em>: two actually-used keys get mapped to the same index, with potentially destructive results.</p>
+
+  <p>So: this is a nice start, but we’d better do a little bit more work.</p>
+
+</details>
+
+<h4 id="a-note-on-terminology">A Note on Terminology</h4>
+
+<p>This kind of key-to-index transformation is often called a <em>hash function</em>, where “hash” here means a digest or summary of the original data. Hash functions are usually fast, lossy, and (in applications beyond this lecture!) built to have a relatively uniform distribution of hashes over the key population to reduce the chance of collision.</p>
+
+<h2 id="the-challenge-collisions">The Challenge: Collisions</h2>
+
+<p>You’ll learn more about the details if you take CSCI 0200. In short, there are a few ways of handling collisions: my favorite is storing a separate list for every index. Then, if two elements get hashed to the same location, Python can store them both in the sub-list. Searching now needs to loop through the entire sub-list, and with a good hash function elements are <em>usually</em> (but not necessarily) uniformly distributed between locations in the top-level list. It might look something like this:</p>
+
+<p><img src="/Lectures/images/chained_hash.png" alt="A &quot;chained&quot; hash table" /></p>
+
+<p>The important takeaway is that, in the <strong>worst case</strong> (all keys hash to the same index, nothing but collisions) searching a hash table is as slow as a list: linear in the number of elements being stored. With a well-chosen hash function, and enough space in the table, collisions turn out to be rare. With some probability theory, we could prove that the <strong>average case</strong> is constant time. It’s <em>usually</em> incredibly fast, and anyway never scales worse than a list.</p>
+
+<p>That’s how sets and dictionaries are so fast in Python, and that’s why data structure choice matters!</p>
+
+<!-- #### Another Note on Terminology
+
+This kind of data structure is called a _hash table_. For myself, I like to make a distinction between a hash table and a dictionary: one is low level, and one is high level. A dictionary (also called a _map_ in some other languages) is an abstract description of the shape of the data (a key-value store) and certain common operations (like lookup). You could implement a dictionary using any of the above data structures! Hash tables are by far the most common (and usually the wisest) way to implement a dictionary, and Python's dictionaries are backed by hash tables. The two terms are often used interchangeably. -->
+
+<h2 id="making-a-simple-hash-table">Making A Simple Hash Table</h2>
+
+<p>Let’s do another code-arrangement exercise. This time we’ll be writing <em>a real hash-table</em>, using the sublist method of collision-handling. You’ll fill in 3 functions:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">table</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="s">'''Add an element to the hash-table set'''</span>
+    
+<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">table</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+     <span class="s">'''search for an element in the hash-table set'''</span>
+
+<span class="k">def</span> <span class="nf">demo</span><span class="p">(</span><span class="n">table_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">num_elements</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">element_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="s">'''Add a large number of random elements to the hash-table set, then
+        show how well-distributed the random elements were'''</span>
+</code></pre></div></div>
+
+<p>Using these lines:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">table</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">table_size</span><span class="p">)]</span>
+<span class="k">print</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">sublist</span><span class="p">)</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">table</span><span class="p">])</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
+<span class="n">random_element</span> <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">choices</span><span class="p">(</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">digits</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">element_length</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_elements</span><span class="p">):</span>
+<span class="k">return</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="n">add</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">random_element</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Note that, unlike last time, you might not need all of these. I’ve also used list-comprehension and a random-choice library you won’t have seen before. What’s the point? To show you that you don’t need to know exactly how to do a low-level thing in Python to be able to know <em>how to start solving the problem</em>.</p>
+
+<p>You can find a solution in the <a href="/Lectures/live/lecture11.py">livecode</a>.</p>
+
+<h2 id="testing-our-hash-table">Testing Our Hash Table</h2>
+
+<p>We’ve got 2 functions to test (the <code class="language-plaintext highlighter-rouge">demo</code> function is just a demonstration).</p>
+<ul>
+  <li>Our <code class="language-plaintext highlighter-rouge">add</code> function modifies the state of objects in memory. Specifically, it modifies the <code class="language-plaintext highlighter-rouge">table</code> list, and potentially all sublists contained in it.</li>
+  <li>Our <code class="language-plaintext highlighter-rouge">search</code> function doesn’t modify the state, but it does depend on that state.</li>
+</ul>
+
+<p>Remember that, when we’re testing <em>side effects</em> (e.g., adding elements to our table) we can’t just write assertions by themselves. We need to assert something about the effects <em>on the state</em>. E.g., for <code class="language-plaintext highlighter-rouge">add</code> maybe we could create an empty table and then see if it contains what we expect.</p>
+
+<p>But how should we check what the table contains? Since the <code class="language-plaintext highlighter-rouge">hash</code> of every element, changes between program runs, we can’t rely on the location of an element being consistent. And just checking to see if <em>any</em> sublist contains the element is too broad, since <code class="language-plaintext highlighter-rouge">search</code> will only check a single sublist. Let’s just use <code class="language-plaintext highlighter-rouge">search</code>. E.g.,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_single_element</span><span class="p">():</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+    <span class="n">add</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s">'Hi, everybody!'</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">search</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s">'Hi, everybody!'</span><span class="p">)</span> <span class="o">==</span> <span class="bp">True</span>    
+    <span class="c1"># ...once this function returns, `table` disappears
+</span>    <span class="c1"># future tests can make their own `table` list
+</span></code></pre></div></div>
+
+<p><strong>What other tests would you write?</strong></p>
+
+<h3 id="note-on-dataclasses">Note on Dataclasses</h3>
+
+<p>Recall that Python’s analogue to Pyret’s data definitions is called a <em>dataclass</em>. (See <a href="https://dcic-world.org/2022-01-25/part_pyret-to-python.html#%28part._.Accessing_.Fields_within_.Dataclasses%29">this 0111 textbook chapter</a>.) E.g.:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">@</span><span class="n">dataclass</span>
+ <span class="k">class</span> <span class="nc">Location</span><span class="p">:</span>
+      <span class="n">lat</span><span class="p">:</span> <span class="nb">int</span>
+      <span class="nb">long</span><span class="p">:</span> <span class="nb">int</span>
+</code></pre></div></div>
+
+<p>If you want to use a dataclass as a key, you need to tell Python that the data cannot be changed by using the <code class="language-plaintext highlighter-rouge">frozen=True</code> annotation, like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">@</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+ <span class="k">class</span> <span class="nc">Location</span><span class="p">:</span>
+      <span class="n">lat</span><span class="p">:</span> <span class="nb">int</span>
+      <span class="nb">long</span><span class="p">:</span> <span class="nb">int</span>
+</code></pre></div></div>
+
+<p>There is a lot more to hash tables than we have time to discuss in 0112. If you want to learn more (without official 0112 support) about how hashing works in Python, check out the documentation on the <code class="language-plaintext highlighter-rouge">__hash__</code> method of objects. If you want to learn more in the context of a course, check out 0200.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

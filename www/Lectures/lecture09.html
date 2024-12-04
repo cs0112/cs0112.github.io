@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Program Performance (Part 2); The Secret Behind Dictionaries | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Program Performance (Part 2); The Secret Behind Dictionaries" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture09.html" />
+<meta property="og:url" content="/Lectures/lecture09.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-23T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Program Performance (Part 2); The Secret Behind Dictionaries" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-23T00:00:00+00:00","datePublished":"2024-09-23T00:00:00+00:00","description":"CSCI 0112","headline":"Program Performance (Part 2); The Secret Behind Dictionaries","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture09.html"},"url":"/Lectures/lecture09.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="program-performance-part-2">Program Performance (Part 2)</h1>
+
+<p>Today we’ll continue the discussion of runtime, and then switch to a more concrete case: figuring out how dictionaries and sets are so fast in Python. The end of these notes contains an optional exercise that is meant to reinforce the runtime material; I strongly recommend trying it out!</p>
+
+<p><strong>Note:</strong> So far we’ve seen constant, linear, and quadratic worst-case runtime. But there are others. If you see reference on a drill or on Ed to “logarithmic”, we’ll talk about how that happens in a couple weeks. But after today you should have some intuition about what it <em>means</em>.</p>
+
+<p><strong>Note:</strong> Keep on working on Song Analysis! Remember that the design check is due on the 24th. Just turn in the readme on gradescope and ignore any error messages it gives you.</p>
+
+<h2 id="big-o-or-asymptotic-notation">Big-O (or asymptotic) Notation</h2>
+
+<p>Last time, we talked about analyzing the performance of programs. When deciding whether a function would run in constant, linear, or quadratic time, we ignored the constants and just looked at the fastest-growing (i.e., worst-scaling) term. We can define this more formally using asymptotic notation. This is also often called <em>big-O notation</em> (because a capital “O” is involved in the usual way of writing it).</p>
+
+<p>Let’s look again at the last function we considered last time:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">distinct</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>            
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>  <span class="c1"># 0 + 1 + 2 + ... + (len(seen)-1) 
+</span>            <span class="n">seen</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># once for every new element
+</span>    <span class="k">return</span> <span class="n">seen</span>
+</code></pre></div></div>
+
+<p>We decided that this function’s <em>worst case</em> running time is quadratic in its input (in the worst case). For a list of length $n$, we can calculate the worst-case number of operations as $\frac{n(n−1)}{2}+n+3$:</p>
+
+<ul>
+  <li>$((n*(n−1))/2)$: when every element in <code class="language-plaintext highlighter-rouge">l</code> is unique, the inner membership check has to loop through the entire <code class="language-plaintext highlighter-rouge">seen</code> list, which grows by 1 element every iteration of the outer loop (and algebra gets us from $0 + 1 + … + (n-1)$ to this form);</li>
+  <li>$n$: we know the <code class="language-plaintext highlighter-rouge">append</code> has to run once for every element of the input list in the worst case (we glossed over this last time); and</li>
+  <li>$3$ (or some other constant): constant setup time for creating the <code class="language-plaintext highlighter-rouge">seen</code> list and returning from the function (Whether or not we count certain operations as the same or different, it’s still a constant).</li>
+</ul>
+
+<p>A computer scientist would say that this function runs in $O(n^2)$ time. Said out loud, this might be pronounced: “Big Oh of n squared”.</p>
+
+<p>Recall that we’re trying to collapse out factors like how fast my computer is, and focus on <em>scaling</em>: is there a way to formalize the idea that one algorithm is faster than another?</p>
+
+<h2 id="why-does-this-matter">Why does this matter?</h2>
+
+<p><strong>Question:</strong> Why do we get to treat <code class="language-plaintext highlighter-rouge">append</code> as something that runs in constant time? Does it necessarily do so? Might there be different ways that <code class="language-plaintext highlighter-rouge">append</code> works, which have different worst-case runtimes?</p>
+
+<p>You’ve noticed already that the data structures you use can influence the runtime of your program. In fact, soon we’ll talk about the difference between Pyret lists and Python lists. If <code class="language-plaintext highlighter-rouge">append</code> were implemented with a Pyret list, it would be worst-case <em>linear</em>, rather than <em>constant</em>. This is why we saw what we did last time, between <code class="language-plaintext highlighter-rouge">distinct</code> via a list and <code class="language-plaintext highlighter-rouge">distinct</code> via a set.</p>
+
+<p>Next time we’ll talk about how sets and dictionaries make this kind of fast lookup possible, and whether there are any limitations. (There are limitations.) For now, think of big-O notation as a way to quickly capture how different tools (like data structures or algorithms) scale for different purposes. If you have the option to use something in $O(n)$ instead of something in $O(n^2)$, and there are no other factors involved, you should pick the better-scaling option.</p>
+
+<h2 id="formally-speaking">Formally Speaking</h2>
+
+<p>The formal definition looks like this:</p>
+
+<p>If we have (mathematical, not Python!) functions $f(x)$ and $g(x)$, then $f(x)$ is in $O(g(x))$ if and only if there are constants $x_0$ and $C$ such that for all $x &gt; x_0$, $f(x) &lt; C g(x)$.</p>
+
+<p>That is, $f(x)$ is in $O(g(x))$ if we can pick a constant $C$ so that after some point ($x_0$), $f(x)$ is always less than $C g(x)$. There may be many such $x_0$ and $C$ values that work. But if even one such pair exists, $f$ is in $O(g)$.</p>
+
+<p>If we want to show that $\frac{n(n+1)}{2} + n + 3$ is in $O(n^2)$, our constants could be, say, $x_0 = 5$ and $C = 1$. After the list is at least $5$ elements long, $\frac{n(n+1)}{2} + n + 3$ will always be less than $1*n^2$. We could prove that using algebra, but here’s a picture motivating the argument:</p>
+
+<p><img src="/Lectures/images/lecture09_quadratic.png" alt="The two functions plotted against each other" /></p>
+
+<p>We could have picked some other values. For example, $x_0 = 2$ and $C = 3$:</p>
+
+<p><img src="/Lectures/images/lecture09_quadratic_another.png" alt="Another two functions plotted against each other" /></p>
+
+<p><b>Important Note:</b> We’re using Wolfram Alpha for generating plots. Wolfram Alpha is an excellent tool which is free for personal use. Its terms <a href="https://www.wolframalpha.com/termsofuse/">allow</a> academic use in settings such as this provided that we credit them and ideally link to the original query, which you can explore <a href="https://www.wolframalpha.com/input?i=plot+%28%28n*%28n%2B1%29%29%2F2%29%2Bn%2B3+and+n%5E2+from+0+to+5">here</a>. Note that they don’t allow, for instance, web scraping vs. their tool, so please use it responsibly!</p>
+
+<p>In this class, we won’t expect you to rigorously prove that a function’s running time is in a particular big-O class. We will, though, use the notation. E.g., we’ll use $O(n)$ as a shorthand for “linear” and $O(n^2)$ as shorthand for “quadratic”. And we’ll try to be precise about whether we’re talking about “worst case”, “best case”, “average case”, etc. <strong>Don’t conflate the two ideas!</strong> “Upper bound” does not mean “worst case”. We can also put an upper bound on the best-case behavior of a program!</p>
+
+<p>Also, notice that, by this definition, if a function is in $O(n)$ it is also in $O(n^2)$ and so on. The notation puts an upper limit on a function, that’s all. However, by convention, we tend to just say $O(n^2)$ by itself to mean “quadratic” rather than also saying “and not $O(n)$”.</p>
+
+<p>The quick trick of looking for the largest term ($n$, $n^2$ etc.) will <em>usually</em> work on everything we give this semester, and in fact is a good place to start regardless. If you decide to take an algorithms course, things become both more complicated and, potentially, more interesting.</p>
+
+<h2 id="conceptual-lets-invent-fast-dictionaries">Conceptual: Let’s “Invent” Fast Dictionaries!</h2>
+
+<p>Last time we saw that switching from a <code class="language-plaintext highlighter-rouge">list</code> to a <code class="language-plaintext highlighter-rouge">set</code> in our <code class="language-plaintext highlighter-rouge">distinct</code> function produced a massive performance improvement. Today we’ll learn about why. Or, rather, <strong>we’ll invent the trick that Python sets (and dictionaries) use for ourselves!</strong> We’ll finish inventing and actually implement all this next time.</p>
+
+<h2 id="two-inefficient-set-structures">Two Inefficient Set Structures</h2>
+
+<h4 id="inefficient-structure-1">Inefficient Structure 1</h4>
+
+<p>If we really wanted to, we could use Python lists to store sets. Adding an element would just mean appending a new value to the list, and checking for membership would involve a linear search through the list.</p>
+
+<p>Python lists are built so that accessing any particular index takes constant time. For example, suppose we have a <strong>list</strong> called <code class="language-plaintext highlighter-rouge">staff</code> that stores the first names of the staff of a course:</p>
+
+<p><img src="/Lectures/images/lecture10_firstnames.png" alt="" /></p>
+
+<p>How long does it take for Python to return <code class="language-plaintext highlighter-rouge">'Ben'</code> for <code class="language-plaintext highlighter-rouge">staff[2]</code>? It depends on how lists are implemented! In Python, lists are contiguous blocks in memory. Python doesn’t have to count down the list elements one by one, it can just do some arithmetic and skip ahead.</p>
+
+<p>This is different from how Pyret lists work. We’ll contrast the two in more detail later. For now, imagine Python lists as being written on a sheet of lined paper in memory. Element <code class="language-plaintext highlighter-rouge">0</code> is a certain distance from element <code class="language-plaintext highlighter-rouge">1</code>, which is that same distance from element <code class="language-plaintext highlighter-rouge">2</code> and so on. As a result, combined with some clever hardware-design tricks, Python can get the value of <code class="language-plaintext highlighter-rouge">staff[2]</code> in <em>constant time</em>. Python doesn’t have to count down the list elements one by one, it can just do some arithmetic and skip ahead.</p>
+
+<p>The trouble is that this kind of fast <em>lookup by index</em> doesn’t help us check for membership in the set. There’s no connection between <code class="language-plaintext highlighter-rouge">2</code> and <code class="language-plaintext highlighter-rouge">'Ben'</code> except the arbitrary order in which elements were added. So let’s simplify the problem.</p>
+
+<h4 id="inefficient-structure-2">Inefficient Structure 2</h4>
+
+<p>What if, instead, the element we were searching for <em>was</em> the index? Suppose that we wanted to check whether a certain ID number was in our set. Then we could take advantage of how lists work in Python, and draw a picture like this, where the list elements are just <code class="language-plaintext highlighter-rouge">True</code> and <code class="language-plaintext highlighter-rouge">False</code>:</p>
+
+<p><img src="/Lectures/images/lecture10_studentids.png" alt="" /></p>
+
+<p>We store a <code class="language-plaintext highlighter-rouge">True</code> if that ID number is in the set, and <code class="language-plaintext highlighter-rouge">False</code> otherwise.
+Since Python can look up an index of a list in constant time, we can use this data structure to report on set membership in constant time—if the elements are numbers.</p>
+
+<p><strong>Aside:</strong> If we stored more than just booleans in that list, we could easily map the numeric keys to arbitrary values, much like a dictionary does. Access would remain constant time. There are also ways to address keys that aren’t just numbers, but let’s keep the discussion simple for today.</p>
+
+<!-- **Aside:** Even better, there are tricks we can use to encode most data-types as numbers. So this idea isn't limited to only looking up non-negative integers. We could use it to solve the lookup-by-name problem above by deciding to encode, say, 'Ben' as $2*26^2+5*26+14$. In practice, there are far better encodings. -->
+
+<p>This all sounds great: it really does get us <em>worst-case constant-time lookup</em>!</p>
+
+<p><em>But there’s a cost.</em> Unless the range of possible values is small, this technique needs a colossally big list—probably more than we could fit in memory! Worse, most of it is going to be used on <code class="language-plaintext highlighter-rouge">False</code> values, to say “nope, nothing here!”. We’re making an extreme trade-off of space for time: allocating a list cell for <em>every potential search key</em>, in exchange for constant-time lookup rewards. So we need another approach.</p>
+
+<p>It turns out that, from a certain point of view, the solution lies in combining these two imperfect approaches. We’ll make that connection next time.</p>
+
+<h2 id="optional-programming-exercise-rainfall">(Optional) Programming Exercise: Rainfall</h2>
+
+<p>Let’s say we are tracking daily rainfall around Brown University. We want to compute the average rainfall over the period for which we have useful sensor readings. Our rainfall sensor is a bit unreliable, and reports data in a strange format. Both of these factors are things you sometimes encounter when dealing with real-world data!</p>
+
+<p>In particular, our sensor data is arrives as a list of numbers like:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sensor_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">999</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>The -999 represents the end of the period we’re interested in. This might seem strange: why not just end the list after the first <code class="language-plaintext highlighter-rouge">4</code> value? But, for good reasons, real-world raw data formats sometimes use a “terminator” symbol like this one. It’s also possible for the <code class="language-plaintext highlighter-rouge">-999</code> not to be present, in which case the entire list is our dataset.</p>
+
+<p>The other negative numbers represent sensor error; we can’t really have a negative amount of rainfall. These should be scrubbed out of the dataset before we take the average.</p>
+
+<p>In summary, we want to take the average of the non-negative numbers in the input list up to the first <code class="language-plaintext highlighter-rouge">-999</code>, if one appears. How would we solve this problem? What are the subproblems?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>One decomposition might be:</p>
+  <ul>
+    <li>Finding the list segment before the <code class="language-plaintext highlighter-rouge">-999</code></li>
+    <li>Filtering out the negative values</li>
+    <li>Computing the average of the positive rainfall days</li>
+  </ul>
+</details>
+<p><br /></p>
+
+<p>This time, <i>you</i> will drive the entire process of building the function:</p>
+
+<ul>
+  <li>note what your input and output look like, and write a few examples to sketch the shape of the data you have and the data you need to produce;</li>
+  <li>brainstorm the steps you might use to solve the problem (without worrying about how to actually perform them—we just did some of that above); then</li>
+  <li>create a function skeleton, and gradually fill it in.</li>
+</ul>
+
+<p>Since these notes are being written before lecture, it’s tough to anticipate the solutions you’ll come up with, but here are two potential solutions:</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">average_rainfall</span><span class="p">(</span><span class="n">sensor_input</span><span class="p">:</span> <span class="n">lst</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+  <span class="n">number_of_readings</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">total_rainfall</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">reading</span> <span class="ow">in</span> <span class="n">sensor_input</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">reading</span> <span class="o">==</span> <span class="o">-</span><span class="mi">999</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">total_rainfall</span> <span class="o">/</span> <span class="n">number_of_readings</span>
+    <span class="k">elif</span> <span class="n">reading</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">number_of_readings</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="n">total_rainfall</span> <span class="o">+=</span> <span class="n">reading</span>
+  <span class="k">return</span> <span class="n">total_rainfall</span> <span class="o">/</span> <span class="n">number_of_readings</span>
+</code></pre></div>  </div>
+
+  <p>In this solution, we loop over the list once. The first two subproblems are solved by returning early from the list and by ignoring the negative values in our loop. The final subproblem is solved with the <code class="language-plaintext highlighter-rouge">number_of_readings</code> and <code class="language-plaintext highlighter-rouge">total_rainfall</code> variables.</p>
+
+  <p>Another approach might be:</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">list_before</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">element</span> <span class="o">==</span> <span class="n">item</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">result</span>
+    <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">def</span> <span class="nf">average_rainfall</span><span class="p">(</span><span class="n">sensor_input</span><span class="p">:</span> <span class="n">lst</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+  <span class="n">readings_in_period</span> <span class="o">=</span> <span class="n">list_before</span><span class="p">(</span><span class="n">sensor_input</span><span class="p">,</span> <span class="o">-</span><span class="mi">999</span><span class="p">)</span>
+  <span class="n">good_readings</span> <span class="o">=</span> <span class="p">[</span><span class="n">reading</span> <span class="k">for</span> <span class="n">reading</span> <span class="ow">in</span> <span class="n">readings_in_period</span> <span class="k">if</span> <span class="n">reading</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">]</span>
+  <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">good_readings</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">good_readings</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+  <p>In this solution, the first subproblem is solved with a helper funciton, the second subproblem by filtering the remaining elements of the list to remove negative values, and the third subproblem calls the built-in <code class="language-plaintext highlighter-rouge">sum</code> and <code class="language-plaintext highlighter-rouge">len</code> functions on the final list.</p>
+
+</details>
+<p><br /></p>
+
+<p>These two solutions have very different feels. One accumulates a value and count while passing through the function once, with different behaviors for different values in the list. The other produces intermediate lists that are <em>steps on the way to the solution</em>, before finally just computing the average value.</p>
+
+<p>The first version is, in my experience, much easier to make mistakes with—and harder to build up incrementally, testing while you go. But it only traverses the list once! That means it’s faster—right?</p>
+
+<p>Well, maybe.</p>
+
+<h3 id="runtime-vs-scaling">Runtime vs. Scaling</h3>
+
+<p>What are the worst-case running times of each solution?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+  <p>For inputs of size $n$, both solutions run in $O(n)$ time. This is true even though version 2 contains multiple <code class="language-plaintext highlighter-rouge">for</code> loops. The reason is that these <code class="language-plaintext highlighter-rouge">for</code> loops are sequential, and not nested one within the other: the program loops through the input, and then loops through the (truncated) input, and then through the (truncated, filtered) input, separately.</p>
+
+</details>
+
+<p>To see why this is the case, let’s look at a smaller example. This program has worst-case performance <em>linear</em> in the length of <code class="language-plaintext highlighter-rouge">l</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sum = 0
+for i in l:
+    sum = sum + i
+for i in l:
+    sum = sum + i
+</code></pre></div></div>
+<p>It loops through the list twice.</p>
+
+<p>But this program has <em>quadratic</em> performance in the length of <code class="language-plaintext highlighter-rouge">l</code>:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sum = 0
+for i in l:
+    for j in l:
+        sum = sum + 1
+</code></pre></div></div>
+<p>For every element in the list, it loops again through the list.</p>
+
+<p>So if you’re “counting loops” to estimate how efficient a program is, pay attention to the structure of nesting, not just the number of times you see a loop.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

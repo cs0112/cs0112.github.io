@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>More Testing, Sets vs. Lists, and Homework 1 | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="More Testing, Sets vs. Lists, and Homework 1" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture05.html" />
+<meta property="og:url" content="/Lectures/lecture05.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-13T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="More Testing, Sets vs. Lists, and Homework 1" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-13T00:00:00+00:00","datePublished":"2024-09-13T00:00:00+00:00","description":"CSCI 0112","headline":"More Testing, Sets vs. Lists, and Homework 1","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture05.html"},"url":"/Lectures/lecture05.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <!-- 
+Note: moved Rainfall off to make room for list(set(...)).
+
+-->
+
+<h1 id="more-testing-sets-vs-lists-and-problem-solving">More Testing, Sets vs. Lists, and Problem Solving</h1>
+
+<h2 id="logistics">Logistics</h2>
+
+<p>The last Lab 1 Section is today from 2 to 4pm. If you havent attended, attend!</p>
+
+<p>Labs will also serve as open hours, so if you have questions you can come to this session too (students participating in lab will be given priority).</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>Livecode link: <a href="/Lectures/live/lecture05.py">here</a>.</p>
+
+<p>Livecode testing: <a href="/Lectures/live/test_lecture05.py">here</a>.</p>
+
+<p>The goal of the second homework is reinforcing <em>sets</em> in Python and contrasting them against <em>lists</em>. We’ll reinforce that today. When you’re downloading the stencils, notice that there are <em>two files</em>: one for your code, and another for your tests.</p>
+
+<p>These notes start by duplicating some of the content from the last class.</p>
+
+<h2 id="reminder-creating-lists-etc">Reminder: Creating Lists, etc.</h2>
+
+<p>What do you want from this code?</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ingredients</span> <span class="o">=</span> <span class="p">[</span><span class="s">'flour'</span><span class="p">,</span> <span class="s">'salt'</span><span class="p">,</span> <span class="s">'flour'</span><span class="p">,</span> <span class="s">'sugar'</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ingredients</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ingredients</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<p>In Python, the <code class="language-plaintext highlighter-rouge">set</code> and <code class="language-plaintext highlighter-rouge">list</code> functions create a new set (or list, respectively) containing the same elements as their argument. When we call <code class="language-plaintext highlighter-rouge">set</code> on <code class="language-plaintext highlighter-rouge">ingredients</code>, the extra <code class="language-plaintext highlighter-rouge">flour</code> is lost because sets cannot contain duplicates. Even if we then return that set to list form, the loss has already happened.</p>
+
+<p>Suppose we went further:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">more_ingredients</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ingredients</span><span class="p">)</span> 
+<span class="n">more_ingredients</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">'cinnamon'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">more_ingredients</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ingredients</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We’ll see:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['flour', 'salt', 'flour', 'sugar', 'cinnamon']
+['flour', 'salt', 'flour', 'sugar']
+</code></pre></div></div>
+<p>because <code class="language-plaintext highlighter-rouge">list</code> <em>creates a new list</em>.</p>
+
+<p>Last time, we ran this code:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">recipes</span> <span class="o">=</span> <span class="p">{</span><span class="s">'pbj'</span><span class="p">:</span> <span class="p">{</span><span class="s">'peanut butter'</span><span class="p">,</span> <span class="s">'jelly'</span><span class="p">,</span> <span class="s">'bread'</span><span class="p">},</span>
+           <span class="s">'smoothie'</span><span class="p">:</span> <span class="p">{</span><span class="s">'peanut butter'</span><span class="p">,</span> <span class="s">'banana'</span><span class="p">,</span> <span class="s">'oat milk'</span><span class="p">}}</span>
+<span class="n">chocolate_smoothie</span> <span class="o">=</span> <span class="n">recipes</span><span class="p">[</span><span class="s">'smoothie'</span><span class="p">]</span>
+<span class="n">chocolate_smoothie</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">'cocoa powder'</span><span class="p">)</span>
+</code></pre></div></div>
+<p>and we saw that the value for <code class="language-plaintext highlighter-rouge">recipes['smoothie']</code> was changed when we added to <code class="language-plaintext highlighter-rouge">chocolate_smoothie</code>, because it was just another name for the same list. What if, instead, we’d run:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chocolate_smoothie</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recipes</span><span class="p">[</span><span class="s">'smoothie'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>In this case, the original recipe would stay intact! These two options…</p>
+
+<p><img src="/Lectures/images/lecture04_choices.png" alt="Two Possibilities" /></p>
+
+<p>…depend on whether we’re telling Python to make a new list or not.</p>
+
+<p>These subtleties about how objects in memory (like lists and dictionaries) work can be powerful: it takes <em>time</em> to copy a list, and <em>memory</em> to hold the copy. But the fact that multiple names can refer to the same object can lead to subtle bugs.</p>
+
+<h3 id="aside-empty-sets">Aside: Empty Sets</h3>
+
+<p>In Python, <code class="language-plaintext highlighter-rouge">{}</code> represents an <em>empty dictionary</em>. To create an empty set, use the <code class="language-plaintext highlighter-rouge">set</code> function and give it no arguments, i.e., <code class="language-plaintext highlighter-rouge">set()</code>.</p>
+
+<h2 id="testing-functions-that-modify-memory">Testing functions that modify memory</h2>
+
+<p>Let’s say we have this (strange) function:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_len_to_list</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+  <span class="n">l</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>How can we test it? We can’t look at what it returns, since it doesn’t return anything (technically, it returns the value <code class="language-plaintext highlighter-rouge">None</code>). We might try to change the function, so that its body is <code class="language-plaintext highlighter-rouge">return l.append(len(l))</code>, but it turns out that doesn’t help: the function still returns <code class="language-plaintext highlighter-rouge">None</code>.</p>
+
+<p>This is because the <code class="language-plaintext highlighter-rouge">append</code> method itself returns <code class="language-plaintext highlighter-rouge">None</code>: it’s not designed to produce a <i>new</i> list, but rather to modify the current list. We could work around this by adding <code class="language-plaintext highlighter-rouge">return l</code> to the end of the function, but that strategy won’t always support testing more complex functions. (For example, what happens if the function needed to return something else, and the list update was just a side effect of running it? We’d still want to test the side effect as well as the output!)</p>
+
+<p>So what can we do in general? We can start by creating a test list, calling <code class="language-plaintext highlighter-rouge">add_len_to_list</code> on it, and then asserting something about the test list. An example might look like:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_add_len</span><span class="p">():</span>
+  <span class="n">my_list</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">add_len_to_list</span><span class="p">(</span><span class="n">my_list</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="n">my_list</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>This test checks the behavior of <code class="language-plaintext highlighter-rouge">add_len_to_list</code> when it’s given an empty list.</p>
+
+<p>What’s going on in memory when we run this test? Put another way, how many lists have been created by the time the assertion is checked?</p>
+
+<details>
+  <summary>Think, then click!</summary>
+
+  <p><strong>Two</strong>. However, only one of them is actually used for anything except expressing our expected value in the assertion. The program proceeds like this:</p>
+  <ul>
+    <li>Create a new, empty list in memory and remember where to find it (<code class="language-plaintext highlighter-rouge">l</code>).</li>
+    <li>Pass that list to the <code class="language-plaintext highlighter-rouge">add_len_to_list</code> function, which modifies it. The <em>contents</em> of the list has changed, but it’s still the same list object in memory, and we still remember how to find it (<code class="language-plaintext highlighter-rouge">l</code>).</li>
+    <li>Check to see if <code class="language-plaintext highlighter-rouge">l</code> is “the same list” as the list <code class="language-plaintext highlighter-rouge">[0]</code>. But, crucially, Python doesn’t interpret <code class="language-plaintext highlighter-rouge">==</code> here as “the same <em>object</em>” but rather “contains equal elements in the same order”.</li>
+  </ul>
+
+  <p>That last point is very subtle. Different objects define their own notion of <code class="language-plaintext highlighter-rouge">==</code>; I say a bit more about this at the end of these notes. The key is that there are two notions of equality here:</p>
+  <ul>
+    <li>“same object” (known as <em>referential equality</em>); and</li>
+    <li>“same structure” (known as <em>structural equality</em>).
+A good rule of thumb is that most built-in Python data structures have defined <code class="language-plaintext highlighter-rouge">==</code> to be structural, not referential.</li>
+  </ul>
+
+  <p>If you’re even in doubt about whether two values reference <em>the same object</em>, you can use the <code class="language-plaintext highlighter-rouge">id</code> function to produce an object identity and print it out. We’ll talk about this more later. For now, give this a try. What does it print?</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="nb">id</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">id</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]))</span>
+</code></pre></div>  </div>
+
+</details>
+
+<h3 id="a-warning">A Warning</h3>
+
+<p>Watch out for <i>reusing</i> containers between tests that modify those containers. For instance, if I’d written:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_add_len</span><span class="p">():</span>
+  <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">add_len_to_list</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="n">l</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">add_len_to_list</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="n">l</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>I might have been very surprised (why?)</p>
+
+<p>This is a toy example of something that can become a problem in a larger suite of tests. Be careful about <em>changes to state</em> in your test functions: try to keep changes isolated to a single function, and be aware of how the changes happen within it. You can avoid many (but not all) such problems by writing lots of <em>short</em> test functions, so that any state you created goes away between tests.</p>
+
+<h3 id="a-digression-on-equality">A digression on equality</h3>
+
+<p>Note that I said “an” empty set, not “the” empty set. It’s an important distinction, but unfortunately one that many (including me!) can miss when speaking. The difference comes down to context: do we mean to identify a list by its <i>contents only</i>, or are speaking of a <i>particular object in memory</i>? Again, it’s about referential versus structural equality. If I create an empty set twice:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>How can you experiment to discover whether Python has made two distinct objects or not? (Hint: read the preceding section. There are also other ways.)</p>
+
+<h4 id="analogy">Analogy</h4>
+
+<p>Can you see the difference in intent between these two sentences?</p>
+<ul>
+  <li>“To take the course, you need to have this textbook.”</li>
+  <li>“I will loan you this textbook, but you need to return it.”</li>
+</ul>
+
+<p>Both sentences invoke some notion of “sameness”. But in one I mean you should have an <em>equivalent</em> book (same author, title, etc.), and in the other I really mean the same physical book object.</p>
+
+<h4 id="another-way--vs-is">Another Way: <code class="language-plaintext highlighter-rouge">==</code> vs. <code class="language-plaintext highlighter-rouge">is</code></h4>
+
+<p>Notice what happens if we run:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">list2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="n">list1</span> <span class="o">==</span> <span class="n">list2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>What does this tell you about how Python compares lists? Do you think it may be comparing them according to their contents, or according to whether they are the same object in memory?</p>
+
+<details>
+  <summary>Think, then click!</summary>
+
+  <p>It looks like it’s comparing them by their contents. We can confirm this using Python’s <code class="language-plaintext highlighter-rouge">is</code> operator, which really does only ever check for object identity:</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">list1</span> <span class="ow">is</span> <span class="n">list2</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+  <p>This prints <code class="language-plaintext highlighter-rouge">False</code>.</p>
+
+  <p>When we get to defining our own object types, we’ll talk about how to define <code class="language-plaintext highlighter-rouge">==</code>, like Python defines it for lists.</p>
+
+</details>
+
+<h2 id="homework-1-discussion">Homework 1 Discussion</h2>
+
+<p>We’ll end by looking at some partial solution code for homework 1. While I won’t put it in the notes, I have no problems with showing some functions and discussing them in class. But there’s something very important we need to agree to: <strong>this code is <em>a</em> solution, not <em>the</em> solution</strong>. There’s lots of ways to do this assignment, and nothing I’m about to show you is perfect.</p>
+
+<p><strong>(See lecture capture for specifics.)</strong></p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

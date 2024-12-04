@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Data Collection and Modeling | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Data Collection and Modeling" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Labs/Lab%207/lab7.html" />
+<meta property="og:url" content="/Labs/Lab%207/lab7.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Data Collection and Modeling" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Data Collection and Modeling","url":"/Labs/Lab%207/lab7.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link active" href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Lab 7:
+    
+    Data Collection and Modeling
+  </h2>
+</header>
+
+
+
+  
+  
+    
+  
+
+  
+
+  <h2 id="section-1-background">Section 1: Background</h2>
+
+<p>Now that you have completed Project 2 and have experience with modeling and simulating systems, we’d like you to revisit the idea and reflect.</p>
+
+<p>Suppose that Brown is looking to add a new course in the Urban Studies department and has asked you to compile a report on the state of education in New York City. They requested <em>three datasets</em> that provide the most comprehensive and pressing issues for students, parents, educators and policymakers in the New York City public school system. Tim was able to gather a list of ten datasets, but needs your help to narrow this list down to just three.</p>
+
+<h2 id="section-2-learning-goals">Section 2: Learning Goals</h2>
+
+<p>Data collection and modeling, like we saw in Project 2 (and that we are about to explore in this lab, are never neutral or objective. While data (and models built from it) are often presented as unbiased, cold, hard, facts, they are inherently subjective. Data are collected by researchers or other stakeholders that, consciously or not, have a particular goal in mind. The same holds for those who curate the data over time, or those who use it for modeling or making policy decisions.</p>
+
+<p>For example, in Project 2, we provided you with five example countries but allowed you to choose off a bigger set of countries if you liked. Both we, as a staff, and you, as the programmer, made decisions about the country you wished to represent. You may have chosen the five countries that held a particular interest for you, five countries close together, or five countries that were listed on the handout because they were the most easily available. Whatever the reasoning, picking those five countries centered some and excluded others. If you lived in a country that was going to lose 50% of its crop production due to global warming in the next year, or that would be underwater due to sea-level rise, you would  likely be concerned and upset that your home (or factors important to your home) didn’t appear in this model.</p>
+
+<p>All data collection and modeling works in a similar way. We can’t possibly collect every single piece of pertinent data or model every single situation because of time, space, or energy constraints. As Tim likes to say, “The only accurate model is the entire universe.” The goal of this lab is to have you consider various implications of data collection and modeling.</p>
+
+<p>Importantly, we are <em>not</em> arguing that data collection (because of its biases) or modeling exercises (because they can’t account for <em>all</em> variables)  are useless! To the contrary, we _are _saying that because of the importance and power of data-gathering and modeling we have an obligation to think deeply and carefully about who we choose to represent and exclude when we engage in these activities.</p>
+
+<p class="notice"><strong>Notice:</strong> Throughout this lab, you will be paired with various classmates. Be prepared to engage and move throughout the room. <em>The answers you submit in the Google Form will count as your attendance and be graded on your participation.</em>
+You can find the Google Form <strong><a href="https://forms.gle/JF66R5tVvcoCyed17">here</a></strong>.</p>
+
+<p>Take a look at <a href="https://opendata.cityofnewyork.us/">NYC OpenData</a>, a project that aims to collect data and publicize data on various aspects of New York City. The following ten datasets come from the <a href="https://data.cityofnewyork.us/browse?category=Education">education</a> category on their website:</p>
+
+<ul>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/2010-2016-School-Safety-Report/qybk-bjjc">School Safety Report</a> (2010-2016)
+This dataset was collected by the New York City Police Department (NYPD) and provides crime data for incidents that occurred within NYC public schools. It includes the overall number of incidents, in categories such as criminal, non-criminal, and violent crimes, among others, organized by school and borough. Collected 2010-2016.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/2005-2010-Graduation-Outcomes-School-Level/vh2h-md7a">Graduation Outcomes by School</a> (2005-2010)
+This dataset provides information on the graduation outcomes of students enrolled in each school. Graduation is measured by those who earned a local or Regents diploma. Collected from 2005-2010.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/2012-SAT-Results/f9bf-2cp4">Average SAT Results by School</a> (2012)
+This dataset provides average SAT results across math, reading, and writing, organized by school. Collected from 2012.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/2020-2021-Bilingual-Program-List-Final-Publication/rrd7-vuvp">List of Bilingual Programs</a> (2020-2021)
+This dataset provides information on the type of support programs for bilingual students and the language in which the programs are offered. Collected from the 2020-2021 school year.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/2019-20-Demographic-Snapshot-School/nie4-bv6q">Student Demographic Snapshot by School</a> (2015-2020)
+This dataset provides information on student demographics, such as grade, race, gender, first language, among others, collected from 2015 to 2020.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/Student-COVID-Vaccinations-3-24-2022-/q5xz-reje">Students with COVID-19 Vaccinations</a> (March, 2022)
+This dataset keeps track of the percentage of students with at least one COVID-19 vaccination and students fully vaccinated by school. Updated March, 2022.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/2019-School-Food-Report-LL215/biv6-d9zt">School Food Report</a> (2019)
+This dataset keeps track of the type of meals offered throughout and before the school day, if applicable. Collected in 2019.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/Fair-Student-Funding-Budget-Detail-2/nbgq-j9jt">Fair Student Funding Budget</a> (2015)
+This dataset keeps track of funding allocated to schools and where that money is going throughout the school year. This dataset includes the growth or decrease in teacher salaries. Collected in 2015.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Education/Update-to-Submitted-State-Aid-Projects/gk83-aa6y">Aid Projects Submitted to the State</a> (updated 2022)
+This dataset keeps track of all the requests schools have submitted to New York state for additional funding. The requests range from full modernizations to bathroom renovations. It also includes the anticipated cost of the project. Last updated September 2015.</p>
+  </li>
+  <li>
+    <p><a href="https://data.cityofnewyork.us/Transportation/Bus-Breakdown-and-Delays/ez4e-fazm">School Bus Breakdowns and Delays</a> (updated 2022)
+This dataset keeps track of all the bus breakdown and delays when bringing students to and from schools. It includes the type of breakdown that occurred, the length of the delay, and how many students were on the bus, among other data points. Last updated November 2022.</p>
+  </li>
+</ul>
+
+<p>Remember, <em>the goal is to compile three datasets that provide pertinent information on the most comprehensive and pressing issues for students, parents, educators and policymakers in the New York City public school system.</em> Pay less attention to the years the data were collected and more to the information each dataset conveys.</p>
+
+<p class="notice"><strong>Task 1:</strong> Choose five datasets you think best serve the goal above. Be prepared to articulate your choices and reasoning behind them. Submit this list of five to the Google Form.</p>
+
+<p class="notice"><strong>Task 2:</strong> Pair up with someone in the class, and compare the datasets you chose. Working together, narrow your list down to just three datasets. Disagreements should be resolved charitably; this is the kind of (professional) discussion that data scientists and modelers have. Submit this list of three to the Google Form. <strong>Each partner should fill out the form.</strong></p>
+
+<p class="notice"><strong>Task 3:</strong> Final move! You and your partner should find another pair. Working in this group of four, come up with a final list of three datasets to submit as your final proposal. <strong>Each group member should fill out the form.</strong></p>
+
+<p class="notice"><strong>Task 4:</strong> Discuss the following reflection questions in your groups. <strong>Individually submit your responses to the Google Form.</strong></p>
+
+<h2 id="section-3-reflection-questions">Section 3: Reflection Questions</h2>
+
+<h3 id="part-1-projection">Part 1: Projection</h3>
+<p>Projection is the process of seeing one’s own inner circumstances reflected onto external circumstances. Projection is a very common process for us when filtering and choosing information. In other words, what matters personally to us oftentimes shapes what we view as necessary or important.</p>
+
+<p class="notice"><strong>Task 5:</strong> While reading through the dataset lists, were there particularly datasets you did not consider at all or considered of higher importance than others? Did projection play any role in your decision making?</p>
+
+<h3 id="part-2-stakeholders">Part 2: Stakeholders</h3>
+
+<p>Take a look at the final datasets you came up with and consider the stakeholders that might be impacted by your set. Who might have been left out and in what ways might they be impacted? For example, a number of schools have 95% of their student populations in poverty. For these students, the school meal program would highly impact their ability to learn and engage in their classes. Thus, including the school meal program in an overview of schools would be of high importance to these students and parents. What are other examples of stakeholders impacted by the data you chose and in what why?</p>
+
+<p class="notice"><strong>Task 6:</strong> Reflect on the stakeholders that might be impacted by the datasets you chose. Who might have been left out and in what ways might they be impacted?</p>
+
+<p class="notice"><strong>Task 7:</strong> Were there any datasets that were left out of the list of ten? (There were many.) Try to think of one or two we missed.</p>
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

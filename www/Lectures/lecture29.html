@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Merge Sort (Part 1) | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Merge Sort (Part 1)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture29.html" />
+<meta property="og:url" content="/Lectures/lecture29.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-11-13T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Merge Sort (Part 1)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-11-13T00:00:00+00:00","datePublished":"2024-11-13T00:00:00+00:00","description":"CSCI 0112","headline":"Merge Sort (Part 1)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture29.html"},"url":"/Lectures/lecture29.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="merge-sort">Merge Sort</h1>
+
+<p>You just saw two different sorting algorithms: insertion sort and selection sort. We then implemented insertion sort. Recall that insertion sort is $O(n^2)$ in the worst case, but $O(n)$ in the best case. Both depend on how the inner loop is structured.</p>
+<ul>
+  <li>If the inner loop goes backwards, the best case is on a sorted list, because the program will do one comparison for each element (the element vs. the largest member of the sorted prefix), discover that the element is in its proper place already, and move on.</li>
+  <li>In the worst case, the inner loop of comparisons and swaps continues until the element is placed at the beginning of the list. So, if the inner loop goes backwards, the worst case is a reverse-sorted list.</li>
+</ul>
+
+<p>The best-case performance is <em>great</em>: not any worse than <em>checking</em> whether the list is sorted in the first place. Since many datasets in real life are partially sorted to begin with, this is a great property for a sorting algorithm to have.</p>
+
+<p>The worst-case performance is concerning, though. We saw how quickly $O(n^2)$ can blow up when we implemented <code class="language-plaintext highlighter-rouge">distinct</code>. A worst-case $O(n^2)$ runtime wouldn’t bode well for sorting large datasets that are random, or $O(log_2(n))$that are mostly in reverse order. And, anyway, haven’t we just seen a data structure (Binary Search Trees) that can find the right place to put a new element in $O(log_2(n))$ time, rather than $O(n)$ (which is what insertion sort uses in its inner loop)? Surely we can do better.</p>
+
+<p>One option would be to just use a BST in place of the inner loop, writing what amounts to:</p>
+<ul>
+  <li>Put all elements of the input list into a BST. (Think about how to make sure the resulting BST is balanced! It’s possible.)</li>
+  <li>Do an in-order tree traversal to extract the values in order.</li>
+</ul>
+
+<p>What’s the worst-case runtime now? We’re running a worst-case  operation $n$ times to insert, and then the traversal itself is linear. So we end up with worst-case $n \times O(log_2(n))$. But what about the best case? Is it still $O(n)$?</p>
+
+<details>
+
+  <p>No. If we use a BST in place of the inner loop, the algorithm can no longer get “lucky” and stop early. We’ll spend time propotional to $O(log_2(n))$ for each element (although there’s some imprecision in how I’m phrasing that, since the number of elements in the tree would grow to $n$ only gradually as we added to it).</p>
+
+</details>
+
+<p>Still, though, we now know that a worst-case $n \times O(log_2(n))$ algorithm exists for sorting, so we’re getting faster in the limit.</p>
+
+<h2 id="how-does-python-sort">How does Python sort?</h2>
+
+<p>Python provides two different built-in sorts:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sorted</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="c1"># Python built-in function, returns new list
+</span><span class="n">lst</span><span class="p">.</span><span class="n">sort</span><span class="p">()</span>  <span class="c1"># Python built-in function, modifies list
+</span></code></pre></div></div>
+
+<p>These both run the same algorithm, but one modifies the current list and the other returns a new list. The algorithm is called <a href="https://en.wikipedia.org/wiki/Timsort"><em>Timsort</em></a> because it’s named after Tim Peters, who first invented it for Python. Timsort is complicated, because it combines ideas from insertion sort with a different algorithm that we’ll learn about today.</p>
+
+<h2 id="a-seemingly-different-problem">A (seemingly?) Different Problem</h2>
+
+<p>Anyway, here’s a question. Suppose we have 2 sorted lists. How could we combine them to produce a sorted list with the same contents? Here’s an example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">assert</span> <span class="n">merge</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>How could we implement <code class="language-plaintext highlighter-rouge">merge</code> efficiently? We could start by just concatenating the lists together and then sorting the result:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">list1</span><span class="o">+</span><span class="n">list2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This will <em>work</em>, but what’s the runtime? The concatenation (<code class="language-plaintext highlighter-rouge">+</code>) will be linear in the sum of the lengths of the lists. The call to <code class="language-plaintext highlighter-rouge">sorted</code> will depend on the runtime of the underlying sort. If it was insertion sort, then <code class="language-plaintext highlighter-rouge">merge</code> would be worst-case quadratic.</p>
+
+<p>Maybe we can do better. After all, we’re not using an important fact: <em>the input lists are both sorted already</em>. Is this fact useful? Think about how you might loop through the input lists to construct the output list.</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>The smallest element of the two lists must be the <em>first element</em> of one of the two lists.</p>
+
+  <p>Look at first elements. 2 is less than 3. And we know the lists are sorted. We know that 2 is the smallest element in 1 comparison: <em>constant time</em>. So we can loop through the lists like this, looking at only the front of each list in every iteration:</p>
+
+  <p><code class="language-plaintext highlighter-rouge">[2,4,6]  [3,5,7]    --&gt; []</code> 
+<code class="language-plaintext highlighter-rouge">[4,6]  [3,5,7]    --&gt; [2]</code> 
+<code class="language-plaintext highlighter-rouge">[4,6]  [5,7]    --&gt; [2,3]</code> 
+<code class="language-plaintext highlighter-rouge">[6]  [5,7]    --&gt; [2,3,4]</code> 
+<code class="language-plaintext highlighter-rouge">[6]  [7]    --&gt; [2,3,4,5]</code> 
+<code class="language-plaintext highlighter-rouge">[]  [7]    --&gt; [2,3,4,5,6]</code> 
+<code class="language-plaintext highlighter-rouge">[]  []    --&gt; [2,3,4,5,6,7]</code></p>
+
+</details>
+
+<p>How long did it take to run this merge? $O(n)$ operations, even in the worst case. So far, this might not appear very useful. But let’s continue anyway.</p>
+
+<h2 id="implementing-merge">Implementing <code class="language-plaintext highlighter-rouge">merge</code></h2>
+
+<p>Let’s try to implement this idea. But first, we’ll write tests.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">assert</span> <span class="n">merge</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">merge</span><span class="p">([],</span> <span class="p">[])</span> <span class="o">==</span> <span class="p">[]</span> 
+<span class="k">assert</span> <span class="n">merge</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+<span class="k">assert</span> <span class="n">merge</span><span class="p">([],</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+<span class="k">assert</span> <span class="n">merge</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">merge</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">merge</span><span class="p">([</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h4 id="something-i-wonder">Something I wonder…</h4>
+
+<p>Should we have any tests where the input lists are <em>not</em> sorted? Why or why not?</p>
+
+<details>
+
+  <p>I would argue that <em>it depends</em>. On the face of it, we shouldn’t, since <code class="language-plaintext highlighter-rouge">merge</code> is only supposed to work on sorted input lists. So unsorted inputs are out of scope for the function; it has no obligation to merge them correctly. A common approach is to just say that we make no guarantees.</p>
+
+  <p>But if our documentation for <code class="language-plaintext highlighter-rouge">merge</code> happens to say what <code class="language-plaintext highlighter-rouge">merge</code> will do if given invalid input (e.g., “if given an input list that is unsorted, <code class="language-plaintext highlighter-rouge">merge</code> will raise a <code class="language-plaintext highlighter-rouge">ValueError</code>) we would write a test to confirm that the promised behavior does indeed occur. So it’s all about what’s expected by someone using the function.</p>
+
+</details>
+
+<h3 id="getting-started">Getting started</h3>
+
+<p>Let’s write a skeletal <code class="language-plaintext highlighter-rouge">merge</code> function. Our core idea will be keeping <em>two</em> counters simultaneously, that tell us where we are in each of the input lists. We’ll keep looping so long as one of those counters still has list elements to feed into the merge.</p>
+
+<p>To do this, we’ll use a <code class="language-plaintext highlighter-rouge">while</code> loop. This will make it easier to keep track of where we are in each list, and move forward in one (not both) of them at a time.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># eventually holds the merged list
+</span>    <span class="n">index1</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># start at beginning of list1
+</span>    <span class="n">index2</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># start at beginning of list2
+</span>    <span class="k">while</span> <span class="n">index1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">index2</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">):</span>
+        <span class="k">pass</span> <span class="c1"># ???
+</span>    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
+
+<p>Now what? We need to either take the next element of <code class="language-plaintext highlighter-rouge">list</code> <em>or</em> the next element of <code class="language-plaintext highlighter-rouge">list2</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">index1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">index2</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">index1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">index2</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">list1</span><span class="p">[</span><span class="n">index1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">list2</span><span class="p">[</span><span class="n">index2</span><span class="p">]:</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">list1</span><span class="p">[</span><span class="n">index1</span><span class="p">])</span>
+            <span class="n">index1</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">list2</span><span class="p">[</span><span class="n">index2</span><span class="p">])</span>
+            <span class="n">index2</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
+
+<p>We’re making progress! But there’s still a problem: eventually we’ll run off the end of one of the lists. (And what if they were different size lists to begin with?) So we need to add a guard to prevent trying to read past the end of a list. There are a few ways to do this, but we’ll add an <code class="language-plaintext highlighter-rouge">or</code> to the first condition:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">index1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">index2</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">index1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">index2</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">):</span> 
+        <span class="c1"># if we're out of elements in list2 *or* list1 has the smaller element
+</span>        <span class="k">if</span> <span class="n">index2</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span> <span class="ow">or</span> <span class="n">list1</span><span class="p">[</span><span class="n">index1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">list2</span><span class="p">[</span><span class="n">index2</span><span class="p">]:</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">list1</span><span class="p">[</span><span class="n">index1</span><span class="p">])</span>
+            <span class="n">index1</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">list2</span><span class="p">[</span><span class="n">index2</span><span class="p">])</span>
+            <span class="n">index2</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
+
+<p>Hopefully our tests all pass, now!</p>
+
+<p><strong>(They don’t. What’s missing?)</strong></p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>What happens if it’s <code class="language-plaintext highlighter-rouge">list1</code> that runs out of elements first? In that case, we’ll still end up trying to access <code class="language-plaintext highlighter-rouge">list1[index1]</code> and get an error.</p>
+
+  <p>This is easiest to fix by just adding another <code class="language-plaintext highlighter-rouge">if</code> branch to catch the out-of-elements cases. This adds some code length, yes, but let’s get the program <em>correct</em> before we make it <em>elegant</em>.</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">index1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">index2</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">index1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">index2</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">):</span> 
+        <span class="c1"># list2 is out of elements 
+</span>        <span class="k">if</span> <span class="n">index2</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">list1</span><span class="p">[</span><span class="n">index1</span><span class="p">])</span>
+            <span class="n">index1</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># list1 is out of elements
+</span>        <span class="k">elif</span> <span class="n">index1</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">list2</span><span class="p">[</span><span class="n">index2</span><span class="p">])</span>
+            <span class="n">index2</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># list1 has the smaller element
+</span>        <span class="k">elif</span> <span class="n">list1</span><span class="p">[</span><span class="n">index1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">list2</span><span class="p">[</span><span class="n">index2</span><span class="p">]:</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">list1</span><span class="p">[</span><span class="n">index1</span><span class="p">])</span>
+            <span class="n">index1</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># list2 has the smaller element
+</span>        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">list2</span><span class="p">[</span><span class="n">index2</span><span class="p">])</span>
+            <span class="n">index2</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>  </div>
+
+</details>
+
+<p>Next time we’ll see how to turn this tiny helper into a sorting algorithm.</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

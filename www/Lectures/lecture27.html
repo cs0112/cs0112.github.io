@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Sorting Intro | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Sorting Intro" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture27.html" />
+<meta property="og:url" content="/Lectures/lecture27.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-11-08T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Sorting Intro" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-11-08T00:00:00+00:00","datePublished":"2024-11-08T00:00:00+00:00","description":"CSCI 0112","headline":"Sorting Intro","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture27.html"},"url":"/Lectures/lecture27.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="sorting-intro-selection-and-insertion">Sorting Intro: Selection and Insertion</h1>
+
+<p>These notes span 2 class meetings. The livecode for insertion sort is <a href="/Lectures/live/insertion.py">here</a></p>
+
+<h2 id="sorting">Sorting</h2>
+
+<p>Let’s start with an exercise. Suppose you were given a list of numbers and asked to put them in sorted order. In class, we’ll use notecards for this, but in these notes, I’ll just write the list:</p>
+
+<blockquote>
+  <p>7 4 2 8 5 3</p>
+</blockquote>
+
+<p>For now, let’s not worry about how the list is represented: it’s not a Python list or a linked list or anything else like that. It’s just a bunch of numbers on paper.</p>
+
+<p>How would you approach sorting this list by hand? Think in basic, tactile terms like swapping cards or moving numbers around.</p>
+
+<h3 id="two-possible-approaches-of-many">Two possible approaches of many</h3>
+
+<p>There are lots of ways to proceed. Here’s one sequence, where we keep moving the lowest element in the list up, building a <em>sorted prefix</em> as we go along:</p>
+
+<blockquote>
+  <p>7 4 <span style="color:blue"><em>2</em></span> 8 5 3</p>
+
+  <p><span style="color:red"><strong>2</strong></span> 7 4 8 5 <span style="color:blue"><em>3</em></span></p>
+
+  <p><span style="color:red"><strong>2 3</strong></span> 7 <span style="color:blue"><em>4</em></span> 8 5</p>
+
+  <p><span style="color:red"><strong>2 3 4</strong></span> 7 8 <span style="color:blue"><em>5</em></span></p>
+
+  <p><span style="color:red"><strong>2 3 4 5</strong></span> <span style="color:blue"><em>7</em></span> 8</p>
+
+  <p><span style="color:red"><strong>2 3 4 5 7</strong></span> <span style="color:blue"><em>8</em></span></p>
+
+  <p><span style="color:red"><strong>2 3 4 5 7 8</strong></span></p>
+</blockquote>
+
+<p>I’ve used <span style="color:red"><strong>bold red</strong></span> to mark the sorted prefix of numbers that have already been shuffled into their proper place, and <span style="color:blue"><em>italic blue</em></span> to mark the element being moved next.  So after the <span style="color:red"><strong>2</strong></span> has been moved, the <span style="color:red"><em>3</em></span> is put into position after it and then gets bolded and colored red.</p>
+
+<p>Here’s another, where we always take the first unsorted element and move it into its proper place in the sorted prefix:</p>
+
+<blockquote>
+  <p><span style="color:blue"><em>7</em></span> 4 2 8 5 3</p>
+
+  <p><span style="color:red"><strong>7</strong></span> <span style="color:blue"><em>4</em></span> 2 8 5 3</p>
+
+  <p><span style="color:red"><strong>4 7</strong></span> <span style="color:blue"><em>2</em></span> 8 5 3</p>
+
+  <p><span style="color:red"><strong>2 4 7</strong></span> <span style="color:blue"><em>8</em></span> 5 3</p>
+
+  <p><span style="color:red"><strong>2 4 7 8</strong></span> <span style="color:blue"><em>5</em></span> 3</p>
+
+  <p><span style="color:red"><strong>2 4 5 7 8</strong></span> <span style="color:blue"><em>3</em></span></p>
+
+  <p><span style="color:red"><strong>2 3 4 5 7 8</strong></span></p>
+</blockquote>
+
+<p><strong>What do you notice in common between these two approaches?</strong></p>
+
+<p>They both move one number at a time, and implicitly divide the list into “sorted” and “unsorted” sections.</p>
+
+<p><strong>What do you notice that’s different?</strong></p>
+
+<p>The first approach always finds and moves the <em>smallest</em> element remaining in the unsorted list suffix. The second always moves the <em>first</em> element in the unsorted list suffix.</p>
+
+<p>The first method is called <em>selection sort</em> because it selects the smallest element to move every time. The second method is called <em>insertion sort</em>, because it inserts the next element into its proper place.</p>
+
+<p>These are the two sorting algorithms that people most often use naturally when sorting things like cards or paper records. They both have more or less the same worst-case efficiency, but more on that later.</p>
+
+<h3 id="insertion-sort-runtime">Insertion Sort: Runtime</h3>
+
+<p>Let’s focus on insertion sort. Can we write out the program, or at least specify the steps? Here’s a description we might use:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>loop over everything in the list from left to right:
+    move this element into its proper place in the sorted prefix
+</code></pre></div></div>
+
+<p>We haven’t written Python yet, but we can still reason informally about the worst-case runtime. You might see opportunities to optimize, but for now let’s stay with the above rough idea.</p>
+
+<h4 id="on-a-list-of-length-n-what-will-the-big-o-runtime-of-insertion-sort-be">On a list of length N, what will the big-O runtime of insertion sort be?</h4>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>$O(N^2)$. This is because the first line in the above description loops $N$ times, and the second line loops from $1$ to $N-1$ times, depending on how far into the list we are and how unsorted it is.</p>
+
+  <p>This is the same situation as we saw when writing <code class="language-plaintext highlighter-rouge">distinct</code> a few weeks back. In the worst, case, the list is sorted in reverse order, and we need to move each element to the beginning of the list. But we won’t discover that until we’ve actually examined the entire sorted prefix. We’ll check $1$, then $2$, then $3$, and so on.</p>
+
+  <p>$\sum_{i=1}^{n}(i) = \dfrac{n(n-1)}{2}$, which is in $O(N^2)$.</p>
+
+</details>
+
+<h4 id="how-about-the-best-case">How about the <em>best</em> case?</h4>
+
+<p>Remember that we’re talking about the best case for an arbitrary list length. Of course a list of only 1 element is easy to sort, but that’s not what we mean by “best case” here.</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>In the best case, the list is already in order and so no elements need to be moved at all; they’re already in the proper insertion position. Thus, insertion sort’s best case performance is $O(N)$. That’s great!</p>
+
+  <p>Maybe we can do better than worst-case $O(n^2)$ However, if your list is <em>mostly</em> sorted, then insertion sort can perform very well.</p>
+
+</details>
+<p>&lt;/br&gt;</p>
+
+<p>We’ll come back to selection sort later.</p>
+
+<h2 id="implementing-insertion-sort">Implementing Insertion Sort</h2>
+
+<p>Let’s write a version of insertion sort that works over Python lists. We’ll make the design decision to modify the list itself, rather than returning a new list; this is sometimes called an <em>in place</em> sort. Because of this, the function won’t return anything.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="n">lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="s">"""
+    loop over everything in the list from left to right:
+         move it into its proper place in the sorted prefix
+    """</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>But before we write the code…</p>
+
+<h3 id="some-tests">Some tests</h3>
+
+<p>Let’s write some tests as examples to make sure we understand the problem and some of the most likely ways we could get it wrong. Here are some (non-exhaustive) examples:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">test_insertion_sort</span><span class="p">():</span>
+    <span class="n">list1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">list2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">list3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">list4</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">]</span>
+    <span class="c1"># ...
+</span>    <span class="n">insertion_sort</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span>
+    <span class="n">insertion_sort</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span>
+    <span class="n">insertion_sort</span><span class="p">(</span><span class="n">list3</span><span class="p">)</span>
+    <span class="n">insertion_sort</span><span class="p">(</span><span class="n">list4</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">list1</span> <span class="o">==</span> <span class="p">[]</span>
+    <span class="k">assert</span> <span class="n">list2</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">list3</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">list4</span> <span class="o">==</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="writing-the-code">Writing the code</h3>
+
+<p>At first, we might want to start like this. After all, that’s what the 2-line summary said: “loop over everything in the list”.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+        <span class="c1"># ???
+</span></code></pre></div></div>
+
+<p>But there’s a problem. All we have in the loop body is the element itself, not the context we need to <em>move the element around</em> in the list. We don’t know where the previous element is, or if there even is one. We’re going to need a different kind a loop.</p>
+
+<p>A <em>while loop</em> in Python is a loop that keeps running so long as its condition is true. We’ll set one of those up here, starting at index 1 (since the first element is already “sorted” on its own):</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+        <span class="c1"># ???        
+</span></code></pre></div></div>
+
+<p>Note that a while loop is more dangerous than a for loop. We need to <em>stop it</em> somehow, or else it will continue running forever. We’ll want to make sure that the <code class="language-plaintext highlighter-rouge">index</code> variable keeps increasing or we’ll be in trouble.</p>
+
+<p>(If you ever find yourself in an infinite loop in Python, you can often terminate the program by hitting <code class="language-plaintext highlighter-rouge">CTRL-C</code>.)</p>
+
+<p>Moving on, we might proceed like this, using explicit swapping to move elements upward:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="o">&lt;</span> <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># safe because index starts at 1
+</span>            <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>            
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>This will work great on lists of 1 or 2 elements, but on larger lists we might need to move an element further than just 1 position. To see why, look at the example from before:</p>
+
+<blockquote>
+  <p>7 4 2 8 5 3</p>
+</blockquote>
+
+<p>If <code class="language-plaintext highlighter-rouge">index == 1</code> (pointing to the <code class="language-plaintext highlighter-rouge">4</code>), the above works. But after that step:</p>
+
+<blockquote>
+  <p>4 7 2 8 5 3</p>
+</blockquote>
+
+<p>when <code class="language-plaintext highlighter-rouge">index == 2</code> (pointing to the 2), we would produce:</p>
+
+<blockquote>
+  <p>4 2 7 8 5 3</p>
+</blockquote>
+
+<p>which doesn’t move the <code class="language-plaintext highlighter-rouge">2</code> far enough.</p>
+
+<p>Now what? We need to <em>keep moving the element</em> as long as needed. That sounds like another loop. But we need to be careful to make sure it stops:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">element</span> <span class="o">&lt;</span> <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># safe because index starts at 1
+</span>            <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>            
+            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>That’s better. Maybe it even works! We can try some examples, and watch it running in the debugger.</p>
+
+<p>In fact, let’s watch it work on our big test in the debugger. We’ll see that we’re inefficiently conflating the index of <em>the element we’re inserting</em> and the index we’re <em>considering for insertion at</em>. Let’s give these two ideas different names:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">insertion_index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="k">while</span> <span class="n">insertion_index</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">element</span> <span class="o">&lt;</span> <span class="n">lst</span><span class="p">[</span><span class="n">insertion_index</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># safe because index starts at 1
+</span>            <span class="n">lst</span><span class="p">[</span><span class="n">insertion_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">insertion_index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">lst</span><span class="p">[</span><span class="n">insertion_index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>            
+            <span class="n">insertion_index</span> <span class="o">=</span> <span class="n">insertion_index</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h3 id="insertion-sort-runtime-more-formally">Insertion sort runtime (more formally)</h3>
+
+<p>Now let’s convince ourselves that the worst-case runtime is indeed in $O(n^2)$. Here’s a worst-case input:</p>
+
+<p>[5, 4, 3, 2, 1]</p>
+
+<p>The outer loop will perform $N-1 = 4$ operations (i.e., we’ll move 4 elements). The inner loop runs once, then twice, and so on. So our intuition above seems to fit. We can confirm this by examining the program and labeling how many times each operation runs:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>                      <span class="c1"># 1 operation
+</span>    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>        <span class="c1"># N-1 operations (comparisons)
+</span>        <span class="n">element</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>       <span class="c1"># N-1 operations
+</span>        <span class="n">insertion_index</span> <span class="o">=</span> <span class="n">index</span>    <span class="c1"># N-1 operations
+</span>        <span class="k">while</span> <span class="n">insertion_index</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">element</span> <span class="o">&lt;</span> <span class="n">lst</span><span class="p">[</span><span class="n">insertion_index</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>    <span class="c1"># N(N-1)/2 times
+</span>            <span class="n">lst</span><span class="p">[</span><span class="n">insertion_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">insertion_index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># N(N-1)/2 times
+</span>            <span class="n">lst</span><span class="p">[</span><span class="n">insertion_index</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>     <span class="c1"># N(N-1)/2 times
+</span>            <span class="n">insertion_index</span> <span class="o">=</span> <span class="n">insertion_index</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># N(N-1)/2 times
+</span>        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>          <span class="c1"># N-1 operations
+</span></code></pre></div></div>
+
+<p>In total, this is  $1 + 4(N-1) + 4(N(N-1)/2)$, which is in O(N^2)$.</p>
+
+<h3 id="selection-sort-runtime">Selection sort runtime</h3>
+
+<p>What about selection sort? Let’s look at a run; recall that selection sort works by finding the smallest element that isn’t in the sorted prefix, and putting it at the end of the sorted prefix.</p>
+
+<blockquote>
+  <p>3 1 4 7 2 
+1 3 4 7 2
+1 2 3 4 7 # can it tell we’re done yet? (this is important)
+1 2 3 4 7<br />
+1 2 3 4 7</p>
+</blockquote>
+
+<p>We might write this as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for a list of length N, do N times:
+  find the smallest element of the unsorted list suffix
+  move it to the end of the sorted list prefix
+</code></pre></div></div>
+
+<p>Selection sort doesn’t know where that smallest element is. It has to <em>look</em> for it, no matter what. As a result, <em>there’s no distinction between the best and worst cases</em>: it always proceeds in the same way. It needs $O(n)$ steps to find the smallest unprocessed element <em>every</em> time.</p>
+
+<h3 id="looking-ahead">Looking ahead</h3>
+
+<p>It turns out that we can be very clever and get better worst-case performance from a sorting algorithm than $O(n^2)$. More on this next time! But for now, I wonder if there’s a better way to find the right spot to insert elements than a <em>linear search</em>?</p>
+
+<p>It’s also worth thinking about when one sort might be better than another. Worst-case and best-case runtimes are important, but not the only criteria.  What else do you think we should care about when picking an approach to sorting?</p>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

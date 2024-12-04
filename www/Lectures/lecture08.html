@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Program Performance (Part 1) | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Program Performance (Part 1)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Lectures/lecture08.html" />
+<meta property="og:url" content="/Lectures/lecture08.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-09-20T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Program Performance (Part 1)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-09-20T00:00:00+00:00","datePublished":"2024-09-20T00:00:00+00:00","description":"CSCI 0112","headline":"Program Performance (Part 1)","mainEntityOfPage":{"@type":"WebPage","@id":"/Lectures/lecture08.html"},"url":"/Lectures/lecture08.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link " href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link active" href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h2 id="starting-to-think-about-performance">Starting to think about performance</h2>
+
+<p>We’ve talked about making programs more readable and concise, but we haven’t yet thought much about making programs <em>fast</em> (or efficient in other ways).</p>
+
+<p>Here’s a <a href="/Lectures/live/lecture08.py">Python program</a>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">count_the</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="s">'the'</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">count</span>
+</code></pre></div></div>
+
+<p>What’s the running time of the <code class="language-plaintext highlighter-rouge">count_the</code> function? One way to find out would be to actually time an execution on some real data. We could load in Frankenstein again, call the function on the list that <code class="language-plaintext highlighter-rouge">split()</code> returns, and actually time it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tim@somerville sep24 % python3 lecture08.py frankenstein.txt
+That file had 4066 appearances of the word "the".
+</code></pre></div></div>
+
+<p>That went by far faster than we could actually count with a stopwatch. We could tell our terminal to time execution for us:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tim@somerville sep24 % time python3 lecture08.py frankenstein.txt
+That file had 4066 appearances of the word "the".
+/usr/local/bin/python3  frankenstein.txt  0.06s user 0.04s system 28% cpu 0.347 total
+</code></pre></div></div>
+<p>This is a lot of information, but for now just notice the <code class="language-plaintext highlighter-rouge">0.347 total</code>, which says the program took around a third of a second in total.</p>
+
+<p>This approach has some flaws. What are they?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <ul>
+    <li>
+      <p>Some of the time will be taken up by starting the program, loading the file into memory, and other operations that have nothing to do with the runtime of the single function <code class="language-plaintext highlighter-rouge">count_the</code>.</p>
+    </li>
+    <li>
+      <p>Our stopwatch only tells us the runtime for a specific computer, under a specific existing workload, in a specific environment. There will also be some randomness involved.</p>
+    </li>
+    <li>
+      <p>This tells us how long the program takes on Frankenstein, but what about other inputs? How is the function likely to scale as the books get bigger? We can’t run the function on all possible books, so how can we really predict its performance <em>overall</em>?</p>
+    </li>
+  </ul>
+
+</details>
+<p><br /></p>
+
+<h2 id="runtime-vs-scaling">Runtime vs. Scaling</h2>
+
+<p>The truth is that, when we talk about how time-efficient a program is, there are two very different things we might mean:</p>
+<ul>
+  <li>How long is the program taking to run on a <em>particular input</em>?</li>
+  <li>How well does the program <em>scale</em> as the input becomes larger or more complex?</li>
+</ul>
+
+<p>Which question you’re asking depends on what problems you’re trying to solve. For today, we’ll focus on the second question: how well does a program scale?</p>
+
+<p>Let’s see if we can figure out a rough estimate of how long it takes to run <code class="language-plaintext highlighter-rouge">count_the</code> <em>without</em> actually running it. We can start by counting the “basic operations,” like adding numbers or assigning to a variable, executed in the function:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def count_the(l: list) -&gt; int:
+    count = 0           # 1 creation, 1 assignment
+    for s in l:         # repeat: len(l) times
+        if s == 'the':  #     1 (short) string comparison
+            count += 1  #     1 add, 1 assignment
+    return count       # 1 to return          
+</code></pre></div></div>
+
+<p>So for an arbitrary list of length L, the program might execute up to $3L+3$ operations:</p>
+<ul>
+  <li>creating, assigning, and returning the <code class="language-plaintext highlighter-rouge">count</code> variable; and</li>
+  <li>for every element (L of them):
+    <ul>
+      <li>a string comparison; and</li>
+      <li>(possibly) addition and assignment</li>
+    </ul>
+  </li>
+</ul>
+
+<p>This might sound way too imprecise. Not all operations take the same amount of time (and there’s a fair bit of variation across different computers). We <em>are</em> losing some precision, but we’re gaining generality. Here’s what I mean:</p>
+<ul>
+  <li>In general, what is going to dominate the runtime of the program: the setup, or the loop? (The loop, unless $L &lt; 2$, since otherwise $3L &gt; 3$.)</li>
+  <li>As input lists get longer, what’s going to dominate the runtime more: the number of times the loop runs, or the time it takes to run an individual iteration of the loop on some element? (The number of times the loop runs! Each iteration takes at most 3 steps.)</li>
+</ul>
+
+<p>If we’re really concerned with how our function’s performance <em>scales</em> as inputs get bigger, the exact details of how long an operation takes often become irrelevant. Because of that, we’ll say that the running time of <code class="language-plaintext highlighter-rouge">count_the</code> is _proportional to <code class="language-plaintext highlighter-rouge">(3 * L) + 3</code>.</p>
+
+<p>Notice that we’re making many assumptions, or at least abstracting out quite a few details. We’re not counting the for-loop itself as an operation; do we need to? Python’s operations probably don’t actually take the same amount of time; does it matter?</p>
+
+<p>For some purposes, the answers to these questions absolutely matter. Some code is run inside Google’s servers every time a user does a web search. The exact running time of that code is very important to Google! But even in professional engineering, when you’re picking an algorithm or data structure (more on this later) the exact runtime is nearly always less important than how your choice will scale.</p>
+
+<p>In fact, even this much precision is more than we’ll generally use. It’s hard to be sure about how long specific operations take: if returning from a function takes a while, then the <em>real</em> runtime could be more like (3 * L) + 100. If addition takes a while it could be <code class="language-plaintext highlighter-rouge">(50 * L) + 3</code>.
+So we’ll focus on the most important value here: the <em>input list length</em>. We’ll say that our function’s running time is <strong>linear in L</strong>, because everything else washes out at scale. The program does some constant amount of work for each element of the list, plus some additional constant amount of work.</p>
+
+<h2 id="two-more-examples">Two more examples</h2>
+
+<p>Next class we’ll introduce some commonly-used notation for expressing this idea. But before that, let’s look at a couple more functions.</p>
+
+<h3 id="example-1-testing-membership-in-a-list">Example 1: testing membership in a list</h3>
+
+<p>How about this one?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def is_member_of(l: list, ele) -&gt; bool:
+    for x in l:
+        if x == ele:
+            return True
+    return False
+</code></pre></div></div>
+
+<p>How long does this function take, for a list of length L?</p>
+
+<p>The running time of member depends on its arguments even more than the running time of <code class="language-plaintext highlighter-rouge">count_the</code> did!</p>
+
+<p><b>Best Case:</b> If we call it on a list whose first element is <code class="language-plaintext highlighter-rouge">ele</code>, it really doesn’t matter how long the list is. It’s going to check the first element and no more, so it’ll take the same, constant, amount of time regardless of how long the list is. We can express this by saying that the <em>best case</em> time is <em>constant</em>.</p>
+
+<p>Computer programming is an engineering discipline, though. If I’m building a bridge, I’m probably not all that interested in the maximum weight it can tolerate under <em>ideal</em> conditions! What we’re usually interested in (though we’ll see some exceptions, later in the course) is <em>worst-case</em> behavior. For us, that’s: how long will the function take on the worst possible input or inputs?</p>
+
+<p><b>Worst Case:</b> If <code class="language-plaintext highlighter-rouge">ele</code> isn’t actually in <code class="language-plaintext highlighter-rouge">l</code>, then the loop in <code class="language-plaintext highlighter-rouge">is_member_of</code> needs to traverse the entire list. As with <code class="language-plaintext highlighter-rouge">count_the</code>, we’ll say that in its worst-case, the function takes <em>linear</em> time in the length of <code class="language-plaintext highlighter-rouge">l</code>.</p>
+
+<h3 id="example-2-removing-duplicates-from-a-list">Example 2: removing duplicates from a list</h3>
+
+<p>Take a look at one last function:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def distinct(l: list) -&gt; list:
+    seen = []
+    for x in l:
+        if x not in seen:
+            seen.append(x)
+    return seen
+</code></pre></div></div>
+
+<p>This one is a bit more complicated. The <code class="language-plaintext highlighter-rouge">for</code> loop runs once for every element in the list, but how long does every iteration of the loop take? To figure that out, we need to learn something about how lists function in Python.</p>
+
+<p>In Python, <code class="language-plaintext highlighter-rouge">x not in seen</code> is basically equivalent in to calling our previous example function <code class="language-plaintext highlighter-rouge">is_member_of</code>. To check membership in a list, Python will walk the list just like our function did. But that means every time the <code class="language-plaintext highlighter-rouge">for</code> loop in <code class="language-plaintext highlighter-rouge">distinct</code> runs, that <em>single iteration takes linear time</em> in the length of <code class="language-plaintext highlighter-rouge">seen</code>.</p>
+
+<p><b>Best Case:</b> What’s the best case? Well, if all of the elements in <code class="language-plaintext highlighter-rouge">l</code> are the same, <code class="language-plaintext highlighter-rouge">x not in seen</code> never takes more than a constant number of operations. So in that case, the function runs in linear time.</p>
+
+<p><b>Worst Case:</b> How about the worst case? What if the elements are all <em>different</em>?</p>
+
+<details>
+  <summary><b>Think, then click!</b></summary>
+
+  <p>If all the elements are different, then every <code class="language-plaintext highlighter-rouge">x</code> will be new, and thus won’t be found in the <code class="language-plaintext highlighter-rouge">seen</code> list. But then the size of the <code class="language-plaintext highlighter-rouge">seen</code> list grows every time the loop iterates: at first it’s 0, then 1, then 2, and so on.</p>
+
+  <p>Some geometric intuition might be useful here:</p>
+
+  <p><img src="/Lectures/images/lecture08_diagonal.png" alt="" /></p>
+
+  <p>How many blocks are there in this diagram? $(0 + 1 + 2 + … + (L - 1))$ of them. With a little algebra, this simplifies to $\frac{L (L + 1)}{2}$. This is a quadratic equation; if we were to multiply it out, there’d be a $L^2$ in it. In the worst case, this function will scale with the <em>square</em> of the length of the input. We’ll call this <em>quadratic</em> time.</p>
+
+</details>
+<p><br /></p>
+
+<p>How much worse is this? Does it actually matter in practice? Let’s find out. We’ll time how long it takes to run <code class="language-plaintext highlighter-rouge">count_the</code> on the text of Frankenstein, and how long it takes to run <code class="language-plaintext highlighter-rouge">distinct</code> on the same input.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tim@somerville sep24 % time python3 lecture08.py frankenstein.txt
+That file had 4066 appearances of the word "the".
+/usr/local/bin/python3  frankenstein.txt  0.06s user 0.04s system 28% cpu 0.347 total
+
+tim@somerville sep24 % time python3 lecture08.py frankenstein.txt
+That file had 12179 unique words (including caps, punctuation, etc).
+python3  frankenstein.txt  2.18s user 0.04s system 84% cpu 2.648 total
+</code></pre></div></div>
+
+<p>The difference is actually quite noticeable even without a timer. Fractions of a second to full seconds. An order of magnitude.</p>
+
+<p>What if we tried on a larger book? I’ve downloaded <a href="/Lectures/live/arthur.txt">the full text</a> of an English translation of Mallory’s <em>The Death of Arthur</em>, which is a bit longer:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tim@somerville sep24 % wc frankenstein.txt
+    7743   78122  448821 frankenstein.txt
+tim@somerville sep24 % wc arthur.txt
+   34131  368286 1965003 arthur.txt
+</code></pre></div></div>
+
+<p>(That’s 78122 words versus 368286 words.)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tim@somerville sep24 % time python3 lecture08.py arthur.txt
+That file had 14681 appearances of the word "the".
+/usr/local/bin/python3  arthur.txt  0.10s user 0.04s system 42% cpu 0.336 total
+
+tim@somerville sep24 % time python3 lecture08.py arthur.txt      
+That file had 15790 unique words (including caps, punctuation, etc).
+/usr/local/bin/python3  arthur.txt  8.35s user 0.09s system 94% cpu 8.901 total
+</code></pre></div></div>
+
+<p>Now it’s an even bigger gap! Nearly 9 seconds (increased from under 3) to get the unique words in <code class="language-plaintext highlighter-rouge">arthur.txt</code>, but hardly any change (around a third of a second) to count how many times <code class="language-plaintext highlighter-rouge">"the"</code> appears. And it’ll only get worse as the data gets bigger—<em>unless we get lucky</em> and the input happens to be closer to the best case.</p>
+
+<h2 id="looking-ahead-sets">Looking ahead: Sets</h2>
+
+<p>But where else do these differences appear? Let’s run a quick experiment between minor changes to the <code class="language-plaintext highlighter-rouge">distinct</code> function.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">distinct_list</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">seen</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">seen</span>
+
+<span class="k">def</span> <span class="nf">distinct_set</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">seen</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span> <span class="c1"># convert back to a list    
+</span></code></pre></div></div>
+
+<p>Try running each of these on Frankenstein. On my laptop, with sets: <code class="language-plaintext highlighter-rouge">0.054 total</code> and with lists: <code class="language-plaintext highlighter-rouge">2.153 total</code>. Both numbers are in seconds.</p>
+
+<p>It seems like there’s a huge impact on performance. In fact, the version that uses sets performs around the same as <code class="language-plaintext highlighter-rouge">count_the</code> did last time, and <code class="language-plaintext highlighter-rouge">count_the</code> had worst-cast runtime linear in the input size. That is, its worst-case performance was in $O(n)$. <em>It seems like using a set has somehow eliminated the linear cost from the <code class="language-plaintext highlighter-rouge">x not in seen</code> check</em>.</p>
+
+<h3 id="i-wonder">I wonder…</h3>
+
+<p>Is there a potential bug lurking in the switch from <code class="language-plaintext highlighter-rouge">distinct_list</code> to <code class="language-plaintext highlighter-rouge">distinct_set</code>? Hint: it depends on what you might need to use the output for.</p>
+
+<h2 id="why-does-runtime-matter">Why does runtime matter?</h2>
+
+<p>It’s useful to consider the ways that runtime matters in the world. People often point out that a faster program uses less electricity and therefore has a lower climate impact. While this is true, I personally tend to be skeptical of generalizing this, since faster execution also makes room for running <em>more</em> programs.</p>
+
+<p>Sure, there are lots of business-focused reasons to have fast code, but there is at least one social factor: access. When building software, we don’t know what kind of computer our eventual users will have. A laptop that a highly-paid developer in San Diego or New York might consider “average” could be a powerful and expensive luxury for others. Even if our program is running in the cloud, performance (realized as <em>cost</em>) could make the difference between someone being able to do analysis and giving it up.</p>
+
+<p>That said, performance isn’t as important as we might initially think. The general advice is: get it <em>right</em> first, and then get it fast. There are exceptions to every rule, but this one is almost always worth following. Especially in 0112.</p>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>

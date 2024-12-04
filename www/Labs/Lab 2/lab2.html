@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Runtime Review | CSCI 0112 - Fall 2024</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Runtime Review" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="CSCI 0112" />
+<meta property="og:description" content="CSCI 0112" />
+<link rel="canonical" href="/Labs/Lab%202/lab2.html" />
+<meta property="og:url" content="/Labs/Lab%202/lab2.html" />
+<meta property="og:site_name" content="CSCI 0112 - Fall 2024" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Runtime Review" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"CSCI 0112","headline":"Runtime Review","url":"/Labs/Lab%202/lab2.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="CSCI 0112 - Fall 2024" /></head>
+<body><header class="site-header" role="banner">
+  <div class="wrapper"><div class="header-top">
+      <a class="site-title " rel="author" href="/">CSCI 0112 - Fall 2024</a>
+    </div>
+    <div class="header-bottom"><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+        <div class="trigger">
+          <a class="page-link " href="/Pages/assignments.html">Assignments</a>
+          <a class="page-link " href="/Pages/hours.html">Hours</a>
+          <a class="page-link active" href="/Labs/">Labs</a>
+          <a class="page-link " href="/Pages/learning.html">Learning</a>
+          <a class="page-link " href="/Lectures/">Lectures</a>
+          <a class="page-link " href="/Pages/setup.html">Setup</a>
+          <a class="page-link " href="/Pages/staff.html">Staff</a>
+        </div>
+      </nav></div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <header class="post-header">
+  <h2 class="post-title">
+    
+      Lab 2:
+    
+    Runtime Review
+  </h2>
+</header>
+
+
+
+  
+  
+    
+  
+
+  
+      <p class="notice"><a href="/Labs/Lab 2/Lab 2.pptx">View presentation</a></p>
+  
+
+  <h2 id="section-1-background">Section 1: Background</h2>
+<p>Very early on in Tim’s talking career, Tim had developed a small habit of rambling during some of the talks he was giving. In the best case scenarios, he was able to get his point across in a few sentences. However, in the worst case scenarios, the audience would begin to lose sight of the points he was trying to make, leading to an inefficient speech. In the end, Tim was able to mitigate this issue and he has grown into a fan-favorite speaker all over the world. How did he do it?</p>
+
+<p>By analyzing runtime. In this lab, you will be able to calculate and see the differences in runtimes of efficient vs. inefficient functions through plotted graphs, similar to how Tim was able to use his knowledge of runtime analysis to help him become a renowned speaker.</p>
+
+<h3 id="what-is-runtime">What is Runtime?</h3>
+<p>Runtime (or Execution Time) is the time it takes a computer to execute a program. Runtime is an important metric that is often used to determine the efficiency of a function. Each program has a best-case runtime and a worst-case runtime. The reason for this is because the runtime of a program is not static. For example, the size of a datafile may affect the iterations a program must perform, which makes the runtime depend on the size of the file.</p>
+
+<p>Worst-case runtime is the most commonly used metric because we must always account for the worst-case scenarios (i.e. a data file with hundreds of inputs).</p>
+
+<h2 id="section-2-evaluating-runtime">Section 2: Evaluating Runtime</h2>
+
+<div class="stencil" data-source="runtime_lab.py">
+  <div class="stencil-header">
+    <a href="#" class="stencil-title" title="Preview runtime_lab.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+      </svg>
+      <code>runtime_lab.py</code>
+    </a>
+    <a href="runtime_lab.py" download="" class="stencil-download" title="Download runtime_lab.py">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z" />
+      </svg>
+    </a>
+    <a href="#" download="" class="stencil-copy" title="Copy runtime_lab.py to clipboard">
+      <svg class="stencil-copy-action" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z" />
+      </svg>
+      <svg class="stencil-copy-done" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+      </svg>
+    </a>
+  </div>
+  <pre class="stencil-code"></pre>
+</div>
+
+<p><strong>Note:</strong> This program uses matplotlib to create and save the graphs. If you are unable to run the program, you may need to install matplotlib. Run the following command in your terminal:</p>
+<pre><code>$ pip3 install matplotlib</code></pre>
+
+<p>IMPORTANT: Since this program uses matplotlib in order to be able to create the graphs and save them to your directory, you will need to head over to the Terminal and run pip3 install matplotlib.</p>
+
+<h3 id="part-1-two-distinct-functions">Part 1: Two Distinct Functions</h3>
+
+<p><code class="language-plaintext highlighter-rouge">distinct1</code> and <code class="language-plaintext highlighter-rouge">distinct2</code> are two distinct functions that have the same functionality of adding elements from a list to a data structure if the new element is distinct. However, these two functions have different runtimes. In the best-case scenario, the two functions both run in constant time, but in the worst-case scenario <code class="language-plaintext highlighter-rouge">distinct1</code> is slower with a quadratic runtime compared to <code class="language-plaintext highlighter-rouge">distinct2</code>‘s linear runtime.</p>
+
+<p>Look at <code class="language-plaintext highlighter-rouge">distinct1</code> and <code class="language-plaintext highlighter-rouge">distinct2</code>. How do these functions differ in implementation, and how would that affect the runtime of the functions given different cases? In what cases do <code class="language-plaintext highlighter-rouge">distinct1</code> and <code class="language-plaintext highlighter-rouge">distinct2</code> have the worst possible runtime?</p>
+
+<p class="notice"><strong>Task 1:</strong> Construct an input to <code class="language-plaintext highlighter-rouge">distinct1</code> and <code class="language-plaintext highlighter-rouge">distinct2</code> which would give them the worst case runtime. That value should be returned by <code class="language-plaintext highlighter-rouge">worst_case_input</code>.</p>
+
+<h3 id="part-2-graphing-runtime">Part 2: Graphing Runtime</h3>
+
+<p>One great way to be able to see the differences in runtimes of efficient vs. inefficient functions is through plotted graphs.</p>
+
+<p class="notice"><strong>Task 2:</strong> Define the <code class="language-plaintext highlighter-rouge">generate_graphs</code> function according to the stencil. This method is in charge of calling the helper methods, respectively, in order to generate the graphs which show the runtimes of <code class="language-plaintext highlighter-rouge">distinct1</code> and <code class="language-plaintext highlighter-rouge">distinct2</code> on the <code class="language-plaintext highlighter-rouge">best_case_input</code> and <code class="language-plaintext highlighter-rouge">worst_case_input</code>.</p>
+
+<h3 id="part-3-running-file">Part 3: Running File</h3>
+
+<p class="notice"><strong>Task 3:</strong> Run the file <code class="language-plaintext highlighter-rouge">runtime_lab.py</code> in your terminal.</p>
+
+<p>After running the program, you should see four images in your directory (best1.png, best2.png, worst1.png, worst2.png). Sometimes you must go to your folder/directory in Finder in order to see the images. You can also open these images directly in VSCode. These images will show how the runtime increases as the size of the input also increases.</p>
+
+<h2 id="section-3-youre-all-set">Section 3: You’re All Set!</h2>
+
+<p>Success!
+Once you have completed both methods and the graph images are saved in your directory, notify your TA!</p>
+
+
+
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <!--<h2 class="footer-heading">CSCI 0112 - Fall 2024</h2>-->
+
+    <div class="footer">
+      <i>
+        <p>
+        Note that all the settings for the assignments are fictional and any resemblance to real people or events is purely coincidental.<br><br>
+
+          If you find any ambiguous language, inconsistencies, or mistakes in this
+          or any other document related to this course, please let us know by filling out the
+          <a href="https://forms.gle/V572baSu29Wnao5r9">anonymous feedback form</a>.
+        </p>
+
+      </i>
+    </div>
+  </div>
+
+</footer>
+<script src="/assets/main.js"></script>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <!-- Was: https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.0/es5/latest?tex-mml-chtml.js--> 
+    <!-- Was: src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> -->
+    <!-- HT link in post.html -->
+    <!-- But this CDN is shutting down:
+      https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
+      <!-- This is what the MathJax github says (as of Oct 2023)-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">      
+    </script>
+  </body>
+
+  
+</html>
